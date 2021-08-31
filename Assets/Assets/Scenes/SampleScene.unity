@@ -401,6 +401,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8559328377163780091, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_RootOrder
       value: 1

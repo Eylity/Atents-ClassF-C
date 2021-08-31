@@ -16,8 +16,6 @@ public class Player_Attack : Istate<PlayerFSM>
 
     public override void OnStAteUpdate()
     {
-        m_Player.m_Anim.SetBool("IsMove", false);
-        m_Player.m_Anim.SetBool("IsRun", false);
         if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL"))
         {
             CollSwitch(true);
@@ -26,6 +24,12 @@ public class Player_Attack : Istate<PlayerFSM>
             if (animInfo.normalizedTime >= 0.8f)
             {
                 CollSwitch(false);
+            }
+
+            if (animInfo.normalizedTime >= 0.9f)
+            {
+                Debug.Log("!");
+                m_Player.ChangeState(EPlayerState.Idle);
             }
         }
         else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR"))
