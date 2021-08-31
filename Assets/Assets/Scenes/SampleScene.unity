@@ -403,7 +403,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_UpdateMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_CullingMode
@@ -411,7 +411,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2317378105049175425, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303908039715704730, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+      propertyPath: m_Skill
+      value: 
+      objectReference: {fileID: 3750629692748755974, guid: 6545dfcafa624a34a511dbe92f2159ce, type: 3}
+    - target: {fileID: 4303908039715704730, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+      propertyPath: m_NowAttack
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8559328377163780091, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_RootOrder

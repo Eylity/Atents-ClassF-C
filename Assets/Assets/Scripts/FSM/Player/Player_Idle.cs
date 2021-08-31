@@ -17,7 +17,6 @@ public class Player_Idle : Istate<PlayerFSM>
 
     public override void OnStAteUpdate()
     {
-        m_PLayer.nowIdle = true;
     }
 
     public override void OnStateExit()

@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player_Attack : Istate<PlayerFSM>
 {
     private readonly PlayerFSM m_Player;
+    private int m_MouseClickCount = 0;
 
     public Player_Attack(PlayerFSM player)
     {
@@ -16,20 +18,19 @@ public class Player_Attack : Istate<PlayerFSM>
 
     public override void OnStAteUpdate()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            m_Player.m_Anim.SetTrigger("Attack");
+        }
+
+
         if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL"))
         {
             CollSwitch(true);
             var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
-
             if (animInfo.normalizedTime >= 0.8f)
             {
                 CollSwitch(false);
-            }
-
-            if (animInfo.normalizedTime >= 0.9f)
-            {
-                Debug.Log("!");
-                m_Player.ChangeState(EPlayerState.Idle);
             }
         }
         else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR"))
@@ -50,8 +51,8 @@ public class Player_Attack : Istate<PlayerFSM>
             if (animInfo.normalizedTime >= 0.8f)
             {
                 CollSwitch(false);
-                m_Player.m_Anim.ResetTrigger("Attack");
             }
+            m_Player.m_Anim.ResetTrigger("Attack");
         }
     }
 
