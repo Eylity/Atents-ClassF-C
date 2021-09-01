@@ -11,7 +11,6 @@ public abstract class Istate<T>
 public enum EPlayerState
 {
     Idle,
-    Move,
     Attack,
     FlyAttack,
     FullSwing,

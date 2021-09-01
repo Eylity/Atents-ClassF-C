@@ -5,6 +5,7 @@ namespace FSM.Player
     public class Player_FullSwing : Istate<PlayerFSM>
     {
         private PlayerFSM m_Player;
+        private static readonly int FullSwing = Animator.StringToHash("FullSwing");
 
         public Player_FullSwing(PlayerFSM player)
         {
@@ -13,7 +14,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Player.m_Anim.SetTrigger("FullSwing");
+            m_Player.m_Anim.SetTrigger(FullSwing);
             foreach (var collider in m_Player.m_AttackCollider)
             {
                 collider.enabled = true;
@@ -26,7 +27,8 @@ namespace FSM.Player
             {
                 return;
             }
-            AnimatorStateInfo animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
+
+            var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
 
             if (animInfo.normalizedTime <= 0.8f)
             {

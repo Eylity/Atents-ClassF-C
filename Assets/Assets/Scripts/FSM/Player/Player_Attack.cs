@@ -1,71 +1,74 @@
-using System.Collections;
 using UnityEngine;
 
-public class Player_Attack : Istate<PlayerFSM>
+namespace FSM.Player
 {
-    private readonly PlayerFSM m_Player;
-    private int m_MouseClickCount = 0;
-
-    public Player_Attack(PlayerFSM player)
+    public class Player_Attack : Istate<PlayerFSM>
     {
-        m_Player = player;
-    }
+        private readonly PlayerFSM m_Player;
+        private int m_MouseClickCount = 0;
+        private static readonly int Attack = Animator.StringToHash("Attack");
 
-    public override void OnStateEnter()
-    {
-        m_Player.m_Anim.SetTrigger("Attack");
-    }
-
-    public override void OnStAteUpdate()
-    {
-        if (Input.GetMouseButtonDown(0))
+        public Player_Attack(PlayerFSM player)
         {
-            m_Player.m_Anim.SetTrigger("Attack");
+            m_Player = player;
         }
 
-
-        if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL"))
+        public override void OnStateEnter()
         {
-            CollSwitch(true);
-            var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
-            if (animInfo.normalizedTime >= 0.8f)
+            m_Player.m_Anim.SetTrigger(Attack);
+        }
+
+        public override void OnStAteUpdate()
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                CollSwitch(false);
+                m_Player.m_Anim.SetTrigger(Attack);
+            }
+
+
+            if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL"))
+            {
+                CollSwitch(true);
+                var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
+                if (animInfo.normalizedTime >= 0.8f)
+                {
+                    CollSwitch(false);
+                }
+            }
+            else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR"))
+            {
+                CollSwitch(true);
+                var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
+
+                if (animInfo.normalizedTime >= 0.8f)
+                {
+                    CollSwitch(false);
+                }
+            }
+            else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack"))
+            {
+                CollSwitch(true);
+                var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
+
+                if (animInfo.normalizedTime >= 0.8f)
+                {
+                    CollSwitch(false);
+                }
+                m_Player.m_Anim.ResetTrigger(Attack);
             }
         }
-        else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR"))
-        {
-            CollSwitch(true);
-            var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
 
-            if (animInfo.normalizedTime >= 0.8f)
-            {
-                CollSwitch(false);
-            }
+        public override void OnStateExit()
+        {
+            CollSwitch(false);
         }
-        else if (m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack"))
-        {
-            CollSwitch(true);
-            var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
 
-            if (animInfo.normalizedTime >= 0.8f)
+        private void CollSwitch(bool isEnabled)
+        {
+            foreach (var collider in m_Player.m_AttackCollider)
             {
-                CollSwitch(false);
+                collider.enabled = isEnabled;
             }
-            m_Player.m_Anim.ResetTrigger("Attack");
-        }
-    }
-
-    public override void OnStateExit()
-    {
-        CollSwitch(false);
-    }
-
-    private void CollSwitch(bool isEnabled)
-    {
-        foreach (var collider in m_Player.m_AttackCollider)
-        {
-            collider.enabled = isEnabled;
         }
     }
 }
