@@ -27,7 +27,7 @@ public class StateMachine<T>
     {
         if (m_CurState != state)
         {
-            m_CurState.OnStateExit();
+            StateExit();
         }
 
         m_CurState = state;

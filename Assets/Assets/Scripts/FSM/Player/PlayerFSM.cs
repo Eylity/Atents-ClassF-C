@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using FSM.Player;
+using UnityEngine.Serialization;
 
 namespace FSM.Player
 {
@@ -36,22 +37,26 @@ namespace FSM.Player
         private float m_MoveSpeed;
         private float m_RotateSpeed;
 
-        public Animator m_Anim;
-        public Collider[] m_AttackCollider;
-        public Rigidbody m_Rigidbody;
+        [HideInInspector] public Animator m_Anim;
+        [HideInInspector] public Collider[] m_AttackColliders;
+        [HideInInspector] public Rigidbody m_Rigidbody;
+        [Header("----- Skill Spawn Prefab -----")]
         public GameObject m_Skill;
-        [Range(40f,200f)]
-        public float m_Stamina = 100f;
-        [Range(5f,20f)]
-        public float m_SubStaminaSpeed = 10f;
-        public float m_Health = 100;
+        [Header("----- Player Status -----")]
+        public int m_Health = 100;
+        [Range(40f, 200f)] public float m_Stamina = 100f;
+        [Range(5f, 20f)] public float m_SubStaminaSpeed = 10f;
 
+        public PlayerFSM()
+        {
+            Init();
+        }
 
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
             m_Anim = GetComponent<Animator>();
-            m_AttackCollider = GetComponentsInChildren<BoxCollider>();
+            m_AttackColliders = GetComponentsInChildren<BoxCollider>();
         }
 
         private void Start()
@@ -60,10 +65,6 @@ namespace FSM.Player
             StartCoroutine(nameof(State));
         }
 
-        public PlayerFSM()
-        {
-            Init();
-        }
 
         public GameObject Test()
         {
@@ -77,8 +78,8 @@ namespace FSM.Player
             m_ArrState[(int) EPlayerState.Idle] = new Player_Idle(this);
             m_ArrState[(int) EPlayerState.Attack] = new Player_Attack(this);
             m_ArrState[(int) EPlayerState.FlyAttack] = new Player_FlyAttack(this);
-            m_ArrState[(int) EPlayerState.Skill] = new Player_Skill(this);
             m_ArrState[(int) EPlayerState.FullSwing] = new Player_FullSwing(this);
+            m_ArrState[(int) EPlayerState.Skill] = new Player_Skill(this);
 
             m_State.SetState(m_ArrState[(int) EPlayerState.Idle], this);
         }
@@ -96,8 +97,11 @@ namespace FSM.Player
             {
                 m_NowReady = false;
             }
+            if (Input.GetMouseButtonDown(1))
+            {
+                TakeDamage(100f);
+            }
             Exhausted();
-            Debug.Log(m_Stamina);
         }
 
         private void FixedUpdate()
@@ -105,6 +109,20 @@ namespace FSM.Player
             Move();
         }
 
+        public void ChangeState(EPlayerState state)
+        {
+            for (var stateIndex = 0; stateIndex < (int) EPlayerState.Length; stateIndex++)
+            {
+                if (stateIndex == (int) state)
+                {
+                    m_State.StateChange(m_ArrState[stateIndex]);
+                    break;
+                }
+            }
+        }
+
+        #region State
+        
         private IEnumerator State()
         {
             while (true)
@@ -145,39 +163,54 @@ namespace FSM.Player
                             CoolDown(ECoolDownSystem.Skill);
                         }
                     }
-
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        TakeDamage(100f);
-                    }
                 }
 
                 yield return null;
             }
         }
+        
+        #endregion
 
+        #region PlayerHit
+        
         public void TakeDamage(float damage)
         {
-            m_Health -= (float)Math.Round(damage);
+            m_Health -= (int)Math.Round(damage);
             if (m_Health <= 0)
             {
                 StartCoroutine(nameof(PlayerDead));
             }
         }
-        
+
         private IEnumerator PlayerDead()
         {
-            StopCoroutine(nameof(State));
+            m_Anim.Rebind();
             m_Anim.SetTrigger(Die);
-                while (m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
+            StopCoroutine(nameof(State));
+            while (m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
+            {
+                yield return null;
+            }
+
+            this.gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Dragon"))
+            {
+                foreach (var collider in m_AttackColliders)
                 {
-                    yield return null;
+                    collider.enabled = false;
                 }
-                this.gameObject.SetActive(false);
+            }
+            Debug.Log("!");
         }
 
         #region Skill CoolDown
-        
+
         private void CoolDown(ECoolDownSystem index)
         {
             switch (index)
@@ -263,7 +296,7 @@ namespace FSM.Player
 
         #endregion
 
-        #region CheckExhausted
+        #region Exhausted
 
         private void Exhausted()
         {
@@ -274,6 +307,7 @@ namespace FSM.Player
                     m_Stamina = 50;
                     return;
                 }
+
                 m_Stamina += m_SubStaminaSpeed * Time.deltaTime;
             }
             else
@@ -285,20 +319,19 @@ namespace FSM.Player
                     m_Anim.SetTrigger(Exhausted1);
                     StartCoroutine(nameof(ExhaustedTimer));
                 }
+
                 m_Stamina -= m_SubStaminaSpeed * 1.5f * Time.deltaTime;
             }
         }
-
-        #endregion
-
-        #region ExhaustedTimer
 
         private IEnumerator ExhaustedTimer()
         {
             yield return m_ExhaustedTime;
             m_NowExhausted = false;
         }
-
+        
         #endregion
+
+
     }
 }

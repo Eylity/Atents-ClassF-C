@@ -15,7 +15,7 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FullSwing);
-            foreach (var collider in m_Player.m_AttackCollider)
+            foreach (var collider in m_Player.m_AttackColliders)
             {
                 collider.enabled = true;
             }
@@ -30,12 +30,12 @@ namespace FSM.Player
 
             var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
 
-            if (animInfo.normalizedTime <= 0.8f)
+            if (animInfo.normalizedTime <= 0.9f)
             {
                 return;
             }
 
-            foreach (var collider in m_Player.m_AttackCollider)
+            foreach (var collider in m_Player.m_AttackColliders)
             {
                 collider.enabled = false;
             }

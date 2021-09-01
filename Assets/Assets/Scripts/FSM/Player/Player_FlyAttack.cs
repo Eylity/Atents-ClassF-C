@@ -15,7 +15,7 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FlyAttack);
-            foreach (var collider in m_Player.m_AttackCollider)
+            foreach (var collider in m_Player.m_AttackColliders)
             {
                 collider.enabled = true;
             }
@@ -35,7 +35,7 @@ namespace FSM.Player
             {
                 return;
             }
-            foreach (var collider in m_Player.m_AttackCollider)
+            foreach (var collider in m_Player.m_AttackColliders)
             {
                 collider.enabled = false;
             }
