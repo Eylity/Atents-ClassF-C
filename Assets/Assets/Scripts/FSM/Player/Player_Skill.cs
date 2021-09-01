@@ -11,15 +11,15 @@ namespace FSM.Player
         {
             m_Player = player;
         }
+
         public override void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(Skill);
-            m_Player.Test();
+            var obj = Object.Instantiate(m_Player.m_Skill, m_Player.transform.position, Quaternion.identity);
         }
 
-        public override void OnStAteUpdate()
+        public override void OnStateUpdate()
         {
-            
         }
 
         public override void OnStateExit()

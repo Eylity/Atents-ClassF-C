@@ -522,7 +522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4303908039715704730, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_SubStaminaSpeed
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4303908040285771545, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_Size.x

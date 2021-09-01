@@ -15,13 +15,10 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FullSwing);
-            foreach (var collider in m_Player.m_AttackColliders)
-            {
-                collider.enabled = true;
-            }
+            m_Player.CollSwitch(true);
         }
 
-        public override void OnStAteUpdate()
+        public override void OnStateUpdate()
         {
             if (!m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
             {
@@ -35,10 +32,7 @@ namespace FSM.Player
                 return;
             }
 
-            foreach (var collider in m_Player.m_AttackColliders)
-            {
-                collider.enabled = false;
-            }
+            m_Player.CollSwitch(false);
         }
 
         public override void OnStateExit()

@@ -1,7 +1,7 @@
 public abstract class Istate<T>
 {
     public abstract void OnStateEnter();
-    public abstract void OnStAteUpdate();
+    public abstract void OnStateUpdate();
     public abstract void OnStateExit();
 
 }

@@ -19,6 +19,7 @@ namespace FSM.Player
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int IsRun = Animator.StringToHash("IsRun");
         private static readonly int IsMove = Animator.StringToHash("IsMove");
+        private static readonly int Attack = Animator.StringToHash("Attack");
         private static readonly int Exhausted1 = Animator.StringToHash("Exhausted");
         private readonly Istate<PlayerFSM>[] m_ArrState = new Istate<PlayerFSM>[(int) EPlayerState.Length];
         private readonly WaitForSeconds m_FlyAttackCoolTime = new WaitForSeconds(5.0f);
@@ -30,7 +31,7 @@ namespace FSM.Player
         private bool m_ActiveFullSwing = true;
         private bool m_ActiveSkill = true;
         private bool m_NowReady = true;
-        private bool m_NowExhausted = false;
+        private bool m_NowExhausted;
         private bool m_NowRun;
         private float m_MoveX;
         private float m_MoveZ;
@@ -40,36 +41,20 @@ namespace FSM.Player
         [HideInInspector] public Animator m_Anim;
         [HideInInspector] public Collider[] m_AttackColliders;
         [HideInInspector] public Rigidbody m_Rigidbody;
+
         [Header("----- Skill Spawn Prefab -----")]
         public GameObject m_Skill;
-        [Header("----- Player Status -----")]
-        public int m_Health = 100;
+
+        [Header("----- Player Status -----")] public int m_Health = 100;
         [Range(40f, 200f)] public float m_Stamina = 100f;
         [Range(5f, 20f)] public float m_SubStaminaSpeed = 10f;
+
+
+        #region Constructor
 
         public PlayerFSM()
         {
             Init();
-        }
-
-        private void Awake()
-        {
-            m_Rigidbody = GetComponent<Rigidbody>();
-            m_Anim = GetComponent<Animator>();
-            m_AttackColliders = GetComponentsInChildren<BoxCollider>();
-        }
-
-        private void Start()
-        {
-            m_State.StateEnter();
-            StartCoroutine(nameof(State));
-        }
-
-
-        public GameObject Test()
-        {
-            var obj = Instantiate(m_Skill, transform.position, Quaternion.identity);
-            return obj;
         }
 
         private void Init()
@@ -84,9 +69,53 @@ namespace FSM.Player
             m_State.SetState(m_ArrState[(int) EPlayerState.Idle], this);
         }
 
+        #endregion
+
+        private void Awake()
+        {
+            m_Rigidbody = GetComponent<Rigidbody>();
+            m_Anim = GetComponent<Animator>();
+            m_AttackColliders = GetComponentsInChildren<BoxCollider>();
+        }
+
+        private void Start()
+        {
+            m_State.StateEnter();
+            StartCoroutine(nameof(State));
+        }
+
         void Update()
         {
             m_State.StateUpdate();
+            ReadyCheck();
+            Exhausted();
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                TakeDamage(100f);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            Move();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Dragon"))
+            {
+                return;
+            }
+
+            CollSwitch(false);
+            Debug.Log("Hit");
+        }
+
+        #region Now Ready Check
+
+        private void ReadyCheck()
+        {
             if (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
                 m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Move") ||
                 m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
@@ -97,32 +126,12 @@ namespace FSM.Player
             {
                 m_NowReady = false;
             }
-            if (Input.GetMouseButtonDown(1))
-            {
-                TakeDamage(100f);
-            }
-            Exhausted();
         }
 
-        private void FixedUpdate()
-        {
-            Move();
-        }
-
-        public void ChangeState(EPlayerState state)
-        {
-            for (var stateIndex = 0; stateIndex < (int) EPlayerState.Length; stateIndex++)
-            {
-                if (stateIndex == (int) state)
-                {
-                    m_State.StateChange(m_ArrState[stateIndex]);
-                    break;
-                }
-            }
-        }
+        #endregion
 
         #region State
-        
+
         private IEnumerator State()
         {
             while (true)
@@ -131,10 +140,11 @@ namespace FSM.Player
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
+                        StartCoroutine(nameof(AttackCheck));
                         m_State.StateChange(m_ArrState[(int) EPlayerState.Attack]);
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Q))
+                    else if (Input.GetKeyDown(KeyCode.Q))
                     {
                         if (m_ActiveFlyAttack)
                         {
@@ -144,7 +154,7 @@ namespace FSM.Player
                         }
                     }
 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    else if (Input.GetKeyDown(KeyCode.E))
                     {
                         if (m_ActiveFullSwing)
                         {
@@ -154,7 +164,7 @@ namespace FSM.Player
                         }
                     }
 
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         if (m_ActiveSkill)
                         {
@@ -168,14 +178,80 @@ namespace FSM.Player
                 yield return null;
             }
         }
+
+        public void ChangeState(EPlayerState state)
+        {
+            for (var stateIndex = 0; stateIndex < (int) EPlayerState.Length; stateIndex++)
+            {
+                if (stateIndex != (int) state)
+                {
+                    continue;
+                }
+
+                m_State.StateChange(m_ArrState[stateIndex]);
+                Debug.Log(stateIndex);
+                break;
+            }
+        }
+
+        #endregion
+
+        #region AttackCheck
+        
+        private IEnumerator AttackCheck()
+        {
+            yield return new WaitForSeconds(0.2f);
+            while (true)
+            {
+                CollSwitch(true);
+                while (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL")) yield return null;
+                if (m_NowReady)
+                {
+                    CollSwitch(false);
+                    yield break;
+                }
+
+                break;
+            }
+
+            while (true)
+            {
+                CollSwitch(true);
+                while (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR")) yield return null;
+                if (m_NowReady)
+                {
+                    CollSwitch(false);
+                    yield break;
+                }
+
+                break;
+            }
+
+            while (true)
+            {
+                CollSwitch(true);
+                while (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack")) yield return null;
+                CollSwitch(false);
+                yield break;
+            }
+        }
+
+        public void CollSwitch(bool isActive)
+        {
+            for (var i = 0; i < m_AttackColliders.Length; i++)
+            {
+                m_AttackColliders[i].enabled = isActive;
+            }
+        }
         
         #endregion
 
+
         #region PlayerHit
-        
+
         public void TakeDamage(float damage)
         {
-            m_Health -= (int)Math.Round(damage);
+            m_Health -= (int) Math.Round(damage);
             if (m_Health <= 0)
             {
                 StartCoroutine(nameof(PlayerDead));
@@ -186,7 +262,7 @@ namespace FSM.Player
         {
             m_Anim.Rebind();
             m_Anim.SetTrigger(Die);
-            StopCoroutine(nameof(State));
+            StopAllCoroutines();
             while (m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
             {
                 yield return null;
@@ -196,18 +272,6 @@ namespace FSM.Player
         }
 
         #endregion
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Dragon"))
-            {
-                foreach (var collider in m_AttackColliders)
-                {
-                    collider.enabled = false;
-                }
-            }
-            Debug.Log("!");
-        }
 
         #region Skill CoolDown
 
@@ -270,16 +334,15 @@ namespace FSM.Player
                     m_MoveSpeed = 6f;
                     m_RotateSpeed = 8f;
                     m_Anim.SetBool(IsRun, true);
-                    m_NowRun = true;
                 }
                 else
                 {
                     m_MoveSpeed = 2f;
                     m_RotateSpeed = 8f;
                     m_Anim.SetBool(IsRun, false);
-                    m_NowRun = false;
                 }
 
+                Debug.Log(m_Stamina);
                 m_Anim.SetBool(IsMove, true);
 
                 var movePos = new Vector3(x, transform.position.y, z) * m_MoveSpeed * Time.deltaTime;
@@ -300,7 +363,18 @@ namespace FSM.Player
 
         private void Exhausted()
         {
-            if (!m_NowRun)
+            if (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+            {
+                m_Stamina -= m_SubStaminaSpeed * Time.deltaTime;
+                if (m_Stamina <= 0)
+                {
+                    m_NowExhausted = true;
+                    m_NowRun = false;
+                    m_Anim.SetTrigger(Exhausted1);
+                    StartCoroutine(nameof(ExhaustedTimer));
+                }
+            }
+            else
             {
                 if (m_Stamina >= 50)
                 {
@@ -310,18 +384,6 @@ namespace FSM.Player
 
                 m_Stamina += m_SubStaminaSpeed * Time.deltaTime;
             }
-            else
-            {
-                if (m_Stamina < 0)
-                {
-                    m_NowExhausted = true;
-                    m_NowRun = false;
-                    m_Anim.SetTrigger(Exhausted1);
-                    StartCoroutine(nameof(ExhaustedTimer));
-                }
-
-                m_Stamina -= m_SubStaminaSpeed * 1.5f * Time.deltaTime;
-            }
         }
 
         private IEnumerator ExhaustedTimer()
@@ -329,9 +391,7 @@ namespace FSM.Player
             yield return m_ExhaustedTime;
             m_NowExhausted = false;
         }
-        
+
         #endregion
-
-
     }
 }

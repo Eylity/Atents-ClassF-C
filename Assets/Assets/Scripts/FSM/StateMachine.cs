@@ -15,7 +15,7 @@ public class StateMachine<T>
 
     public void StateUpdate()
     {
-        m_CurState?.OnStAteUpdate();
+        m_CurState?.OnStateUpdate();
     }
 
     public void StateExit()

@@ -13,7 +13,7 @@ namespace FSM.Player
         {
         }
 
-        public override void OnStAteUpdate()
+        public override void OnStateUpdate()
         {
         }
 

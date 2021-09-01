@@ -23,7 +23,7 @@ namespace FSM.Player
             m_Player.m_Rigidbody.AddForce(m_Player.transform.forward * SPEED,ForceMode.Impulse);
         }
 
-        public override void OnStAteUpdate()
+        public override void OnStateUpdate()
         {
             if (!m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FlyAttack"))
             {
