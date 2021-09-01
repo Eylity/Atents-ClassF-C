@@ -168,7 +168,6 @@ namespace FSM.Player
         private IEnumerator PlayerDead()
         {
             StopCoroutine(nameof(State));
-            m_Anim.Rebind();
             m_Anim.SetTrigger(Die);
                 while (m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.9f)
                 {
