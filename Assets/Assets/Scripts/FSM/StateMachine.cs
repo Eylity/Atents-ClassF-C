@@ -7,7 +7,6 @@ public class StateMachine<T>
     private T m_PLayer;
 
     private Istate<T> m_CurState;
-    private Istate<T> m_PrevState;
 
     public void StateEnter()
     {
@@ -30,7 +29,6 @@ public class StateMachine<T>
         {
             m_CurState.OnStateExit();
         }
-        m_PrevState = m_CurState;
 
         m_CurState = state;
         m_CurState?.OnStateEnter();
@@ -40,11 +38,6 @@ public class StateMachine<T>
     {
         m_PLayer = player;
         m_CurState = state;
-
-        if (m_CurState != state && m_CurState != null)
-        {
-            m_PrevState = m_CurState;
-        }
     }
 
 }

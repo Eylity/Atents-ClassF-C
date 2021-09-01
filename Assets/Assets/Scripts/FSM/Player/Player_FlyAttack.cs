@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace FSM.Player
 {
     public class Player_FlyAttack : Istate<PlayerFSM>
     {
-        private PlayerFSM m_Player;
         private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
+        private readonly PlayerFSM m_Player;
         private const float SPEED = 8f;
         public Player_FlyAttack(PlayerFSM player)
         {
