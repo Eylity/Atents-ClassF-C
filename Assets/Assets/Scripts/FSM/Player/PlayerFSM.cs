@@ -1,72 +1,83 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using FSM.Player;
-using UnityEngine.Serialization;
 
 namespace FSM.Player
 {
     internal enum ECoolDownSystem
     {
-        FlyAttack,
-        FullSwing,
-        Skill
+        FLY_ATTACK,
+        FULL_SWING,
+        SKILL
     }
 
-    public class PlayerFSM : MonoBehaviour
+    public class PlayerFsm : MonoBehaviour
     {
         private static readonly int Die = Animator.StringToHash("Die");
         private static readonly int IsRun = Animator.StringToHash("IsRun");
         private static readonly int IsMove = Animator.StringToHash("IsMove");
-        private static readonly int Attack = Animator.StringToHash("Attack");
+        private static readonly int Damage = Animator.StringToHash("TakeDamage");
         private static readonly int Exhausted1 = Animator.StringToHash("Exhausted");
-        private readonly Istate<PlayerFSM>[] m_ArrState = new Istate<PlayerFSM>[(int) EPlayerState.Length];
+        private readonly State[] m_ArrState = new State[(int) EPlayerState.LENGTH];
         private readonly WaitForSeconds m_FlyAttackCoolTime = new WaitForSeconds(5.0f);
         private readonly WaitForSeconds m_FullSwingCoolTime = new WaitForSeconds(6.0f);
         private readonly WaitForSeconds m_SkillCoolTime = new WaitForSeconds(6.0f);
         private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(10.0f);
-        private StateMachine<PlayerFSM> m_State;
+        private StateMachine m_State;
         private bool m_ActiveFlyAttack = true;
         private bool m_ActiveFullSwing = true;
         private bool m_ActiveSkill = true;
         private bool m_NowReady = true;
         private bool m_NowExhausted;
-        private bool m_NowRun;
         private float m_MoveX;
         private float m_MoveZ;
         private float m_MoveSpeed;
         private float m_RotateSpeed;
 
         [HideInInspector] public Animator m_Anim;
-        [HideInInspector] public Collider[] m_AttackColliders;
+        [HideInInspector] public BoxCollider[] m_AttackColliders;
         [HideInInspector] public Rigidbody m_Rigidbody;
 
         [Header("----- Skill Spawn Prefab -----")]
         public GameObject m_Skill;
 
-        [Header("----- Player Status -----")] public int m_Health = 100;
+        [Header("----- Player Status -----")]
+        [SerializeField]
+        private int m_HealthPoint = 100;
         [Range(40f, 200f)] public float m_Stamina = 100f;
         [Range(5f, 20f)] public float m_SubStaminaSpeed = 10f;
+
+        public int Health
+        {
+            get => m_HealthPoint;
+            set
+            {
+                m_HealthPoint = value;
+                if (m_HealthPoint >= 100)
+                {
+                    m_HealthPoint = 100;
+                }
+            }
+        }
 
 
         #region Constructor
 
-        public PlayerFSM()
+        public PlayerFsm()
         {
             Init();
         }
 
         private void Init()
         {
-            m_State = new StateMachine<PlayerFSM>();
-            m_ArrState[(int) EPlayerState.Idle] = new Player_Idle(this);
-            m_ArrState[(int) EPlayerState.Attack] = new Player_Attack(this);
-            m_ArrState[(int) EPlayerState.FlyAttack] = new Player_FlyAttack(this);
-            m_ArrState[(int) EPlayerState.FullSwing] = new Player_FullSwing(this);
-            m_ArrState[(int) EPlayerState.Skill] = new Player_Skill(this);
+            m_State = new StateMachine();
+            m_ArrState[(int) EPlayerState.IDLE] = new Player_Idle(this);
+            m_ArrState[(int) EPlayerState.ATTACK] = new Player_Attack(this);
+            m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack(this);
+            m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing(this);
+            m_ArrState[(int) EPlayerState.SKILL] = new Player_Skill(this);
 
-            m_State.SetState(m_ArrState[(int) EPlayerState.Idle], this);
+            m_State.SetState(m_ArrState[(int) EPlayerState.IDLE]);
         }
 
         #endregion
@@ -81,18 +92,22 @@ namespace FSM.Player
         private void Start()
         {
             m_State.StateEnter();
-            StartCoroutine(nameof(State));
         }
 
-        void Update()
+        private void Update()
         {
             m_State.StateUpdate();
             ReadyCheck();
             Exhausted();
-
+            State();
+            
             if (Input.GetMouseButtonDown(1))
             {
                 TakeDamage(100f);
+            }
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                TakeDamage(35f);
             }
         }
 
@@ -132,72 +147,48 @@ namespace FSM.Player
 
         #region State
 
-        private IEnumerator State()
+        private void State()
         {
-            while (true)
+            if (!m_NowReady) return;
+            
+            if (Input.GetMouseButtonDown(0))
             {
-                if (m_NowReady)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        StartCoroutine(nameof(AttackCheck));
-                        m_State.StateChange(m_ArrState[(int) EPlayerState.Attack]);
-                    }
-
-                    else if (Input.GetKeyDown(KeyCode.Q))
-                    {
-                        if (m_ActiveFlyAttack)
-                        {
-                            m_ActiveFlyAttack = false;
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.FlyAttack]);
-                            CoolDown(ECoolDownSystem.FlyAttack);
-                        }
-                    }
-
-                    else if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        if (m_ActiveFullSwing)
-                        {
-                            m_ActiveFullSwing = false;
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.FullSwing]);
-                            CoolDown(ECoolDownSystem.FullSwing);
-                        }
-                    }
-
-                    else if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        if (m_ActiveSkill)
-                        {
-                            m_ActiveSkill = false;
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.Skill]);
-                            CoolDown(ECoolDownSystem.Skill);
-                        }
-                    }
-                }
-
-                yield return null;
+                StartCoroutine(nameof(AttackCheck));
+                m_State.StateChange(m_ArrState[(int) EPlayerState.ATTACK]);
             }
-        }
 
-        public void ChangeState(EPlayerState state)
-        {
-            for (var stateIndex = 0; stateIndex < (int) EPlayerState.Length; stateIndex++)
+            else if (Input.GetKeyDown(KeyCode.Q))
             {
-                if (stateIndex != (int) state)
-                {
-                    continue;
-                }
+                if (!m_ActiveFlyAttack) return;
+                
+                m_ActiveFlyAttack = false;
+                m_State.StateChange(m_ArrState[(int) EPlayerState.FLY_ATTACK]);
+                CoolDown(ECoolDownSystem.FLY_ATTACK);
+            }
 
-                m_State.StateChange(m_ArrState[stateIndex]);
-                Debug.Log(stateIndex);
-                break;
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (!m_ActiveFullSwing) return;
+                
+                m_ActiveFullSwing = false;
+                m_State.StateChange(m_ArrState[(int) EPlayerState.FULL_SWING]);
+                CoolDown(ECoolDownSystem.FULL_SWING);
+            }
+
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (!m_ActiveSkill) return;
+                
+                m_ActiveSkill = false;
+                m_State.StateChange(m_ArrState[(int) EPlayerState.SKILL]);
+                CoolDown(ECoolDownSystem.SKILL);
             }
         }
 
         #endregion
 
         #region AttackCheck
-        
+
         private IEnumerator AttackCheck()
         {
             yield return new WaitForSeconds(0.2f);
@@ -205,7 +196,7 @@ namespace FSM.Player
             {
                 CollSwitch(true);
                 while (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackL")) yield return null;
-                if (m_NowReady)
+                if (!m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR"))
                 {
                     CollSwitch(false);
                     yield break;
@@ -218,7 +209,7 @@ namespace FSM.Player
             {
                 CollSwitch(true);
                 while (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("AttackR")) yield return null;
-                if (m_NowReady)
+                if (!m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack"))
                 {
                     CollSwitch(false);
                     yield break;
@@ -243,18 +234,21 @@ namespace FSM.Player
                 m_AttackColliders[i].enabled = isActive;
             }
         }
-        
-        #endregion
 
+        #endregion
 
         #region PlayerHit
 
         public void TakeDamage(float damage)
         {
-            m_Health -= (int) Math.Round(damage);
-            if (m_Health <= 0)
+            Health -= (int) Math.Round(damage);
+            if (Health <= 0)
             {
                 StartCoroutine(nameof(PlayerDead));
+            }
+            else if (damage >= 30)
+            {
+                m_Anim.SetTrigger(Damage);
             }
         }
 
@@ -279,13 +273,13 @@ namespace FSM.Player
         {
             switch (index)
             {
-                case ECoolDownSystem.FullSwing:
+                case ECoolDownSystem.FULL_SWING:
                     StartCoroutine(nameof(FullSwingCoolDown));
                     break;
-                case ECoolDownSystem.FlyAttack:
+                case ECoolDownSystem.FLY_ATTACK:
                     StartCoroutine(nameof(FlyAttackCoolDown));
                     break;
-                case ECoolDownSystem.Skill:
+                case ECoolDownSystem.SKILL:
                     StartCoroutine(nameof(SkillCoolDown));
                     break;
                 default:
@@ -320,9 +314,9 @@ namespace FSM.Player
         {
             if (m_NowReady)
             {
-                var x = Input.GetAxis("Horizontal");
-                var z = Input.GetAxis("Vertical");
-                if (x == 0 && z == 0)
+                m_MoveX = Input.GetAxis("Horizontal");
+                m_MoveZ = Input.GetAxis("Vertical");
+                if (m_MoveX == 0 && m_MoveZ == 0)
                 {
                     m_Anim.SetBool(IsMove, false);
                     m_Anim.SetBool(IsRun, false);
@@ -342,12 +336,14 @@ namespace FSM.Player
                     m_Anim.SetBool(IsRun, false);
                 }
 
-                Debug.Log(m_Stamina);
                 m_Anim.SetBool(IsMove, true);
 
-                var movePos = new Vector3(x, transform.position.y, z) * m_MoveSpeed * Time.deltaTime;
-                transform.position += movePos;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movePos),
+                var playerTransform = transform;
+                var position = playerTransform.position;
+                var movePos = new Vector3(m_MoveX, position.y, m_MoveZ) * (m_MoveSpeed * Time.deltaTime);
+                position += movePos;
+                playerTransform.position = position;
+                transform.rotation = Quaternion.Slerp(playerTransform.rotation, Quaternion.LookRotation(movePos),
                     m_RotateSpeed * Time.deltaTime);
             }
             else
@@ -369,7 +365,6 @@ namespace FSM.Player
                 if (m_Stamina <= 0)
                 {
                     m_NowExhausted = true;
-                    m_NowRun = false;
                     m_Anim.SetTrigger(Exhausted1);
                     StartCoroutine(nameof(ExhaustedTimer));
                 }

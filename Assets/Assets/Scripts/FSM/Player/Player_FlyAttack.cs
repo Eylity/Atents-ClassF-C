@@ -1,24 +1,20 @@
-﻿using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FSM.Player
 {
-    public class Player_FlyAttack : Istate<PlayerFSM>
+    public class Player_FlyAttack : State
     {
         private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
-        private readonly PlayerFSM m_Player;
+        private readonly PlayerFsm m_Player;
         private const float SPEED = 8f;
-        public Player_FlyAttack(PlayerFSM player)
+        public Player_FlyAttack(PlayerFsm player)
         {
             m_Player = player;
         }
         public override void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FlyAttack);
-            foreach (var collider in m_Player.m_AttackColliders)
-            {
-                collider.enabled = true;
-            }
+            m_Player.CollSwitch(true);
 
             m_Player.m_Rigidbody.AddForce(m_Player.transform.forward * SPEED,ForceMode.Impulse);
         }
@@ -35,10 +31,7 @@ namespace FSM.Player
             {
                 return;
             }
-            foreach (var collider in m_Player.m_AttackColliders)
-            {
-                collider.enabled = false;
-            }
+            m_Player.CollSwitch(false);
         }
 
         public override void OnStateExit()

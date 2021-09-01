@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace FSM.Player
 {
-    public class Player_Attack : Istate<PlayerFSM>
+    public class Player_Attack : State
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
-        private readonly PlayerFSM m_Player;
+        private readonly PlayerFsm m_Player;
 
-        public Player_Attack(PlayerFSM player)
+        public Player_Attack(PlayerFsm player)
         {
             m_Player = player;
         }

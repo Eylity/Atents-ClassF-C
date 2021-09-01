@@ -2,12 +2,12 @@
 
 namespace FSM.Player
 {
-    public class Player_FullSwing : Istate<PlayerFSM>
+    public class Player_FullSwing : State
     {
-        private PlayerFSM m_Player;
         private static readonly int FullSwing = Animator.StringToHash("FullSwing");
+        private readonly PlayerFsm m_Player;
 
-        public Player_FullSwing(PlayerFSM player)
+        public Player_FullSwing(PlayerFsm player)
         {
             m_Player = player;
         }

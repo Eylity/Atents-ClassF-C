@@ -1,11 +1,11 @@
 namespace FSM.Player
 {
-    public class Player_Idle : Istate<PlayerFSM>
+    public class Player_Idle : State
     {
-        private PlayerFSM m_PLayer;
+        private PlayerFsm m_PLayer;
     
 
-        public Player_Idle(PlayerFSM player)
+        public Player_Idle(PlayerFsm player)
         {
             m_PLayer = player;
         }

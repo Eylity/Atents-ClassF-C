@@ -1,43 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class StateMachine<T>
+namespace FSM
 {
-    private T m_PLayer;
-
-    private Istate<T> m_CurState;
-
-    public void StateEnter()
+    public class StateMachine
     {
-        m_CurState?.OnStateEnter();
-    }
 
-    public void StateUpdate()
-    {
-        m_CurState?.OnStateUpdate();
-    }
+        private State m_CurState;
 
-    public void StateExit()
-    {
-        m_CurState.OnStateExit();
-    }
-
-    public void StateChange(Istate<T> state)
-    {
-        if (m_CurState != state)
+        public void StateEnter()
         {
-            StateExit();
+            m_CurState?.OnStateEnter();
         }
 
-        m_CurState = state;
-        m_CurState?.OnStateEnter();
-    }
+        public void StateUpdate()
+        {
+            m_CurState?.OnStateUpdate();
+        }
 
-    public void SetState(Istate<T> state, T player)
-    {
-        m_PLayer = player;
-        m_CurState = state;
-    }
+        private void StateExit()
+        {
+            m_CurState.OnStateExit();
+        }
 
+        public void StateChange(State state)
+        {
+            if (m_CurState != state)
+            {
+                StateExit();
+            }
+
+            m_CurState = state;
+            m_CurState?.OnStateEnter();
+        }
+
+        public void SetState(State state)
+        {
+            m_CurState = state;
+        }
+
+    }
 }

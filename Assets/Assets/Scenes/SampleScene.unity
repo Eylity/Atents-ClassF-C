@@ -511,7 +511,7 @@ PrefabInstance:
     - target: {fileID: 4303908039715704730, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_Skill
       value: 
-      objectReference: {fileID: 3750629692748755974, guid: 6545dfcafa624a34a511dbe92f2159ce, type: 3}
+      objectReference: {fileID: 3326169196404683811, guid: 9d941930aa261414a99c0527ea6bf419, type: 3}
     - target: {fileID: 4303908039715704730, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
       propertyPath: m_Stamina
       value: 50
