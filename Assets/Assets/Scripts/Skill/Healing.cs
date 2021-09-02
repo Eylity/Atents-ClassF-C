@@ -15,10 +15,10 @@ public class Healing : MonoBehaviour
         m_Player = FindObjectOfType<PlayerController>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         Invoke(nameof(Enable), 0.1f);
-        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject,EPrefabsName.PLAYERSKILL,6.5f);
+        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject,EPrefabsName.AREA,6.5f);
         StartCoroutine(nameof(Heal));
     }
 

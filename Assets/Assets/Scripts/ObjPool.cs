@@ -5,7 +5,9 @@ using UnityEngine;
 
 public enum EPrefabsName
 {
-    PLAYERSKILL
+    AREA,
+    FLYATTACK,
+    FLYATTACKEFFECT
 }
 
 public class ObjPool : MonoBehaviour
@@ -88,7 +90,7 @@ public class ObjPool : MonoBehaviour
     /// </summary>
     /// <param name="name">Object Name</param>
     /// <returns> Object</returns>
-    public static GameObject GetObject(EPrefabsName name)
+    public GameObject GetObject(EPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);
         if (currentPrefab == null)
@@ -117,7 +119,7 @@ public class ObjPool : MonoBehaviour
     /// </summary>
     /// <param name="obj">Return Obj</param>
     /// <param name="name">Return Obj Name</param>
-    public static void ReturnObject(GameObject obj, EPrefabsName name)
+    public void ReturnObject(GameObject obj, EPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);
         

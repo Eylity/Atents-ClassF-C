@@ -8,7 +8,7 @@ internal enum ECoolDownSystem
 {
     FLY_ATTACK,
     FULL_SWING,
-    SKILL,
+    AREA,
     EXHAUSTED
 }
 
@@ -21,12 +21,12 @@ public class PlayerController : MonoBehaviour
     private readonly WaitForSeconds m_FullSwingCoolTime = new WaitForSeconds(7.0f);
     private readonly WaitForSeconds m_FlyAttackCoolTime = new WaitForSeconds(5.0f);
     private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(10.0f);
-    private readonly WaitForSeconds m_SkillCoolTime = new WaitForSeconds(6.0f);
+    private readonly WaitForSeconds m_AreaCoolTime = new WaitForSeconds(6.0f);
     private readonly WaitForSeconds m_AnimDelay = new WaitForSeconds(0.3f);
     private readonly StateMachine m_State;
     private bool m_ActiveFlyAttack = true;
     private bool m_ActiveFullSwing = true;
-    private bool m_ActiveSkill = true;
+    private bool m_ActiveArea = true;
 
     [HideInInspector] public Rigidbody m_Rigidbody;
     [HideInInspector] public Animator m_Anim;
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
         m_ArrState[(int) EPlayerState.ATTACK] = new Player_Attack(this);
         m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack(this);
         m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing(this);
-        m_ArrState[(int) EPlayerState.SKILL] = new Player_Skill(this);
+        m_ArrState[(int) EPlayerState.SKILL] = new Player_Area(this);
 
         m_State.SetState(m_ArrState[(int) EPlayerState.IDLE]);
     }
@@ -246,12 +246,12 @@ public class PlayerController : MonoBehaviour
                 }
                 case true when Input.GetKeyDown(KeyCode.Space):
                 {
-                    if (m_ActiveSkill)
+                    if (m_ActiveArea)
                     {
                         m_State.StateChange(m_ArrState[(int) EPlayerState.SKILL]);
                         m_NowReady = false;
-                        m_ActiveSkill = false;
-                        StartCoroutine(CoolDown(ECoolDownSystem.SKILL));
+                        m_ActiveArea = false;
+                        StartCoroutine(CoolDown(ECoolDownSystem.AREA));
                     }
 
                     break;
@@ -319,9 +319,9 @@ public class PlayerController : MonoBehaviour
                 yield return m_FlyAttackCoolTime;
                 m_ActiveFlyAttack = true;
                 break;
-            case ECoolDownSystem.SKILL:
-                yield return m_SkillCoolTime;
-                m_ActiveSkill = true;
+            case ECoolDownSystem.AREA:
+                yield return m_AreaCoolTime;
+                m_ActiveArea = true;
                 break;
             case ECoolDownSystem.EXHAUSTED:
                 yield return m_ExhaustedTime;

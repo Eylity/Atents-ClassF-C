@@ -2226,8 +2226,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48341d4565d69c24fa6f683aa4d4b249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Rigidbody: {fileID: 0}
   m_Anim: {fileID: 2317378105049175425}
-  m_AttackCollider: []
+  m_NowReady: 1
+  m_IsLive: 1
+  m_NowExhausted: 0
+  m_AttackLeftCollider: {fileID: 0}
+  m_AttackRightCollider: {fileID: 0}
+  m_HealthPoint: 100
+  m_PlayerDamage: 20
+  m_StaminaPoint: 200
+  m_StunDamage: 30
+  m_SubOrPlusStamina: 10
 --- !u!1 &9061865420825440350
 GameObject:
   m_ObjectHideFlags: 0

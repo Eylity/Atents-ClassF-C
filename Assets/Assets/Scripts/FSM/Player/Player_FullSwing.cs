@@ -15,7 +15,6 @@ namespace FSM.Player
         public void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FullSwing);
-            m_Player.m_PlayerDamage = 50f;
         }
 
         public void OnStateFixedUpdate()
@@ -28,7 +27,6 @@ namespace FSM.Player
 
         public void OnStateExit()
         {
-            m_Player.m_PlayerDamage = 20f;
         }
     }
 }
