@@ -15,7 +15,8 @@ namespace FSM.Player
         public void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(Skill);
-            Object.Instantiate(m_Player.m_Skill, m_Player.transform.position, Quaternion.identity);
+            var obj = ObjPool.GetObject(EPrefabsName.PLAYERSKILL);
+            obj.transform.position = m_Player.transform.position;
         }
 
         public void OnStateFixedUpdate()

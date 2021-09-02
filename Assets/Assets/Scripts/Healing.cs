@@ -18,7 +18,7 @@ public class Healing : MonoBehaviour
     private void Start()
     {
         Invoke(nameof(Enable), 0.1f);
-        Destroy(this.gameObject, 5.0f);
+        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject,EPrefabsName.PLAYERSKILL,6.5f);
         StartCoroutine(nameof(Heal));
     }
 

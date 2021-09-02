@@ -36,10 +36,7 @@ namespace FSM.Player
         [Header("----- Player Attack Collider -----")]
         [SerializeField] private BoxCollider m_AttackLeftCollider;
         [SerializeField] private BoxCollider m_AttackRightCollider;
-
-        [Header("----- Skill Spawn Prefab -----")]
-        public GameObject m_Skill;
-
+        
         [Header("----- Player Status -----")] [SerializeField]
         private float m_HealthPoint = 100;
 

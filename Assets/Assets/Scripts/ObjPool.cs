@@ -128,6 +128,12 @@ public class ObjPool : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Object Delay Return To ObjectPool
+    /// </summary>
+    /// <param name="obj">Return Obj</param>
+    /// <param name="name">Return Obj Name</param>
+    /// <param name="time">Delay Time</param>
     public void ReturnObject(GameObject obj, EPrefabsName name, float time)
     {
         StartCoroutine(DelayReturn(obj, name, time));
