@@ -22,31 +22,9 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
-      copied configuration does not match position in animation file:\n\t'Bip001-L-Thigh'
-      : position error = 16.340801 mm\n\t'Bip001-R-Thigh' : position error = 16.340771
-      mm\n"
+    rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'Bip001' has translation animation that
-      will be discarded.\n\t'Bip001' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\t'Bip001-Spine' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'Bip001-Spine2' has translation
-      animation that will be discarded.\n\t'Bip001-L-Clavicle' has translation animation
-      that will be discarded.\n\t'Bip001-R-Clavicle' has translation animation that
-      will be discarded.\n\t'Bip001-L-Thigh' has translation animation that will
-      be discarded.\n\t'Bip001-R-Thigh' has translation animation that will be discarded.\n\nClip
-      'BATTLE_SKILL_SWING_L' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'Bip001'
-      has translation animation that will be discarded.\n\t'Bip001' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\t'Bip001-Spine'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Bip001-Spine2'
-      has translation animation that will be discarded.\n\t'Bip001-L-Clavicle' has
-      translation animation that will be discarded.\n\t'Bip001-R-Clavicle' has translation
-      animation that will be discarded.\n\t'Bip001-L-Thigh' has translation animation
-      that will be discarded.\n\t'Bip001-R-Thigh' has translation animation that
-      will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -112,7 +90,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.28869048
+        functionName: AttackTrue
+        data: AttackL
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6636905
+        functionName: AttackFalse
+        data: AttackL
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

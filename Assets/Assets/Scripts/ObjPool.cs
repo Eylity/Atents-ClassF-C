@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum EPrefabsName
 {
@@ -15,7 +14,7 @@ public class ObjPool : MonoBehaviour
 
     public Prefabs[] m_Prefab;
     
-    [System.Serializable]
+    [Serializable]
     public class Prefabs
     {
         public GameObject m_Prefab;
@@ -83,6 +82,12 @@ public class ObjPool : MonoBehaviour
     
     #endregion
 
+    
+    /// <summary>
+    /// Get Object To ObjectPool
+    /// </summary>
+    /// <param name="name">Object Name</param>
+    /// <returns> Object</returns>
     public static GameObject GetObject(EPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);

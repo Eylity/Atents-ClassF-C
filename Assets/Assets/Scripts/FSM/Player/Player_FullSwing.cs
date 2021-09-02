@@ -14,9 +14,8 @@ namespace FSM.Player
 
         public void OnStateEnter()
         {
-            m_Player.m_PlayerDamage = 50f;
             m_Player.m_Anim.SetTrigger(FullSwing);
-            m_Player.CollSwitch(true);
+            m_Player.m_PlayerDamage = 50f;
         }
 
         public void OnStateFixedUpdate()
@@ -25,25 +24,11 @@ namespace FSM.Player
 
         public void OnStateUpdate()
         {
-            if (!m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
-            {
-                return;
-            }
-
-            var animInfo = m_Player.m_Anim.GetCurrentAnimatorStateInfo(0);
-
-            if (animInfo.normalizedTime <= 0.9f)
-            {
-                return;
-            }
-
-            m_Player.m_PlayerDamage = 20f;
-            m_Player.CollSwitch(false);
         }
 
         public void OnStateExit()
         {
-
+            m_Player.m_PlayerDamage = 20f;
         }
     }
 }

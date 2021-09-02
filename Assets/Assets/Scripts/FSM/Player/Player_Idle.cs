@@ -12,6 +12,7 @@ namespace FSM.Player
         private float m_MoveZ;
         private float m_MoveSpeed;
         private float m_RotateSpeed;
+        private Vector3 m_MoveDir;
 
         public Player_Idle(PlayerController player)
         {
@@ -21,6 +22,7 @@ namespace FSM.Player
         {
             m_Animator = m_PLayer.GetComponent<Animator>();
             m_PLayer.CollSwitch(false);
+            m_PLayer.m_PlayerDamage = 20f;
         }
 
         public void OnStateFixedUpdate()
@@ -35,7 +37,7 @@ namespace FSM.Player
                     m_Animator.SetBool(IsRun, false);
                     return;
                 }
-
+                
                 if (Input.GetKey(KeyCode.LeftShift) && !m_PLayer.m_NowExhausted)
                 {
                     m_MoveSpeed = 6f;
@@ -48,9 +50,9 @@ namespace FSM.Player
                     m_RotateSpeed = 8f;
                     m_Animator.SetBool(IsRun, false);
                 }
-
+                
                 m_Animator.SetBool(IsMove, true);
-
+                
                 var playerTransform = m_PLayer.transform;
                 var position = playerTransform.position;
                 var movePos = new Vector3(m_MoveX, position.y, m_MoveZ) * (m_MoveSpeed * Time.deltaTime);
@@ -72,7 +74,8 @@ namespace FSM.Player
         
         public void OnStateExit()
         {
-
+            m_Animator.SetBool(IsMove, false);
+            m_Animator.SetBool(IsRun, false);
         }
     }
 }

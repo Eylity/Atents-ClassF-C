@@ -16,6 +16,7 @@ namespace FSM.Player
 
         public void OnStateEnter()
         {
+            m_Player.m_PlayerDamage = 20f;
             m_Anim = m_Player.GetComponent<Animator>();
             m_Anim.SetTrigger(Attack);
         }
