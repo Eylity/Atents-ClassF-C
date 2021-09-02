@@ -2,27 +2,31 @@
 
 namespace FSM.Player
 {
-    public class Player_Skill : State
+    public class Player_Skill : IState
     {
         private static readonly int Skill = Animator.StringToHash("Skill");
-        private readonly PlayerFsm m_Player;
+        private readonly PlayerController m_Player;
 
-        public Player_Skill(PlayerFsm player)
+        public Player_Skill(PlayerController player)
         {
             m_Player = player;
         }
 
-        public override void OnStateEnter()
+        public void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(Skill);
             Object.Instantiate(m_Player.m_Skill, m_Player.transform.position, Quaternion.identity);
         }
 
-        public override void OnStateUpdate()
+        public void OnStateFixedUpdate()
         {
         }
 
-        public override void OnStateExit()
+        public void OnStateUpdate()
+        {
+        }
+
+        public void OnStateExit()
         {
         }
     }

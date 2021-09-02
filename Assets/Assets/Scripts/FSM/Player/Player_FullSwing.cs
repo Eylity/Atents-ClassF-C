@@ -2,23 +2,28 @@
 
 namespace FSM.Player
 {
-    public class Player_FullSwing : State
+    public class Player_FullSwing : IState
     {
         private static readonly int FullSwing = Animator.StringToHash("FullSwing");
-        private readonly PlayerFsm m_Player;
+        private readonly PlayerController m_Player;
 
-        public Player_FullSwing(PlayerFsm player)
+        public Player_FullSwing(PlayerController player)
         {
             m_Player = player;
         }
 
-        public override void OnStateEnter()
+        public void OnStateEnter()
         {
+            m_Player.m_PlayerDamage = 50f;
             m_Player.m_Anim.SetTrigger(FullSwing);
             m_Player.CollSwitch(true);
         }
 
-        public override void OnStateUpdate()
+        public void OnStateFixedUpdate()
+        {
+        }
+
+        public void OnStateUpdate()
         {
             if (!m_Player.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
             {
@@ -32,11 +37,13 @@ namespace FSM.Player
                 return;
             }
 
+            m_Player.m_PlayerDamage = 20f;
             m_Player.CollSwitch(false);
         }
 
-        public override void OnStateExit()
+        public void OnStateExit()
         {
+
         }
     }
 }

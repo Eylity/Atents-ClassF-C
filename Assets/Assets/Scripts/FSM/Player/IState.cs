@@ -1,11 +1,11 @@
 namespace FSM
 {
-    public abstract class State
+    public interface IState
     {
-        public abstract void OnStateEnter();
-        public abstract void OnStateUpdate();
-        public abstract void OnStateExit();
-
+        void OnStateEnter();
+        void OnStateFixedUpdate();
+        void OnStateUpdate();
+        void OnStateExit();
     }
 
     public enum EPlayerState

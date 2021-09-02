@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using FSM.Player;
 using UnityEngine;
@@ -5,41 +6,48 @@ using UnityEngine;
 public class Healing : MonoBehaviour
 {
     private readonly WaitForSeconds m_Time = new WaitForSeconds(0.1f);
+    private PlayerController m_Player;
     private Collider m_Collider;
-    private PlayerFsm m_Player;
+    private bool m_InPlayer;
+
+    private void Awake()
+    {
+        m_Player = FindObjectOfType<PlayerController>();
+    }
 
     private void Start()
     {
-        Invoke(nameof(Enable),0.1f);
-        Destroy(this.gameObject,5.0f);
+        Invoke(nameof(Enable), 0.1f);
+        Destroy(this.gameObject, 5.0f);
+        StartCoroutine(nameof(Heal));
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        
-        m_Player = other.GetComponent<PlayerFsm>();
-        if (m_Player == null)
-        {
-            return;
-        }
-        StartCoroutine(nameof(Heal));
+        m_InPlayer = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            StopCoroutine(nameof(Heal));
-        }
+        if (!other.CompareTag("Player")) return;
+        m_InPlayer = false;
     }
 
     private IEnumerator Heal()
     {
         while (true)
         {
-            m_Player.Health += 1;
-            yield return m_Time;
+            if (m_InPlayer)
+            {
+                m_Player.Stamina += 1;
+                m_Player.Health += 1;
+                yield return m_Time;
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 
