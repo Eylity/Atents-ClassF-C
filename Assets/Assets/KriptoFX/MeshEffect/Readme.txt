@@ -6,9 +6,7 @@ My English is not very good, and if there are any translation errors, you can le
 
 The package includes prefabs of mesh effects and demo scene for pc/mobiles with characters and environment.
 
-This simple tutorial only for Default Legacy rendering. 
-
-If you use URP rendering then you must import HDRP or URP patches "\Assets\KriptoFX\MeshEffect\HDRP and URP patches"
+This simple tutorial only for HDRP rendering. 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -27,8 +25,18 @@ NOTE !!!!
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 For correct effects working you must:
+
 	
-1) Use included postprocessing profile "\Assets\KriptoFX\MeshEffect\PostProcess Profile.asset" (If you want effects which look like in the video example)
+1) Use included postprocessing profile "\Assets\KriptoFX\MeshEffect\PostEffects Profile.asset" (If you want effects which look like in the video example)
+
+With new unity 2019.3+ the bloom posteffect was changed (again...) 
+Right now you need set up this settings in PostEffects Profile-> bloom.
+
+Quality = High (we use HDRP, and no different in perfomance with this simple posteffect)
+Threshold = 1.5
+Intencity = 0.5
+Scatter = 0.9
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 

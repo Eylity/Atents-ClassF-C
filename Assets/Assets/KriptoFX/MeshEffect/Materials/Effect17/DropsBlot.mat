@@ -53,7 +53,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlphaClip: 14.2
-    - _BumpAmt: 100
+    - _BumpAmt: -100
     - _ColorStrength: 1
     - _CullMode: 2
     - _Cutoff: 1
@@ -91,4 +91,3 @@ Material:
     - _ReflectColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 0.6162182, g: 0.9117647, b: 0.18101211, a: 1}
-  m_BuildTextureStacks: []

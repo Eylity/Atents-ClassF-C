@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace FSM.Player
 {
@@ -6,39 +7,41 @@ namespace FSM.Player
     {
         private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
         private readonly PlayerController m_Player;
-        private const float SPEED = 8f;
-        private PSMeshRendererUpdater m_PsUpdater;
-        private GameObject m_CurrentInstance;
-        
+        private const float SPEED = 15f;
+        private bool m_IsTime;
+        private float m_Timer;
+
         public Player_FlyAttack(PlayerController player)
         {
             m_Player = player;
         }
+
         public void OnStateEnter()
         {
             m_Player.m_Anim.SetTrigger(FlyAttack);
-            m_Player.m_Rigidbody.AddForce(m_Player.transform.forward * SPEED,ForceMode.Impulse);
-            m_CurrentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FLYATTACKEFFECT);
-            m_CurrentInstance.transform.SetParent(m_Player.transform);
-            m_PsUpdater = m_CurrentInstance.GetComponent<PSMeshRendererUpdater>();
-            m_PsUpdater.UpdateMeshEffect(m_Player.gameObject);
+            m_IsTime = false;
+            m_Timer = 0f;
         }
 
         public void OnStateUpdate()
         {
-            
+            m_Timer += Time.deltaTime;
+            if (!m_IsTime && m_Timer >= 0.1f)
+            {
+                m_IsTime = true;
+                m_Player.m_Rigidbody.AddForce(m_Player.transform.up + m_Player.transform.forward * SPEED, ForceMode.Impulse);
+            }
         }
 
         public void OnStateFixedUpdate()
         {
         }
+
         public void OnStateExit()
         {
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FLYATTACK);
             arrow.transform.position = m_Player.transform.position;
-            m_PsUpdater.UpdateMeshEffect(null);
-            ObjPool.ObjectPoolInstance.ReturnObject(m_CurrentInstance,EPrefabsName.FLYATTACKEFFECT,8.0f);
+            ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FLYATTACK, 2.5f);
         }
-
     }
 }

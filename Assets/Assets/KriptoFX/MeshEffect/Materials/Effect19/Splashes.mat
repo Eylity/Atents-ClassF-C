@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 972a05a1fafc1c54d8287892f2a939b6, type: 3}
   m_ShaderKeywords: USE_ALPHA_CLIPING
   m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -85,10 +85,11 @@ Material:
     - _Cutout: 1
     - _CutoutThreshold: 0.015
     - _DetailNormalMapScale: 1
-    - _Distortion: 500
+    - _Distortion: 2000
     - _DstBlend: 0
     - _FPOW: 5
     - _FresnelDistort: 1500
+    - _FresnelInvert: 1
     - _FresnelPow: 5
     - _FresnelR0: 0.04
     - _Glossiness: 0.5
@@ -101,6 +102,7 @@ Material:
     - _R0: 0.3
     - _RefractiveStrength: -0.448
     - _SrcBlend: 1
+    - _TintDistortion: 1
     - _UVSec: 0
     - _UseAlphaCliping: 1
     - _UseBlending: 0
@@ -119,10 +121,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _HeightUVScrollDistort: {r: 8, g: 12, b: 0, a: 0}
-    - _MainColor: {r: 1.0525221, g: 1.1095554, b: 1.2028824, a: 1}
+    - _MainColor: {r: 0.77343786, g: 0.90226555, b: 1.1004618, a: 1}
     - _NoiseScale: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _Speed: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 800, g: 1600, b: 8, a: 16}
     - _TintColor: {r: 0.28546715, g: 0.2936046, b: 0.32352942, a: 0.037}
-  m_BuildTextureStacks: []

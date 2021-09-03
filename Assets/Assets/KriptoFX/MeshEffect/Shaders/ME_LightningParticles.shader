@@ -81,7 +81,7 @@ Category {
 				
 				clip(i.color.a - alpha);
 				half4 col = 2.0f * _TintColor * tex *  i.color.a;
-				
+				col.rgb *= col.a;
 				return col;
 			}
 			ENDCG 

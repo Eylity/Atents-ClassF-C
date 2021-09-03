@@ -195,7 +195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1185334640473918746
 Transform:
   m_ObjectHideFlags: 0
@@ -747,7 +747,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 13
+    type: 14
     angle: 0
     length: 6.74
     boxThickness: {x: 0, y: 0, z: 0}
@@ -817,7 +817,7 @@ ParticleSystem:
           m_RotationOrder: 4
     m_Mesh: {fileID: 4300000, guid: bb0adcbe9de6ee341921dc05f4cded45, type: 3}
     m_MeshRenderer: {fileID: 0}
-    m_SkinnedMeshRenderer: {fileID: 0}
+    m_SkinnedMeshRenderer: {fileID: 4311096470252006028, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
     m_Sprite: {fileID: 0}
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
@@ -9404,7 +9404,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1185101174837924720}
   - component: {fileID: 1290736710216420308}
-  - component: {fileID: 7173654550633548270}
   m_Layer: 0
   m_Name: FlyAttackEffect
   m_TagString: Untagged
@@ -9442,20 +9441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a144aae082d4f478dce882e7a9ff3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MeshObject: {fileID: 9044080602071225665, guid: 470a5069992b6564c8c3d5d81a94b0e0, type: 3}
+  MeshObject: {fileID: 7896147908375461208, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
   StartScaleMultiplier: 1
   Color: {r: 0, g: 0, b: 0, a: 1}
   IsActive: 1
   FadeTime: 1.5
---- !u!114 &7173654550633548270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188792801463974112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 768b3d51c75590142af4ac676a4777bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

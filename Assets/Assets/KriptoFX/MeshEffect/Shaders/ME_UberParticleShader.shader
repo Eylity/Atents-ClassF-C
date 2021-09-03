@@ -1,10 +1,12 @@
+// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+
 Shader "KriptoFX/ME/Particle"
 {
 	Properties
 	{
 		[Header(Main Settings)]
 	[Space]
-	[PerRendererData] [HDR] _TintColor("Tint Color", Color) = (1,1,1,1)
+	[PerRendererData] [HDR]_TintColor("Tint Color", Color) = (1,1,1,1)
 		_MainTex("Main Texture", 2D) = "white" {}
 
 	[Header(Fading)]
@@ -94,12 +96,13 @@ Shader "KriptoFX/ME/Particle"
 #pragma shader_feature _BLENDMODE_BLEND
 
 
-#include "UnityCG.cginc"
+#include "UnityCG.cginc"
+ float4 _DepthPyramidScale;
 
 		sampler2D _MainTex;
 	sampler2D _NoiseTex;
 	sampler2D _CutoutTex;
-	sampler2D _CameraDepthTexture;
+	UNITY_DECLARE_TEX2DARRAY(_CameraDepthTexture);
 
 	float4 _MainTex_ST;
 	float4 _NoiseTex_ST;
@@ -134,7 +137,7 @@ Shader "KriptoFX/ME/Particle"
 	UNITY_INSTANCING_BUFFER_END(Props)
 
 
-	struct appdata_t
+	struct appdata_t 
 	{
 		float4 vertex : POSITION;
 		float4 normal : NORMAL;
@@ -155,7 +158,7 @@ Shader "KriptoFX/ME/Particle"
 		UNITY_VERTEX_INPUT_INSTANCE_ID
 	};
 
-	struct v2f
+	struct v2f 
 	{
 		float4 vertex : SV_POSITION;
 		half4 color : COLOR0;
@@ -176,9 +179,8 @@ Shader "KriptoFX/ME/Particle"
 		UNITY_FOG_COORDS(4)
 
 #ifdef _FADING_ON
-	#ifdef SOFTPARTICLES_ON
 			float4 projPos : TEXCOORD5;
-	#endif
+	
 #endif
 
 #if defined (USE_FRESNEL_FADING) || defined (USE_FRESNEL)
@@ -225,10 +227,10 @@ Shader "KriptoFX/ME/Particle"
 
 		o.vertex = UnityObjectToClipPos(v.vertex);
 #ifdef _FADING_ON
-	#ifdef SOFTPARTICLES_ON
-		o.projPos = ComputeScreenPos(o.vertex);
+		o.projPos = ComputeScreenPos(o.vertex);
+		o.projPos.xy *= _DepthPyramidScale.xy;
 		COMPUTE_EYEDEPTH(o.projPos.z);
-	#endif
+	
 #endif
 		o.color = v.color;
 #if USE_VERTEX_LIGHT
@@ -284,14 +286,13 @@ Shader "KriptoFX/ME/Particle"
 		UNITY_SETUP_INSTANCE_ID(i);
 
 #ifdef _FADING_ON
-	#ifdef SOFTPARTICLES_ON
-		float z = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos)).r;
+		float z = (UNITY_SAMPLE_TEX2DARRAY_LOD(_CameraDepthTexture, float4(i.projPos.xy / i.projPos.w, 0, 0), 0));
 		float sceneZ = LinearEyeDepth(UNITY_SAMPLE_DEPTH(z));
 		float partZ = i.projPos.z;
 		float fade = saturate(_InvFade * (sceneZ - partZ));
 		fade = lerp(fade, 1 - fade, _SoftInverted);
 		i.color.a *= fade;
-	#endif
+	
 #endif
 
 #ifdef USE_NOISE_DISTORTION
@@ -329,7 +330,7 @@ Shader "KriptoFX/ME/Particle"
 #endif
 
 	half4 tintColor = UNITY_ACCESS_INSTANCED_PROP(_TintColor_arr, _TintColor);
-	tintColor.rgb = tintColor.rgb * tintColor.rgb * 2;
+	tintColor.rgb = pow(tintColor.rgb * 2, 2.2);
 	half4 res = 2 * tex * tintColor;
 
 #ifdef USE_CUTOUT
@@ -341,13 +342,13 @@ Shader "KriptoFX/ME/Particle"
 #else
 	fixed mask = tex.a;
 #endif
-
+	
 	fixed diffMask = mask - cutout;
 	fixed alphaMask = lerp(saturate(diffMask * 10000) * res.a, saturate(diffMask * 2) * res.a, _UseSoftCutout);
 
 #ifdef USE_CUTOUT_THRESHOLD
 	fixed alphaMaskThreshold = saturate((diffMask - _CutoutThreshold) * 10000) * res.a;
-	res.rgb = lerp(res.rgb, _CutoutColor, saturate((1 - alphaMaskThreshold) * alphaMask));
+	res.rgb = lerp(res.rgb, pow(_CutoutColor.rgb * 8, 2.2), saturate((1 - alphaMaskThreshold) * alphaMask));
 	res.a = alphaMask;
 #else
 	res.a = alphaMask;
@@ -363,18 +364,19 @@ Shader "KriptoFX/ME/Particle"
 #endif
 
 #ifdef USE_FRESNEL
-	res.rgb += i.fresnel * _FresnelColor;
+	res.rgb += i.fresnel * pow(_FresnelColor.rgb * 8, 2.2);
 #endif
-
+	
 	res.a = saturate(res.a);
-
+	
 #ifdef _BLENDMODE_BLEND
 	UNITY_APPLY_FOG(i.fogCoord, res);
 #else
+	res.rgb *= res.a;
 	res.rgb = lerp(res.rgb, lerp(1, res.rgb, res.a), _FogColorMultiplier.r);
 	UNITY_APPLY_FOG_COLOR(i.fogCoord, res, _FogColorMultiplier);
 #endif
-
+	
 		return res;
 	}
 		ENDCG

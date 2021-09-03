@@ -39,14 +39,17 @@ public class PlayerController : MonoBehaviour
     [Header("----- Player Attack Collider -----")]
     [SerializeField] private BoxCollider m_AttackLeftCollider;
     [SerializeField] private BoxCollider m_AttackRightCollider;
-        
-    [Header("----- Player Status -----")]
-    [SerializeField] private float m_HealthPoint = 100;
 
-    public float m_PlayerDamage = 20f;
-    [SerializeField] private float m_StaminaPoint = 200f;
-    [SerializeField] private int m_StunDamage = 30;
+    [Header("----- Player Status -----")] 
+    
+    [SerializeField] private float m_HealthPoint;
+    [SerializeField] private float m_MaxHealthPoint = 100; 
+    [SerializeField] private float m_StaminaPoint;
+    [SerializeField] private float m_MaxStaminaPoint = 200; 
+
     [Range(5f, 20f)] public float m_SubOrPlusStamina = 10f;
+    [SerializeField] private float m_PlayerDamage = 20f;
+    [SerializeField] private int m_StunDamage = 30;
 
     #region Health And Stamina
 
@@ -56,9 +59,9 @@ public class PlayerController : MonoBehaviour
         set
         {
             m_HealthPoint = value;
-            if (m_HealthPoint >= 100)
+            if (m_HealthPoint >= m_MaxHealthPoint)
             {
-                m_HealthPoint = 100f;
+                m_HealthPoint = m_MaxHealthPoint;
             }
             else if (m_HealthPoint <= 0 && m_IsLive)
             {
@@ -75,6 +78,8 @@ public class PlayerController : MonoBehaviour
         get => m_StaminaPoint;
         set
         {
+            if (!m_IsLive) return;
+            
             m_StaminaPoint = value;
             if (m_StaminaPoint <= 0 && !m_NowExhausted)
             {
@@ -85,9 +90,9 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (m_StaminaPoint >= 200f)
+                if (m_StaminaPoint >= m_MaxStaminaPoint)
                 {
-                    m_StaminaPoint = 200f;
+                    m_StaminaPoint = m_MaxStaminaPoint;
                 }
             }
         }
@@ -120,6 +125,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         m_State.StateEnter();
+        m_HealthPoint = m_MaxHealthPoint;
+        m_StaminaPoint = m_MaxStaminaPoint;
         StartCoroutine(nameof(State));
     }
 
@@ -141,10 +148,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Dragon"))
-        {
-            return;
-        }
+        if (!other.CompareTag("Dragon")) return;
+        
 
         Debug.Log("Hit");
         CollSwitch(false);
@@ -193,8 +198,18 @@ public class PlayerController : MonoBehaviour
             case "FlyAttack":
                 CollSwitch(false);
                 break;
-                    
         }
+    }
+    
+    // Animation Event State Name "FlyAttack"
+    private void IsGround()
+    {
+        Debug.Log("!");
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
+        var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FLYATTACKDUST);
+        obj.transform.position = transform.position;
+        ObjPool.ObjectPoolInstance.ReturnObject(obj,EPrefabsName.FLYATTACKDUST,1.5f);
     }
         
     // Animation Event State Name "Die"

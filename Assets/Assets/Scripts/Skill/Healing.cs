@@ -12,19 +12,24 @@ public class Healing : MonoBehaviour
 
     private void Awake()
     {
+        m_Collider = GetComponent<BoxCollider>();
         m_Player = FindObjectOfType<PlayerController>();
     }
 
     private void OnEnable()
     {
-        Invoke(nameof(Enable), 0.1f);
-        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject,EPrefabsName.AREA,6.5f);
         StartCoroutine(nameof(Heal));
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(nameof(Heal));
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject, EPrefabsName.AREA, 7f);
         m_InPlayer = true;
     }
 
@@ -49,11 +54,5 @@ public class Healing : MonoBehaviour
                 yield return null;
             }
         }
-    }
-
-    private void Enable()
-    {
-        m_Collider = GetComponent<BoxCollider>();
-        m_Collider.enabled = true;
     }
 }

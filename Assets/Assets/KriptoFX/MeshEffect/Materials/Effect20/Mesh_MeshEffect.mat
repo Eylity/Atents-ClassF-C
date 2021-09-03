@@ -68,13 +68,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BumpAmt: 150
+    - _BumpAmt: 300
     - _BumpScale: 1
     - _ColorStrength: 0.5
     - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FPOW: 5
+    - _FPOW: 4
     - _Glossiness: 0.5
     - _Height: 1
     - _HeightScale: 0.3
@@ -85,7 +85,7 @@ Material:
     - _OffsetXHeightMap: 0
     - _OffsetYHeightMap: 0
     - _Parallax: 0.02
-    - _R0: -0.1
+    - _R0: -0.15
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
@@ -103,9 +103,8 @@ Material:
     - _HeightScaleVector2: {r: 1, g: 1, b: 1, a: 0.2}
     - _NoiseScale: {r: 1.6, g: 1.5, b: 1, a: 0.45}
     - _ReflectColor: {r: 1, g: 1, b: 1, a: 0.5}
-    - _RimColor: {r: 0.6737718, g: 0.79956305, b: 0.9716981, a: 1}
+    - _RimColor: {r: 0.7043741, g: 1.8405668, b: 3.8289049, a: 1}
     - _Scale: {r: 2, g: 2, b: 2, a: 1}
     - _Shift: {r: 0, g: 0, b: 0, a: 500}
     - _Speed: {r: -1, g: -2, b: 1, a: -5}
-    - _TintColor: {r: 0.9411765, g: 0.9634888, b: 1, a: 1}
-  m_BuildTextureStacks: []
+    - _TintColor: {r: 0.9481132, g: 0.9676403, b: 1, a: 1}

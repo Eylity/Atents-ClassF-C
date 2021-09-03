@@ -25,7 +25,6 @@ public class ME_PerPlatformSettings : MonoBehaviour
         }
     }
 
-
     bool IsMobilePlatform()
     {
         bool isMobile = false;

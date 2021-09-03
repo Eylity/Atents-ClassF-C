@@ -113,5 +113,4 @@ Material:
     - _FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tiling: {r: 800, g: 800, b: 8, a: 8}
-    - _TintColor: {r: 0.41176468, g: 0.9026369, b: 1, a: 0.14509805}
-  m_BuildTextureStacks: []
+    - _TintColor: {r: 0.48640686, g: 1.1746209, b: 1.2988098, a: 0.15686275}

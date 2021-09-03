@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "KriptoFX/ME/DistortionSlime" {
 	Properties{
 			_TintColor("Main Color", Color) = (1,1,1,1)
@@ -8,7 +10,7 @@ Shader "KriptoFX/ME/DistortionSlime" {
 	}
 		Category{
 
-			Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+			Tags { "Queue" = "Transparent-10" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
 						Blend SrcAlpha OneMinusSrcAlpha
 						ZWrite Off
 						Offset -1,-1
@@ -16,9 +18,7 @@ Shader "KriptoFX/ME/DistortionSlime" {
 						
 
 			SubShader {
-				GrabPass {
-					"_GrabTexture"
-				}
+				
 				Pass {
 					CGPROGRAM
 					#pragma vertex vert
@@ -33,8 +33,8 @@ Shader "KriptoFX/ME/DistortionSlime" {
 					samplerCUBE _Cube;
 
 					float _BumpAmt;
-					sampler2D _GrabTexture;
-					float4 _GrabTexture_TexelSize;
+					UNITY_DECLARE_TEX2DARRAY(_ColorPyramidTexture);
+					float4 _ColorPyramidTexture_TexelSize;
 
 					float4 _TintColor;
 					float _FPOW;
@@ -93,9 +93,9 @@ Shader "KriptoFX/ME/DistortionSlime" {
 
 						half3 normal = UnpackNormal(tex2D(_BumpMap, i.uv_BumpMap));
 
-						half2 offset = normal.rg * _BumpAmt * _GrabTexture_TexelSize.xy * i.color.a;
+						half2 offset = normal.rg * _BumpAmt * _ColorPyramidTexture_TexelSize.xy * i.color.a;
 						i.grab.xy = offset * i.grab.z + i.grab.xy;
-						half4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.grab));
+						half4 col = UNITY_SAMPLE_TEX2DARRAY_LOD(_ColorPyramidTexture, float4(i.grab.xy / i.grab.w, 0, 0), 0);
 
 						fixed gray = col.r * 0.3 + col.g * 0.59 + col.b * 0.11;
 						half3 emission = col.rgb*_TintColor.rgb;

@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 972a05a1fafc1c54d8287892f2a939b6, type: 3}
   m_ShaderKeywords: USE_ALPHA_CLIPING USE_SOFT_PARTICLES
   m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2999
   stringTagMap: {}
@@ -76,9 +76,10 @@ Material:
     - _Cutout: 0.252
     - _CutoutThreshold: 0.006
     - _DetailNormalMapScale: 1
-    - _Distortion: -25
+    - _Distortion: -50
     - _DstBlend: 0
     - _FresnelDistort: 1500
+    - _FresnelInvert: 1
     - _FresnelPow: 5
     - _FresnelR0: 0.04
     - _Glossiness: 0.5
@@ -90,6 +91,7 @@ Material:
     - _Parallax: 0.02
     - _RefractiveStrength: 0
     - _SrcBlend: 1
+    - _TintDistortion: 1
     - _UVSec: 0
     - _UseAlphaCliping: 1
     - _UseBlending: 0
@@ -109,4 +111,3 @@ Material:
     - _HeightUVScrollDistort: {r: 8, g: 12, b: 0, a: 0}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 0.8602941, g: 0.5885075, b: 0.2973075, a: 0.559}
-  m_BuildTextureStacks: []

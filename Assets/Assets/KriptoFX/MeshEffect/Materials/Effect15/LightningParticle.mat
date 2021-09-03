@@ -10,9 +10,9 @@ Material:
   m_Name: LightningParticle
   m_Shader: {fileID: 4800000, guid: 3bc67cd3532d0b2429f1a3eddf7f22f7, type: 3}
   m_ShaderKeywords: BlendAlpha Clip_OFF FrameBlend_OFF FresnelFade_OFF SoftParticles_OFF
-    VertLight_OFF _BLENDMODE_BLEND
+    VertLight_OFF _BLENDMODE_ADD
   m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -68,7 +68,7 @@ Material:
     - CullMode: 2
     - DstMode: 10
     - SrcMode: 5
-    - _BlendMode: 1
+    - _BlendMode: 0
     - _BumpScale: 1
     - _ColorStrength: 5
     - _CullMode: 0
@@ -77,7 +77,7 @@ Material:
     - _CutoutThreshold: 0.015
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _DstMode: 10
+    - _DstMode: 1
     - _FresnelFadeFactor: 3
     - _FresnelPow: 5
     - _FresnelR0: 0.04
@@ -113,5 +113,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FogColorMultiplier: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TintColor: {r: 0.64097345, g: 0.5294118, b: 2, a: 1}
-  m_BuildTextureStacks: []
+    - _TintColor: {r: 2.6352665, g: 1.9444513, b: 9.586597, a: 0.6431373}

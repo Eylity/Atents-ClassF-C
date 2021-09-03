@@ -88,12 +88,7 @@ Shader "KriptoFX/ME/GlowCutoutGradient" {
 	half alphaMask = tex2DTriplanar(_MainTex, 0.3 + mask * _BorderScale.y, i.worldPosScaled, i.normal);
 
 	float4 res;
-#if (KRIPTO_FX_HDRP_RENDERING) || ((KRIPTO_FX_LWRP_RENDERING) && (!UNITY_COLORSPACE_GAMMA))
-	res = i.color * _TintColor;
-	res = pow(i.color * _TintColor, 2.2);
-#else
-	res = i.color * _TintColor;
-#endif
+	res = i.color * pow(_TintColor, 2.2);
 	res *= tex * mask;
 
 	res = lerp(float4(0, 0, 0, 0), res, alphaMask.xxxx);

@@ -12,7 +12,7 @@ Material:
   m_ShaderKeywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_OFF USE_ALPHA_CLIPING
     USE_SOFT_PARTICLES VertLight4_ON
   m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -79,6 +79,7 @@ Material:
     - _Distortion: 300
     - _FPOW: 1.4
     - _FresnelDistort: 1500
+    - _FresnelInvert: 1
     - _FresnelPow: 5
     - _FresnelR0: 0.04
     - _Height: 0
@@ -94,6 +95,7 @@ Material:
     - _RefractiveStrength2: 3.79
     - _RimPower: 8
     - _Shininess: 10.000001
+    - _TintDistortion: 1
     - _UseAlphaCliping: 1
     - _UseBlending: 0
     - _UseCutout: 0
@@ -116,4 +118,3 @@ Material:
     - _Test: {r: 7, g: 8, b: 0, a: 1500}
     - _TintColor: {r: 0.42322665, g: 0.48027083, b: 0.5588235, a: 0.303}
     - _UVScrollFadeDistort: {r: 3, g: 6, b: 0, a: 1500}
-  m_BuildTextureStacks: []

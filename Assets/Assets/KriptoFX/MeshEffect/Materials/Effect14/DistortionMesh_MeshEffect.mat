@@ -120,5 +120,4 @@ Material:
     - _RimColor: {r: 0.41911763, g: 0.41911763, b: 0.41911763, a: 0.5}
     - _Speed: {r: 0, g: 5, b: 0, a: 0}
     - _TimeScale: {r: 0, g: -10, b: -5, a: 6.1}
-    - _TintColor: {r: 0.5514706, g: 2.6960447, b: 3, a: 1}
-  m_BuildTextureStacks: []
+    - _TintColor: {r: 1.5362431, g: 4.349334, b: 4.7200513, a: 0.54509807}

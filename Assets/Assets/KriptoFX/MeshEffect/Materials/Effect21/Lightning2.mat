@@ -46,5 +46,4 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DistortSpeed: {r: 2, g: -0.4, b: 5, a: 0.25}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _TintColor: {r: 25.089405, g: 3.1953487, b: 9.121557, a: 1}
-  m_BuildTextureStacks: []
+    - _TintColor: {r: 314.7589, g: 26.094004, b: 104.376015, a: 1}

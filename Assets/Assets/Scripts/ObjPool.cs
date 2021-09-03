@@ -7,7 +7,7 @@ public enum EPrefabsName
 {
     AREA,
     FLYATTACK,
-    FLYATTACKEFFECT
+    FLYATTACKDUST,
 }
 
 public class ObjPool : MonoBehaviour

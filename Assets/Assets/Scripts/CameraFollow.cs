@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FSM.Player;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -12,7 +13,7 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
-        m_CameraPosition = new Vector3(0, 3f, -4f);
+        m_CameraPosition = new Vector3(0, 3f, -6f);
     }
 
     void LateUpdate()
@@ -31,5 +32,6 @@ public class CameraFollow : MonoBehaviour
             transform.position = m_CameraPosition + m_Target.transform.position;
             transform.rotation = Quaternion.identity;
         }
+        
     }
 }
