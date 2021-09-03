@@ -29,7 +29,6 @@ public class Healing : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        ObjPool.ObjectPoolInstance.ReturnObject(this.gameObject, EPrefabsName.AREA, 7f);
         m_InPlayer = true;
     }
 

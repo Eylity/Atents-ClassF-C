@@ -3,6 +3,7 @@ using System.Collections;
 using FSM;
 using FSM.Player;
 using UnityEngine;
+using XftWeapon;
 
 internal enum ECoolDownSystem
 {
@@ -24,12 +25,12 @@ public class PlayerController : MonoBehaviour
     private readonly WaitForSeconds m_AreaCoolTime = new WaitForSeconds(6.0f);
     private readonly WaitForSeconds m_AnimDelay = new WaitForSeconds(0.3f);
     private readonly StateMachine m_State;
+    private const float MASS = 3f;
     private bool m_ActiveFlyAttack = true;
     private bool m_ActiveFullSwing = true;
     private bool m_ActiveArea = true;
     private CharacterController m_CharacterController;
-    private Vector3 impact = Vector3.zero;
-    private float mass = 3f;
+    private Vector3 m_Impact = Vector3.zero;
 
 
     [HideInInspector] public Rigidbody m_Rigidbody;
@@ -41,8 +42,10 @@ public class PlayerController : MonoBehaviour
     // public CharacterController m_CharacterController;
         
     [Header("----- Player Attack Collider -----")]
-    [SerializeField] private BoxCollider m_AttackLeftCollider;
-    [SerializeField] private BoxCollider m_AttackRightCollider;
+    [SerializeField] private BoxCollider m_AttackLeftCollider; 
+    public XWeaponTrail m_AttackLeftTrail;
+    [SerializeField] private BoxCollider m_AttackRightCollider; 
+    public XWeaponTrail m_AttackRightTrail;
 
     [Header("----- Player Status -----")] 
     
@@ -151,11 +154,11 @@ public class PlayerController : MonoBehaviour
         }
         
         
-        if (impact.magnitude > 0.2)
+        if (m_Impact.magnitude > 0.2)
         {
-            m_CharacterController.Move(impact * Time.deltaTime);
+            m_CharacterController.Move(m_Impact * Time.deltaTime);
         }
-        impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
+        m_Impact = Vector3.Lerp(m_Impact, Vector3.zero, 5*Time.deltaTime);
     }
 
     
@@ -163,7 +166,7 @@ public class PlayerController : MonoBehaviour
     {
         dir.Normalize();
         if (dir.y < 0) dir.y = -dir.y;
-        impact += dir.normalized * force / mass;
+        m_Impact += dir.normalized * force / MASS;
     }
     
 
@@ -218,9 +221,9 @@ public class PlayerController : MonoBehaviour
     private void IsGround()
     {
         Debug.Log("Spawn FlyAttackDust");
-        var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FLYATTACKDUST);
+        var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackDust);
         obj.transform.position = transform.position;
-        ObjPool.ObjectPoolInstance.ReturnObject(obj,EPrefabsName.FLYATTACKDUST,1.5f);
+        ObjPool.ObjectPoolInstance.ReturnObject(obj,EPrefabsName.FlyAttackDust,1f);
     }
         
     // Animation Event State Name "Die"

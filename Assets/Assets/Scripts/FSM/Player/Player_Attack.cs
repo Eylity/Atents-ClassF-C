@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using XftWeapon;
 
 namespace FSM.Player
 {
@@ -18,6 +19,8 @@ namespace FSM.Player
         {
             m_Anim = m_Player.GetComponent<Animator>();
             m_Anim.SetTrigger(Attack);
+            m_Player.m_AttackLeftTrail.Activate();
+            m_Player.m_AttackRightTrail.Activate();
         }
 
         public void OnStateFixedUpdate()
@@ -39,6 +42,8 @@ namespace FSM.Player
 
         public void OnStateExit()
         {
+            m_Player.m_AttackLeftTrail.Deactivate();
+            m_Player.m_AttackRightTrail.Deactivate();
         }
     }
 }

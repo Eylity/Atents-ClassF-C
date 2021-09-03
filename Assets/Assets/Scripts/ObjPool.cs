@@ -5,9 +5,13 @@ using UnityEngine;
 
 public enum EPrefabsName
 {
-    AREA,
-    FLYATTACK,
-    FLYATTACKDUST,
+    Area,
+    AreaEffect,
+    FlyAttackArrow,
+    FlyAttackDust,
+    FlyAttackStartDust,
+    ChargingFullAttack,
+    FullAttack
 }
 
 public class ObjPool : MonoBehaviour
