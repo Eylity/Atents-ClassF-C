@@ -1,7 +1,9 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
+using FSM;
+using FSM.Player;
+using UnityEngine;
 
-namespace FSM.Player
+namespace Skill
 {
     public class Player_Area : IState
     {

@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using FSM;
+using FSM.Player;
 using UnityEngine;
 
-namespace FSM.Player
+namespace Skill
 {
     public class Player_FlyAttack : IState
     {
@@ -51,7 +52,7 @@ namespace FSM.Player
             m_Player.m_AttackRightTrail.Deactivate();
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
             arrow.transform.position = m_Player.transform.position;
-            ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 2.5f);
+            ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 3f);
         }
     }
 }

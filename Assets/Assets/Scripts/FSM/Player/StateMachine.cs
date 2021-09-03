@@ -1,4 +1,4 @@
-namespace FSM
+namespace FSM.Player
 {
     public class StateMachine
     {

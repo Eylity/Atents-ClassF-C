@@ -98,16 +98,16 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7675572
-        functionName: AttackFalse
-        data: FlyAttack
+      - time: 0.37957805
+        functionName: IsGround
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.42391303
-        functionName: IsGround
-        data: 
+      - time: 0.7675572
+        functionName: AttackFalse
+        data: FlyAttack
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

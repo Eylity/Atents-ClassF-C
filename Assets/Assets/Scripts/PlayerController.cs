@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using FSM;
 using FSM.Player;
+using Skill;
 using UnityEngine;
 using XftWeapon;
 
@@ -224,6 +225,7 @@ public class PlayerController : MonoBehaviour
         var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackDust);
         obj.transform.position = transform.position;
         ObjPool.ObjectPoolInstance.ReturnObject(obj,EPrefabsName.FlyAttackDust,1f);
+      
     }
         
     // Animation Event State Name "Die"

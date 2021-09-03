@@ -11,7 +11,7 @@ public enum EPrefabsName
     FlyAttackDust,
     FlyAttackStartDust,
     ChargingFullAttack,
-    FullAttack
+    FullSwingBomb
 }
 
 public class ObjPool : MonoBehaviour
