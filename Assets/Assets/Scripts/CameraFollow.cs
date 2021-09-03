@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
     private GameObject m_Target;
     private Vector3 m_CameraPosition;
     private Vector3 m_Eye;
-    private float m_MoveX; 
+    private float m_MoveX;
 
     void Start()
     {

@@ -39,8 +39,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool m_NowReady = true;
     [HideInInspector] public bool m_IsLive = true;
     [HideInInspector] public bool m_NowExhausted;
-    // public Camera m_CameraFollow;
-    // public CharacterController m_CharacterController;
         
     [Header("----- Player Attack Collider -----")]
     [SerializeField] private BoxCollider m_AttackLeftCollider; 
@@ -146,6 +144,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        
         m_State.StateUpdate();
         StaminaChange();
 
