@@ -6,72 +6,60 @@ using Random = UnityEngine.Random;
 
 public class Weapon : MonoBehaviour
 {
-    public float m_MAxDistance = 1f;
-    private EBloodPrefabsName effectIdx;
-    public LayerMask m_Dragon;
+    private readonly Vector3 m_Direction = Vector3.zero;
+    private const int FirstBloodPrefab = 1;
+    private const int LastBloodPrefab = 17;
+    private EBloodPrefabsName m_EffectIdx;
     private Collider m_Collider;
-    private Ray ray;
-    private Vector3 direction = Vector3.zero;
-
+    public Transform m_RayTransform;
+    private Ray m_Ray;
 
     private void Awake()
     {
-        ray = new Ray();
-
         m_Collider = GetComponent<BoxCollider>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        RaycastHit hit;
+        if (!Physics.Raycast(m_Ray, out var hit) || !other.CompareTag("Dragon")) return;
+        
+        var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
 
-        if (other.CompareTag("Dragon"))
+        m_EffectIdx = (EBloodPrefabsName) Random.Range(FirstBloodPrefab, LastBloodPrefab);
+        var instance = ObjPool.ObjectPoolInstance.GetObject(m_EffectIdx);
+        ObjPool.ObjectPoolInstance.ReturnObject(instance, m_EffectIdx, 5f);
+        instance.transform.position = hit.point;
+        instance.transform.rotation = Quaternion.Euler(0f, angle + 90, 0f);
+        var settings = instance.GetComponent<BFX_BloodSettings>();
+        settings.GroundHeight = hit.point.y;
+
+        var nearestBone = GetNearestBone(hit.transform.root, hit.point);
+        if (nearestBone == null) return;
+
+        if (nearestBone != null)
         {
-            if (Physics.Raycast(ray, out hit,m_MAxDistance,m_Dragon))
-            {
-                float angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
-
-                effectIdx = (EBloodPrefabsName)Random.Range(1, 17);
-                var instance = ObjPool.ObjectPoolInstance.GetObject(effectIdx);
-                ObjPool.ObjectPoolInstance.ReturnObject(instance,effectIdx,5f);
-                instance.transform.position = hit.normal;
-                instance.transform.rotation = Quaternion.Euler(0f, angle + 90, 0f);
-                var settings = instance.GetComponent<BFX_BloodSettings>();
-                settings.GroundHeight = hit.point.y;
-
-                var nearestBone = GetNearestBone(hit.transform.root, hit.point);
-                if (nearestBone == null) return;
-
-                if (nearestBone != null)
-                {
-                    var attachBloodInstance = ObjPool.ObjectPoolInstance.GetObject(EBloodPrefabsName.BloodAttach);
-                    ObjPool.ObjectPoolInstance.ReturnObject(attachBloodInstance,EBloodPrefabsName.BloodAttach,20f);
-                    var bloodT = attachBloodInstance.transform;
-                    bloodT.position = hit.point;
-                    bloodT.localRotation = Quaternion.identity;
-                    bloodT.localScale = Vector3.one * (UnityEngine.Random.Range(0.75f, 1.2f));
-                    bloodT.LookAt(hit.point + hit.normal, direction);
-                    bloodT.Rotate(90, 0, 0);
-                    bloodT.transform.parent = nearestBone;
-                }
-            }
-            Debug.Log("Hit Weapon");
-            m_Collider.enabled = false;
+            var attachBloodInstance = ObjPool.ObjectPoolInstance.GetObject(EBloodPrefabsName.BloodAttach);
+            ObjPool.ObjectPoolInstance.ReturnObject(attachBloodInstance, EBloodPrefabsName.BloodAttach, 20f);
+            var bloodT = attachBloodInstance.transform;
+            bloodT.position = hit.point;
+            bloodT.localRotation = Quaternion.identity;
+            bloodT.localScale = Vector3.one * (UnityEngine.Random.Range(0.75f, 1.2f));
+            bloodT.LookAt(hit.point + hit.normal, m_Direction);
+            bloodT.Rotate(90, 0, 0);
+            bloodT.transform.parent = nearestBone;
         }
+
+        Debug.Log("Hit Weapon");
+        m_Collider.enabled = false;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        ray.origin = transform.position;
-        ray.direction = transform.forward;
+        m_Ray.origin = m_RayTransform.position;
+        m_Ray.direction = m_RayTransform.transform.forward;
     }
 
-    private void OnDrawGizmos()
-    {
-        Debug.DrawRay(ray.origin, ray.direction * 0.1f, Color.green);
-    }
-
-    Transform GetNearestBone(Transform characterTransform, Vector3 hitPos)
+    private Transform GetNearestBone(Transform characterTransform, Vector3 hitPos)
     {
         var closestPos = 100f;
         Transform closestBone = null;

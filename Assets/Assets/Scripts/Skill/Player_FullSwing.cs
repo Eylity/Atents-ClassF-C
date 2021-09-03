@@ -25,9 +25,6 @@ namespace Skill
             m_LeftCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
             m_RightCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
 
-            var bomb = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FullSwingBomb);
-            bomb.transform.position = (m_Player.transform.forward * 3) + m_Player.transform.position;
-            ObjPool.ObjectPoolInstance.ReturnObject(bomb,EPrefabsName.FullSwingBomb,4.0f);
         }
 
         public void OnStateFixedUpdate()
