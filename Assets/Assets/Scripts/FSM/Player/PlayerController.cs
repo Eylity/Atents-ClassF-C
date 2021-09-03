@@ -32,9 +32,9 @@ public class PlayerController : MonoBehaviour
     private bool m_ActiveArea = true;
     private CharacterController m_CharacterController;
     private Vector3 m_Impact = Vector3.zero;
+    private float m_Gravity = 9.8f;
 
 
-    [HideInInspector] public Rigidbody m_Rigidbody;
     [HideInInspector] public Animator m_Anim;
     [HideInInspector] public bool m_NowReady = true;
     [HideInInspector] public bool m_IsLive = true;
@@ -125,7 +125,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
-        m_Rigidbody = GetComponent<Rigidbody>();
         m_Anim = GetComponent<Animator>();
     }
 
@@ -144,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
+        m_CharacterController.Move(Vector3.down * m_Gravity * Time.deltaTime);
         
         m_State.StateUpdate();
         StaminaChange();
