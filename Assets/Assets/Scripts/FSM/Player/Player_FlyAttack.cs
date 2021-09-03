@@ -29,7 +29,8 @@ namespace FSM.Player
             if (!m_IsTime && m_Timer >= 0.1f)
             {
                 m_IsTime = true;
-                m_Player.m_Rigidbody.AddForce(m_Player.transform.up + m_Player.transform.forward * SPEED, ForceMode.Impulse);
+                Debug.Log("FlyAttack Addforce");
+                m_Player.AddImpact((m_Player.transform.forward), 100f);
             }
         }
 

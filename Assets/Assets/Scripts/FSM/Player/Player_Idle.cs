@@ -15,6 +15,7 @@ namespace FSM.Player
         private Transform m_PlayerTransform;
         private Camera cam;
         private Vector3 m_MoveDir;
+        private CharacterController m_CharacterController;
 
         public Player_Idle(PlayerController player)
         {
@@ -23,6 +24,7 @@ namespace FSM.Player
 
         public void OnStateEnter()
         {
+            m_CharacterController = m_PLayer.GetComponent<CharacterController>();
             m_PlayerTransform = m_PLayer.transform;
             cam = Camera.main;
             m_Animator = m_PLayer.GetComponent<Animator>();
@@ -57,26 +59,20 @@ namespace FSM.Player
 
                 m_Animator.SetBool(IsMove, true);
 
-                var movePos = new Vector3(m_MoveX, m_PLayer.transform.localPosition.y, m_MoveZ) *
-                              (m_MoveSpeed * Time.deltaTime);
+                var movePos = new Vector3(m_MoveX, 0f, m_MoveZ) * m_MoveSpeed * Time.deltaTime;
+                m_PLayer.transform.position += movePos;
+                //     m_CharacterController.Move(movePos);
 
                 if (Input.GetMouseButton(1))
                 {
-                    Vector3 dir = cam.transform.localRotation * Vector3.forward;
-                    //카메라가 바라보는 방향으로 팩맨도 바라보게 합니다.
-                    m_PlayerTransform.localRotation = cam.transform.localRotation;
-                    //팩맨의 Rotation.x값을 freeze해놓았지만 움직여서 따로 Rotation값을 0으로 세팅해주었습니다.
-                    m_PlayerTransform.localRotation = new Quaternion(0, m_PlayerTransform.localRotation.y, 0,
-                        m_PLayer.transform.localRotation.w);
-                    //바라보는 시점 방향으로 이동합니다.
-                    m_PLayer.transform.transform.Translate(movePos * 0.1f * Time.deltaTime);
+                    // Vector3 dir = cam.transform.localRotation * Vector3.forward;
+                    // m_PlayerTransform.localRotation = cam.transform.localRotation;
+                    // m_PlayerTransform.localRotation = new Quaternion(0, m_PlayerTransform.localRotation.y, 0,
+                    //     m_PLayer.transform.localRotation.w);
+                    // m_PLayer.transform.transform.Translate(new Vector3(m_MoveX, 0f, m_MoveZ) * dir.magnitude * m_MoveSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    var position = m_PlayerTransform.localPosition;
-                    position += movePos;
-                    m_PlayerTransform.localPosition = position;
-
                     m_PlayerTransform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
                         Quaternion.LookRotation(movePos),
                         m_RotateSpeed * Time.deltaTime);

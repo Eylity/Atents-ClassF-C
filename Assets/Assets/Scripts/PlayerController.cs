@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
     private bool m_ActiveFlyAttack = true;
     private bool m_ActiveFullSwing = true;
     private bool m_ActiveArea = true;
+    private CharacterController m_CharacterController;
+    private Vector3 impact = Vector3.zero;
+    private float mass = 3f;
+
 
     [HideInInspector] public Rigidbody m_Rigidbody;
     [HideInInspector] public Animator m_Anim;
@@ -118,6 +122,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        m_CharacterController = GetComponent<CharacterController>();
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Anim = GetComponent<Animator>();
     }
@@ -144,16 +149,24 @@ public class PlayerController : MonoBehaviour
         {
             TakeDamage(35f);
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!other.CompareTag("Dragon")) return;
         
-
-        Debug.Log("Hit");
-        CollSwitch(false);
+        
+        if (impact.magnitude > 0.2)
+        {
+            m_CharacterController.Move(impact * Time.deltaTime);
+        }
+        impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
     }
+
+    
+    public void AddImpact(Vector3 dir, float force)
+    {
+        dir.Normalize();
+        if (dir.y < 0) dir.y = -dir.y;
+        impact += dir.normalized * force / mass;
+    }
+    
+
 
     #region Animation Events
         
@@ -174,7 +187,7 @@ public class PlayerController : MonoBehaviour
                 CollSwitch(true);
                 break;
             case "FlyAttack":
-                CollSwitch(true);
+                CollSwitch(true, m_AttackRightCollider);
                 break;
         }
     }
@@ -196,7 +209,7 @@ public class PlayerController : MonoBehaviour
                 CollSwitch(false);
                 break;
             case "FlyAttack":
-                CollSwitch(false);
+                CollSwitch(false,m_AttackRightCollider);
                 break;
         }
     }
@@ -204,9 +217,7 @@ public class PlayerController : MonoBehaviour
     // Animation Event State Name "FlyAttack"
     private void IsGround()
     {
-        Debug.Log("!");
-        m_Rigidbody.velocity = Vector3.zero;
-        m_Rigidbody.angularVelocity = Vector3.zero;
+        Debug.Log("Spawn FlyAttackDust");
         var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FLYATTACKDUST);
         obj.transform.position = transform.position;
         ObjPool.ObjectPoolInstance.ReturnObject(obj,EPrefabsName.FLYATTACKDUST,1.5f);
