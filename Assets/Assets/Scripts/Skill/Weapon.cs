@@ -63,9 +63,9 @@ public class Weapon : MonoBehaviour
     {
         var closestPos = 100f;
         Transform closestBone = null;
-        var childs = characterTransform.GetComponentsInChildren<Transform>();
+        var children = characterTransform.GetComponentsInChildren<Transform>();
 
-        foreach (var child in childs)
+        foreach (var child in children)
         {
             var dist = Vector3.Distance(child.position, hitPos);
             if (dist < closestPos)

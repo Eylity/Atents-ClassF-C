@@ -16,6 +16,8 @@ internal enum ECoolDownSystem
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController GetPlayerController { get; private set; }
+    
     private static readonly int Exhausted = Animator.StringToHash("Exhausted");
     private static readonly int Damage = Animator.StringToHash("TakeDamage");
     private static readonly int Die = Animator.StringToHash("Die");
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private bool m_ActiveFlyAttack = true;
     private bool m_ActiveFullSwing = true;
     private bool m_ActiveArea = true;
-    private CharacterController m_CharacterController;
+    public CharacterController m_CharacterController;
     private Vector3 m_Impact = Vector3.zero;
     private float m_Gravity = 9.8f;
 
@@ -111,11 +113,11 @@ public class PlayerController : MonoBehaviour
     private PlayerController()
     {
         m_State = new StateMachine();
-        m_ArrState[(int) EPlayerState.IDLE] = new Player_Idle(this);
-        m_ArrState[(int) EPlayerState.ATTACK] = new Player_Attack(this);
-        m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack(this);
-        m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing(this);
-        m_ArrState[(int) EPlayerState.SKILL] = new Player_Area(this);
+        m_ArrState[(int) EPlayerState.IDLE] = new Player_Idle();
+        m_ArrState[(int) EPlayerState.ATTACK] = new Player_Attack();
+        m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack();
+        m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing();
+        m_ArrState[(int) EPlayerState.SKILL] = new Player_Area();
 
         m_State.SetState(m_ArrState[(int) EPlayerState.IDLE]);
     }
@@ -124,6 +126,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (GetPlayerController != null && GetPlayerController != this)
+        {
+            Destroy(this);
+        }
+
+        GetPlayerController = this;
         m_CharacterController = GetComponent<CharacterController>();
         m_Anim = GetComponent<Animator>();
     }

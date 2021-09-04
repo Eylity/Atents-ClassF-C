@@ -7,26 +7,19 @@ namespace Skill
     public class Player_FlyAttack : IState
     {
         private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
-        private readonly PlayerController m_Player;
         private const float SPEED = 15f;
         private bool m_IsTime;
         private float m_Timer;
-
-        public Player_FlyAttack(PlayerController player)
-        {
-            m_Player = player;
-        }
-
         public void OnStateEnter()
         {
             var startDust = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackStartDust);
-            startDust.transform.position = m_Player.transform.position;
+            startDust.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(startDust,EPrefabsName.FlyAttackStartDust,1f);
             
-            m_Player.m_AttackLeftTrail.Activate();
-            m_Player.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
+            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
             
-            m_Player.m_Anim.SetTrigger(FlyAttack);
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(FlyAttack);
             m_IsTime = false;
             m_Timer = 0f;
         }
@@ -38,7 +31,7 @@ namespace Skill
             {
                 m_IsTime = true;
                 Debug.Log("FlyAttack AddForce");
-                m_Player.AddImpact((m_Player.transform.forward), 100f);
+                PlayerController.GetPlayerController.AddImpact((PlayerController.GetPlayerController.transform.forward), 100f);
             }
         }
 
@@ -48,10 +41,10 @@ namespace Skill
 
         public void OnStateExit()
         {
-            m_Player.m_AttackLeftTrail.Deactivate();
-            m_Player.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
-            arrow.transform.position = m_Player.transform.position;
+            arrow.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 3f);
         }
     }
