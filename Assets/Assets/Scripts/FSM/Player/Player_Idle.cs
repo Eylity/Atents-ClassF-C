@@ -50,8 +50,10 @@ namespace FSM.Player
 
 
                 var movePos = cam.transform.right * m_MoveX + cam.transform.forward * m_MoveZ;
-                movePos.Normalize();
-                PlayerController.GetPlayerController.m_CharacterController.Move(movePos *m_MoveSpeed * Time.deltaTime);
+                movePos.y = 0f;
+                movePos.Normalize();  
+ 
+                PlayerController.GetPlayerController.m_CharacterController.Move(movePos * m_MoveSpeed * Time.deltaTime);
                 PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
                     Quaternion.LookRotation(movePos),
                     m_RotateSpeed * Time.deltaTime);
