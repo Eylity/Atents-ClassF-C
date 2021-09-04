@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 namespace FSM.Player
@@ -60,21 +59,22 @@ namespace FSM.Player
 
                 m_Animator.SetBool(IsMove, true);
 
-                var moveDir = new Vector3(m_MoveX, 0F, m_MoveZ).normalized;
-                
+                var movePos = new Vector3(m_MoveX, 0f, m_MoveZ) * m_MoveSpeed * Time.deltaTime;
+                m_PLayer.transform.position += movePos;
+                //     m_CharacterController.Move(movePos);
 
                 if (Input.GetMouseButton(1))
                 {
-                    var movePos = cam.transform.TransformDirection(moveDir).normalized;
-                    m_PLayer.transform.rotation = cam.transform.rotation;
-                    m_PLayer.transform.position += movePos * Time.deltaTime * m_MoveSpeed;
+                    // Vector3 dir = cam.transform.localRotation * Vector3.forward;
+                    // m_PlayerTransform.localRotation = cam.transform.localRotation;
+                    // m_PlayerTransform.localRotation = new Quaternion(0, m_PlayerTransform.localRotation.y, 0,
+                    //     m_PLayer.transform.localRotation.w);
+                    // m_PLayer.transform.transform.Translate(new Vector3(m_MoveX, 0f, m_MoveZ) * dir.magnitude * m_MoveSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    moveDir = moveDir * Time.deltaTime * m_MoveSpeed;
-                    m_CharacterController.Move(moveDir);
                     m_PlayerTransform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
-                        Quaternion.LookRotation(moveDir),
+                        Quaternion.LookRotation(movePos),
                         m_RotateSpeed * Time.deltaTime);
                 }
             }
