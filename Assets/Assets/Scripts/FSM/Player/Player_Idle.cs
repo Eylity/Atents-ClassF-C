@@ -47,23 +47,13 @@ namespace FSM.Player
 
             PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, true);
 
-            var moveDir = new Vector3(m_MoveX, 0F, m_MoveZ).normalized;
 
-
-            if (Input.GetMouseButton(1))
-            {
-                var movePos = cam.transform.TransformDirection(moveDir).normalized;
-                PlayerController.GetPlayerController.transform.rotation = cam.transform.rotation;
-                PlayerController.GetPlayerController.transform.position += movePos * Time.deltaTime * m_MoveSpeed;
-            }
-            else
-            {
-                moveDir = moveDir * Time.deltaTime * m_MoveSpeed;
-                PlayerController.GetPlayerController.m_CharacterController.Move(moveDir);
-                m_PlayerTransform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
-                    Quaternion.LookRotation(moveDir),
-                    m_RotateSpeed * Time.deltaTime);
-            }
+            var movePos = cam.transform.right * m_MoveX + cam.transform.forward * m_MoveZ;
+            movePos.Normalize();
+            PlayerController.GetPlayerController.m_CharacterController.Move(movePos *m_MoveSpeed * Time.deltaTime);
+            PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
+                Quaternion.LookRotation(movePos),
+                m_RotateSpeed * Time.deltaTime);
         }
 
         public void OnStateUpdate()
