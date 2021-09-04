@@ -20,8 +20,8 @@ namespace FSM.Player
             startDust.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(startDust,EPrefabsName.FlyAttackStartDust,1f);
             
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.TrailSwitch(true);
+
             
             PlayerController.GetPlayerController.m_Anim.SetTrigger(FlyAttack);
             m_IsTime = false;
@@ -45,8 +45,8 @@ namespace FSM.Player
 
         public void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.TrailSwitch(false);
+
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
             arrow.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 3f);

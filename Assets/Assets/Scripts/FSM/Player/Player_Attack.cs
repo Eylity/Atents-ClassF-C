@@ -10,8 +10,7 @@ namespace FSM.Player
         public void OnStateEnter()
         {
             PlayerController.GetPlayerController.m_Anim.SetTrigger(Attack);
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.TrailSwitch(true);
             PlayerController.GetPlayerController.m_NowReady = false;
         }
 
@@ -34,8 +33,8 @@ namespace FSM.Player
 
         public void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.TrailSwitch(false);
+
         }
     }
 }

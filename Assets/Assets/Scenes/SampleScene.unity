@@ -804,7 +804,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CentralAxis: {fileID: 1471000637}
   m_Player: {fileID: 5060228404805620329}
-  m_CamSpeed: 20
 --- !u!1 &1741198563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1063,10 @@ PrefabInstance:
     - target: {fileID: 7896147908375461208, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
       propertyPath: m_Name
       value: Human_warrior
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896147908375461208, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

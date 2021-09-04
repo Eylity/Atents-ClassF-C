@@ -18,42 +18,49 @@ namespace FSM.Player
         {
             m_PlayerTransform = PlayerController.GetPlayerController.transform;
             cam = Camera.main;
-            PlayerController.GetPlayerController.CollSwitch(false);
         }
 
         public void OnStateFixedUpdate()
         {
-            m_MoveX = Input.GetAxis("Horizontal");
-            m_MoveZ = Input.GetAxis("Vertical");
-            if (m_MoveX == 0 && m_MoveZ == 0)
+            if (PlayerController.GetPlayerController.m_NowReady)
             {
-                PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
-                PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
-                return;
-            }
+                m_MoveX = Input.GetAxis("Horizontal");
+                m_MoveZ = Input.GetAxis("Vertical");
+                if (m_MoveX == 0 && m_MoveZ == 0)
+                {
+                    PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
+                    PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
+                    return;
+                }
 
-            if (Input.GetKey(KeyCode.LeftShift) && !PlayerController.GetPlayerController.m_NowExhausted)
-            {
-                m_MoveSpeed = 6f;
-                m_RotateSpeed = 8f;
-                PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, true);
+                if (Input.GetKey(KeyCode.LeftShift) && !PlayerController.GetPlayerController.m_NowExhausted)
+                {
+                    m_MoveSpeed = 6f;
+                    m_RotateSpeed = 8f;
+                    PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, true);
+                }
+                else
+                {
+                    m_MoveSpeed = 2f;
+                    m_RotateSpeed = 8f;
+                    PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
+                }
+
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, true);
+
+
+                var movePos = cam.transform.right * m_MoveX + cam.transform.forward * m_MoveZ;
+                movePos.Normalize();
+                PlayerController.GetPlayerController.m_CharacterController.Move(movePos *m_MoveSpeed * Time.deltaTime);
+                PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
+                    Quaternion.LookRotation(movePos),
+                    m_RotateSpeed * Time.deltaTime);
             }
             else
             {
-                m_MoveSpeed = 2f;
-                m_RotateSpeed = 8f;
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
                 PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
             }
-
-            PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, true);
-
-
-            var movePos = cam.transform.right * m_MoveX + cam.transform.forward * m_MoveZ;
-            movePos.Normalize();
-            PlayerController.GetPlayerController.m_CharacterController.Move(movePos *m_MoveSpeed * Time.deltaTime);
-            PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(m_PlayerTransform.rotation,
-                Quaternion.LookRotation(movePos),
-                m_RotateSpeed * Time.deltaTime);
         }
 
         public void OnStateUpdate()

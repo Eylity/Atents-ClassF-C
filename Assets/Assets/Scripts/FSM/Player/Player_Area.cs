@@ -7,17 +7,16 @@ namespace FSM.Player
     public class Player_Area : IState
     {
         private static readonly int Skill = Animator.StringToHash("Skill");
-        private float timer;
+        private float m_Timer;
         public void OnStateEnter()
         {
-            timer = 0f;
+            m_Timer = 0f;
             
             PlayerController.GetPlayerController.m_NowReady = false;
             PlayerController.GetPlayerController.m_ActiveArea = false;
             PlayerController.GetPlayerController.StartCoroutine(PlayerController.GetPlayerController.CoolDown(ECoolDownSystem.AREA));
-            
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.TrailSwitch(true);
+
             PlayerController.GetPlayerController.m_Anim.SetTrigger(Skill);
             
             var position = PlayerController.GetPlayerController.transform.position;
@@ -42,8 +41,7 @@ namespace FSM.Player
 
         public void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.TrailSwitch(false);
         }
     }
 }

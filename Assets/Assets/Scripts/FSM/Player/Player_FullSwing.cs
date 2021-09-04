@@ -17,8 +17,8 @@ namespace FSM.Player
             PlayerController.GetPlayerController.m_ActiveFullSwing = false;
             PlayerController.GetPlayerController.StartCoroutine(PlayerController.GetPlayerController.CoolDown(ECoolDownSystem.FULL_SWING));
             
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.TrailSwitch(true);
+
             PlayerController.GetPlayerController.m_Anim.SetTrigger(FullSwing);
             
             m_LeftCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
@@ -40,8 +40,8 @@ namespace FSM.Player
         {
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge,EPrefabsName.ChargingFullAttack);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge,EPrefabsName.ChargingFullAttack);
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.TrailSwitch(false);
+
         }
     }
 }
