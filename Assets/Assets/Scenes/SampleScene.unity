@@ -145,6 +145,21 @@ MonoBehaviour:
     m_Bits: 1
   DecalRenderingMode: 1
   LayerDepthResoulution: 0
+--- !u!114 &71400009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71400007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b3e394b2aa1084faebfac0d001a1aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 5060228404805620329}
+  offset: {x: 0, y: 3, z: -6}
+  currentZoom: 7
 --- !u!114 &71400012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,7 +994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412661118861699042, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7412661118861699042, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1051,6 +1066,11 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!4 &5060228404805620329 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7412661118861699042, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
+  m_PrefabInstance: {fileID: 3147253367876513597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6549433720609109858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1633,11 +1653,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8186090686836867821, guid: d789cc4564978a54da7aa3566a998f6a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8186090686836867821, guid: d789cc4564978a54da7aa3566a998f6a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8186090686836867821, guid: d789cc4564978a54da7aa3566a998f6a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1667,5 +1687,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8186090686836867820, guid: d789cc4564978a54da7aa3566a998f6a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d789cc4564978a54da7aa3566a998f6a, type: 3}

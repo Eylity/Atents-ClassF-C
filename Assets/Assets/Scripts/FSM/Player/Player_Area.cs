@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using PlayerScript;
 using UnityEngine;
 
 namespace FSM.Player

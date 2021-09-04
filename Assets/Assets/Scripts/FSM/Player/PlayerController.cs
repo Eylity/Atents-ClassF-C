@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using FSM;
+using PlayerScript;
 using Skill;
 using UnityEngine;
 using XftWeapon;
@@ -30,14 +31,14 @@ namespace FSM.Player
         private readonly WaitForSeconds m_AnimDelay = new WaitForSeconds(0.3f);
         private readonly StateMachine m_State;
         private const float MASS = 3f;
-        public bool m_ActiveFlyAttack = true;
-        public bool m_ActiveFullSwing = true;
-        public bool m_ActiveArea = true;
         public CharacterController m_CharacterController;
         private Vector3 m_Impact = Vector3.zero;
         private const float GRAVITY = 9.8f;
 
 
+        [HideInInspector] public bool m_ActiveFlyAttack = true;
+        [HideInInspector] public bool m_ActiveFullSwing = true;
+        [HideInInspector] public bool m_ActiveArea = true;
         [HideInInspector] public Animator m_Anim;
         [HideInInspector] public bool m_NowReady = true;
         [HideInInspector] public bool m_IsLive = true;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using PlayerScript;
+using UnityEngine;
 
 namespace FSM.Player
 {

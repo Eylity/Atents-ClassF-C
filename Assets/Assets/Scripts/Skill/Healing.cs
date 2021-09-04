@@ -8,12 +8,10 @@ namespace Skill
     {
         private readonly WaitForSeconds m_Time = new WaitForSeconds(0.1f);
         private PlayerController m_Player;
-        private Collider m_Collider;
         private bool m_InPlayer;
 
         private void Awake()
         {
-            m_Collider = GetComponent<BoxCollider>();
             m_Player = FindObjectOfType<PlayerController>();
         }
 
