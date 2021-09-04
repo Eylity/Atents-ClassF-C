@@ -1,19 +1,18 @@
 using System.Collections;
 using UnityEngine;
-using XftWeapon;
 
 namespace FSM.Player
 {
     public class Player_Attack : IState
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
- 
 
         public void OnStateEnter()
         {
             PlayerController.GetPlayerController.m_Anim.SetTrigger(Attack);
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            PlayerController.GetPlayerController.m_NowReady = false;
         }
 
         public void OnStateFixedUpdate()

@@ -1,17 +1,20 @@
-﻿using FSM;
-using FSM.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Skill
+namespace FSM.Player
 {
     public class Player_FlyAttack : IState
     {
         private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
-        private const float SPEED = 15f;
+        private const float FORCE = 100f;
         private bool m_IsTime;
         private float m_Timer;
         public void OnStateEnter()
         {
+            PlayerController.GetPlayerController.m_NowReady = false;
+            PlayerController.GetPlayerController.Stamina -= 40f;
+            PlayerController.GetPlayerController.m_ActiveFlyAttack = false;
+            PlayerController.GetPlayerController.StartCoroutine(PlayerController.GetPlayerController.CoolDown(ECoolDownSystem.FLY_ATTACK));
+            
             var startDust = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackStartDust);
             startDust.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(startDust,EPrefabsName.FlyAttackStartDust,1f);
@@ -31,7 +34,7 @@ namespace Skill
             {
                 m_IsTime = true;
                 Debug.Log("FlyAttack AddForce");
-                PlayerController.GetPlayerController.AddImpact((PlayerController.GetPlayerController.transform.forward), 100f);
+                PlayerController.GetPlayerController.AddImpact((PlayerController.GetPlayerController.transform.forward), FORCE);
             }
         }
 

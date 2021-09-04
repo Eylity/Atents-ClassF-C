@@ -1,8 +1,6 @@
-﻿using FSM;
-using FSM.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Skill
+namespace FSM.Player
 {
     public class Player_FullSwing : IState
     {
@@ -13,6 +11,11 @@ namespace Skill
 
         public void OnStateEnter()
         {
+            PlayerController.GetPlayerController.m_NowReady = false;
+            PlayerController.GetPlayerController.Stamina -= 40f;
+            PlayerController.GetPlayerController.m_ActiveFullSwing = false;
+            PlayerController.GetPlayerController.StartCoroutine(PlayerController.GetPlayerController.CoolDown(ECoolDownSystem.FULL_SWING));
+            
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.m_Anim.SetTrigger(FullSwing);

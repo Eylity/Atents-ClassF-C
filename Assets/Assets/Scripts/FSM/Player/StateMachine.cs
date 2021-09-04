@@ -30,6 +30,10 @@ namespace FSM.Player
             if (m_CurState != state)
             {
                 StateExit();
+            }           
+            if (m_CurState == state)
+            {
+                return;
             }
 
             m_CurState = state;
