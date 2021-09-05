@@ -1,62 +1,43 @@
 using System;
 using System.Collections;
-using FSM;
 using PlayerScript;
-using Skill;
 using UnityEngine;
 using XftWeapon;
 
 namespace FSM.Player
 {
-    public enum ECoolDownSystem
-    {
-        FLY_ATTACK,
-        FULL_SWING,
-        AREA,
-        EXHAUSTED
-    }
-
     public class PlayerController : MonoBehaviour
     {
         public static PlayerController GetPlayerController { get; private set; }
 
-        private static readonly int Exhausted = Animator.StringToHash("Exhausted");
-        private static readonly int Damage = Animator.StringToHash("TakeDamage");
-        private static readonly int Die = Animator.StringToHash("Die");
-        private readonly IState[] m_ArrState = new IState[(int) EPlayerState.LENGTH];
-        private readonly WaitForSeconds m_FullSwingCoolTime = new WaitForSeconds(7.0f);
-        private readonly WaitForSeconds m_FlyAttackCoolTime = new WaitForSeconds(5.0f);
-        private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(10.0f);
-        private readonly WaitForSeconds m_AreaCoolTime = new WaitForSeconds(6.0f);
-        private readonly WaitForSeconds m_AnimDelay = new WaitForSeconds(0.3f);
+        public static CharacterController m_CharacterController;
+        public static Animator m_Anim;
+
+        private readonly State[] m_ArrState = new State[(int) EPlayerState.LENGTH];
         private readonly StateMachine m_State;
         private const float MASS = 3f;
         private const float GRAVITY = 9.8f;
         private Vector3 m_Impact = Vector3.zero;
 
-
-        [HideInInspector] public CharacterController m_CharacterController;
-        [HideInInspector] public Animator m_Anim;
+        public EPlayerState m_CurState;
         [HideInInspector] public bool m_ActiveFlyAttack = true;
         [HideInInspector] public bool m_ActiveFullSwing = true;
         [HideInInspector] public bool m_ActiveArea = true;
-        [HideInInspector] public bool m_NowReady = true;
         [HideInInspector] public bool m_IsLive = true;
         [HideInInspector] public bool m_NowExhausted;
 
-        [Header("----- Player Attack Collider -----")] 
+        [Header("----- Player Attack Collider -----")]
         [SerializeField] private BoxCollider m_AttackLeftCollider;
         public XWeaponTrail m_AttackLeftTrail;
         [SerializeField] private BoxCollider m_AttackRightCollider;
         public XWeaponTrail m_AttackRightTrail;
 
-        [Header("----- Player Status -----")] [SerializeField]
-        private float m_HealthPoint;
+        [Header("----- Player Status -----")] 
+        [SerializeField] private float m_HealthPoint;
 
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
-
         [Range(5f, 20f)] public float m_SubOrPlusStamina = 10f;
         [SerializeField] private float m_PlayerDamage = 20f;
         [SerializeField] private int m_StunDamage = 30;
@@ -66,18 +47,12 @@ namespace FSM.Player
             get => m_HealthPoint;
             set
             {
+                if (!m_IsLive) return;
+
                 m_HealthPoint = value;
-                if (m_HealthPoint >= m_MaxHealthPoint)
+                if (m_HealthPoint > m_MaxHealthPoint)
                 {
                     m_HealthPoint = m_MaxHealthPoint;
-                }
-                else if (m_HealthPoint <= 0 && m_IsLive)
-                {
-                    m_NowReady = false;
-                    m_HealthPoint = 0f;
-                    StopAllCoroutines();
-                    m_IsLive = false;
-                    m_Anim.SetTrigger(Die);
                 }
             }
         }
@@ -90,19 +65,9 @@ namespace FSM.Player
                 if (!m_IsLive) return;
 
                 m_StaminaPoint = value;
-                if (m_StaminaPoint <= 0 && !m_NowExhausted)
+                if (m_StaminaPoint >= m_MaxStaminaPoint)
                 {
-                    m_NowReady = false;
-                    m_NowExhausted = true;
-                    m_Anim.SetTrigger(Exhausted);
-                    StartCoroutine(CoolDown(ECoolDownSystem.EXHAUSTED));
-                }
-                else
-                {
-                    if (m_StaminaPoint >= m_MaxStaminaPoint)
-                    {
-                        m_StaminaPoint = m_MaxStaminaPoint;
-                    }
+                    m_StaminaPoint = m_MaxStaminaPoint;
                 }
             }
         }
@@ -115,8 +80,11 @@ namespace FSM.Player
             m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack();
             m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing();
             m_ArrState[(int) EPlayerState.SKILL] = new Player_Area();
+            m_ArrState[(int) EPlayerState.STUN] = new Player_Stun();
+            m_ArrState[(int) EPlayerState.EXHAUSTED] = new Player_Exhausted();
+            m_ArrState[(int) EPlayerState.DIE] = new Player_DIe();
 
-            m_State.SetState(m_ArrState[(int) EPlayerState.IDLE]);
+            m_State.SetState(m_ArrState[(int) EPlayerState.IDLE], this);
         }
 
         private void Awake()
@@ -134,8 +102,8 @@ namespace FSM.Player
         private void Start()
         {
             m_State.StateEnter();
-            m_HealthPoint = m_MaxHealthPoint;
-            m_StaminaPoint = m_MaxStaminaPoint;
+            Health = m_MaxHealthPoint;
+            Stamina = m_MaxStaminaPoint;
             StartCoroutine(nameof(State));
         }
 
@@ -146,7 +114,7 @@ namespace FSM.Player
 
         private void Update()
         {
-            m_CharacterController.Move(Vector3.down * GRAVITY * Time.deltaTime);
+            m_CharacterController.Move(Vector3.down * (GRAVITY * Time.deltaTime));
 
             m_State.StateUpdate();
             StaminaChange();
@@ -155,7 +123,7 @@ namespace FSM.Player
             {
                 TakeDamage(35f);
             }
-            
+
             if (m_Impact.magnitude > 0.2)
             {
                 m_CharacterController.Move(m_Impact * Time.deltaTime);
@@ -172,7 +140,8 @@ namespace FSM.Player
             m_Impact += dir.normalized * force / MASS;
         }
 
-        // Animation Event
+        #region AnimEvents
+
         private void AttackTrue(string animName)
         {
             switch (animName)
@@ -195,7 +164,6 @@ namespace FSM.Player
             }
         }
 
-        // Animation Event
         private void AttackFalse(string animName)
         {
             switch (animName)
@@ -218,74 +186,60 @@ namespace FSM.Player
             }
         }
 
-        // Animation Event State Name "FlyAttack"
+        // State Name "FlyAttack"
         private void IsGround()
         {
-            Debug.Log("Spawn FlyAttackDust");
             var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackDust);
             obj.transform.position = transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(obj, EPrefabsName.FlyAttackDust, 1f);
         }
-
-        // Animation Event State Name "Die"
-        private void PlayerDead()
-        {
-            this.gameObject.SetActive(false);
-        }
+        #endregion 
 
         private IEnumerator State()
         {
-            while (true)
+            while (m_IsLive)
             {
-                switch (m_NowReady)
+                if (m_CurState == EPlayerState.IDLE || m_CurState == EPlayerState.MOVE ||
+                    m_CurState == EPlayerState.RUN)
                 {
-                    case true when Input.GetMouseButtonDown(0):
-                        m_State.StateChange(m_ArrState[(int) EPlayerState.ATTACK]);
-
-                        break;
-                    case true when Input.GetKeyDown(KeyCode.Q):
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        if (m_ActiveFlyAttack && Stamina > 40f)
-                        {
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.FLY_ATTACK]);
-                        }
-
-                        break;
+                        m_State.StateChange(m_ArrState[(int) EPlayerState.ATTACK]);
                     }
-                    case true when Input.GetKeyDown(KeyCode.E):
+
+                    if (Input.GetKeyDown(KeyCode.Q) && m_ActiveFlyAttack && Stamina > 40f)
+                    {
+                        m_State.StateChange(m_ArrState[(int) EPlayerState.FLY_ATTACK]);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
                         if (m_ActiveFullSwing && Stamina > 40f)
                         {
                             m_State.StateChange(m_ArrState[(int) EPlayerState.FULL_SWING]);
                         }
-
-                        break;
                     }
-                    case true when Input.GetKeyDown(KeyCode.Space):
+
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
                         if (m_ActiveArea)
                         {
                             m_State.StateChange(m_ArrState[(int) EPlayerState.SKILL]);
                         }
-
-                        break;
-                    }
-                    case false:
-                    {
-                        yield return m_AnimDelay;
-                        if (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Idle") ||
-                            m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Move") ||
-                            m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
-                        {
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.IDLE]);
-                            m_NowReady = true;
-                        }
-
-                        break;
                     }
                 }
-
                 yield return null;
+            }
+        }
+
+        public void ChangeState(EPlayerState stateName)
+        {
+            for (var i = 0; i < (int) EPlayerState.LENGTH; i++)
+            {
+                if ((int) stateName == i)
+                {
+                    m_State.StateChange(m_ArrState[i]);
+                }
             }
         }
 
@@ -316,48 +270,41 @@ namespace FSM.Player
 
         public void TakeDamage(float damage)
         {
-            if (Health <= 0) return;
-            Health -= (int) Math.Round(damage);
-            if (damage > m_StunDamage && Health <= 0) return;
-            m_Anim.SetTrigger(Damage);
-            m_NowReady = false;
-        }
+            if (!m_IsLive) return;
 
-        public IEnumerator CoolDown(ECoolDownSystem index)
-        {
-            switch (index)
+            Health -= (int) Math.Round(damage);
+
+            if (Health <= 0)
             {
-                case ECoolDownSystem.FULL_SWING:
-                    yield return m_FullSwingCoolTime;
-                    m_ActiveFullSwing = true;
-                    break;
-                case ECoolDownSystem.FLY_ATTACK:
-                    yield return m_FlyAttackCoolTime;
-                    m_ActiveFlyAttack = true;
-                    break;
-                case ECoolDownSystem.AREA:
-                    yield return m_AreaCoolTime;
-                    m_ActiveArea = true;
-                    break;
-                case ECoolDownSystem.EXHAUSTED:
-                    yield return m_ExhaustedTime;
-                    m_NowExhausted = false;
-                    break;
-                default:
-                    Debug.Log($"Can't Find : PlayerFsm - ECoolDownSystem - {index.ToString()}");
-                    break;
+                ChangeState(EPlayerState.DIE);
+            }
+
+            else if (damage >= m_StunDamage)
+            {
+                m_State.StateChange(m_ArrState[(int) EPlayerState.STUN]);
             }
         }
+
 
         private void StaminaChange()
         {
-            if (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+            switch (m_CurState)
             {
-                Stamina -= m_SubOrPlusStamina * 1.5f * Time.deltaTime;
+                case EPlayerState.RUN:
+                    Stamina -= m_SubOrPlusStamina * 1.5f * Time.deltaTime;
+                    break;
+                case EPlayerState.IDLE:
+                    Stamina += m_SubOrPlusStamina * 1.5f * Time.deltaTime;
+                    break;
+                default:
+                    Stamina += m_SubOrPlusStamina * Time.deltaTime;
+                    break;
             }
-            else
+
+            if (m_StaminaPoint <= 0 && !m_NowExhausted)
             {
-                Stamina += m_SubOrPlusStamina * Time.deltaTime;
+                m_NowExhausted = true;
+                m_State.StateChange(m_ArrState[(int)EPlayerState.EXHAUSTED]);
             }
         }
     }

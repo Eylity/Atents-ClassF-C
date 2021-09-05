@@ -159,8 +159,8 @@ MonoBehaviour:
   m_UpdateMethod: 0
   m_BlendUpdateMethod: 0
   m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
+    m_Style: 5
+    m_Time: 3
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -984,7 +984,7 @@ MonoBehaviour:
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
   m_Priority: 10
-  m_StandbyUpdate: 2
+  m_StandbyUpdate: 0
   m_LookAt: {fileID: 423681040}
   m_Follow: {fileID: 1471000637}
   m_Lens:
@@ -1408,6 +1408,10 @@ PrefabInstance:
     - target: {fileID: 2643749425328163176, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0.00016698525
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147253367029278595, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
+      propertyPath: m_StaminaPoint
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3147253367029278595, guid: 47d9ec9e310eb1a4facaa672d0595d6d, type: 3}
       propertyPath: m_AttackLeftTrail

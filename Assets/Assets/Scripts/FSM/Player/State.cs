@@ -1,35 +1,39 @@
+using System.Collections;
+
 namespace FSM.Player
 {
-    public class IState
+    public abstract class State
     {
-        public virtual void OnStateEnter()
+        public virtual IEnumerator OnStateEnter()
         {
-            
+            yield return null;
         }
 
         public virtual void OnStateFixedUpdate()
         {
-            
         }
 
         public virtual void OnStateUpdate()
         {
-            
         }
 
         public virtual void OnStateExit()
         {
-            
         }
     }
 
     public enum EPlayerState
     {
         IDLE,
+        MOVE,
+        RUN,
         ATTACK,
         FLY_ATTACK,
         FULL_SWING,
         SKILL,
+        STUN,
+        EXHAUSTED,
+        DIE,
         LENGTH
     }
 }

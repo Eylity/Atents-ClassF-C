@@ -28,7 +28,6 @@ namespace Skill
         {
             while (!m_InEnemy) yield return null;
         
-            Debug.Log("ArrowSpawn");
         }
     }
 }

@@ -1,13 +1,20 @@
+using UnityEngine;
+
 namespace FSM.Player
 {
     public class StateMachine
     {
-
-        private IState m_CurState;
+        private PlayerController m_PlayerController;
+        private State m_CurState;
 
         public void StateEnter()
         {
-            m_CurState?.OnStateEnter();
+            if (m_CurState == null)
+            {
+                return;
+            }
+
+            m_PlayerController.StartCoroutine(m_CurState.OnStateEnter());
         }
 
         public void StateFixedUpdate()
@@ -17,7 +24,7 @@ namespace FSM.Player
 
         public void StateUpdate()
         {
-            m_CurState?.OnStateUpdate();
+            m_CurState.OnStateUpdate();
         }
 
         private void StateExit()
@@ -25,25 +32,26 @@ namespace FSM.Player
             m_CurState?.OnStateExit();
         }
 
-        public void StateChange(IState state)
+        public void StateChange(State state)
         {
             if (m_CurState != state)
             {
                 StateExit();
-            }           
+            }
+
             if (m_CurState == state)
             {
                 return;
             }
 
             m_CurState = state;
-            m_CurState?.OnStateEnter();
+            StateEnter();
         }
 
-        public void SetState(IState state)
+        public void SetState(State state, PlayerController player)
         {
+            m_PlayerController = player;
             m_CurState = state;
         }
-
     }
 }

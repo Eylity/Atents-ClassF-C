@@ -50,7 +50,6 @@ namespace Skill
                 bloodT.transform.parent = nearestBone;
             }
 
-            Debug.Log("Hit Weapon");
             m_Collider.enabled = false;
         }
 
