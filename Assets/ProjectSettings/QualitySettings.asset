@@ -209,7 +209,7 @@ QualitySettings:
     vSyncCount: 1
     lodBias: 1
     maximumLODLevel: 0
-    streamingMipmapsActive: 0
+    streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
     streamingMipmapsRenderersPerFrame: 512
@@ -220,7 +220,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: babcff628b940a946bc98ed57dbd5f44, type: 2}
+    customRenderPipeline: {fileID: 11400000, guid: fa85fb1d12628e24ca2c8dd271dff25d, type: 2}
     excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
     Android: 2

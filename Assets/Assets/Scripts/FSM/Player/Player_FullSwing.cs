@@ -15,19 +15,20 @@ namespace FSM.Player
         public override IEnumerator OnStateEnter()
         {
             PlayerController.GetPlayerController.m_CurState = EPlayerState.FULL_SWING;
-            PlayerController.m_Anim.SetTrigger(FullSwing);
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(FullSwing);
 
-            while (!PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
+            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
                 yield return null;
 
             PlayerController.GetPlayerController.Stamina -= 40f;
-            PlayerController.GetPlayerController.TrailSwitch(true);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.m_ActiveFullSwing = false;
             PlayerController.GetPlayerController.StartCoroutine(FullSwingCoolDown());
 
             m_LeftCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
             m_RightCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
-            while (PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
+            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FullSwing"))
             {
                 m_LeftCharge.transform.position =
                     PlayerController.GetPlayerController.m_AttackLeftTrail.transform.position;
@@ -43,7 +44,8 @@ namespace FSM.Player
         {
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge, EPrefabsName.ChargingFullAttack);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge, EPrefabsName.ChargingFullAttack);
-            PlayerController.GetPlayerController.TrailSwitch(false);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Deactivate();
         }
 
         private IEnumerator FullSwingCoolDown()

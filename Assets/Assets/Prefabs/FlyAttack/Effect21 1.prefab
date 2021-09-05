@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4187623289939302}
   - component: {fileID: 114630448198454340}
   m_Layer: 0
-  m_Name: Effect21
+  m_Name: Effect21 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

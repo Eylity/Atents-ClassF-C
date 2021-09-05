@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using DG.Tweening;
 using PlayerScript;
 using UnityEngine;
 
@@ -11,14 +10,15 @@ namespace FSM.Player
         private readonly WaitForSeconds m_SkillTimer = new WaitForSeconds(8.0f);
         public override IEnumerator OnStateEnter()
         {
-            PlayerController.m_Anim.SetTrigger(Skill);
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(Skill);
             PlayerController.GetPlayerController.m_ActiveArea = false;
             PlayerController.GetPlayerController.m_CurState = EPlayerState.SKILL;
 
-            while (!PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
+            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
                 yield return null;
 
-            PlayerController.GetPlayerController.TrailSwitch(true);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.StartCoroutine(AreaCoolDown());
 
             var playerPos = PlayerController.GetPlayerController.transform.position;
@@ -29,24 +29,37 @@ namespace FSM.Player
             
             var areaEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.AreaEffect);
             areaEffect.transform.position = playerPos;
-            areaEffect.transform.DOLocalMoveY(5f, 2f).SetEase(Ease.InQuad);
+            PlayerController.GetPlayerController.StartCoroutine(EffectUp(areaEffect));
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect,EPrefabsName.AreaEffect,7f);
             
-            while (PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
+            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
                 yield return null;
             
-            PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
+            if (PlayerController.GetPlayerController.m_CurState != EPlayerState.DIE)
+            {
+                PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
+            }
         }
 
         public override void OnStateExit()
         {
-            PlayerController.GetPlayerController.TrailSwitch(false);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Deactivate();
         }
 
         private IEnumerator AreaCoolDown()
         {
             yield return m_SkillTimer;
             PlayerController.GetPlayerController.m_ActiveArea = true;
+        } 
+        private IEnumerator EffectUp(GameObject effect)
+        {
+            var timer = 0f;
+            while (timer <= 5f)
+            {
+                effect.transform.position += Vector3.up * 2f * Time.deltaTime;
+                yield return timer += Time.deltaTime;
+            }
         }
     }
 }

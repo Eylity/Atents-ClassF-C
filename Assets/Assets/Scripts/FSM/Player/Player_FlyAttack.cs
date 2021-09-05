@@ -11,15 +11,20 @@ namespace FSM.Player
         private const float FORCE = 100f;
         public override IEnumerator OnStateEnter()
         {
+            var currentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
+            currentInstance.transform.SetParent(PlayerController.GetPlayerController.gameObject.transform);
+            var psUpdater = currentInstance.GetComponent<PSMeshRendererUpdater>();
+            psUpdater.UpdateMeshEffect(PlayerController.GetPlayerController.gameObject);
             PlayerController.GetPlayerController.m_CurState = EPlayerState.FLY_ATTACK;
             PlayerController.GetPlayerController.Stamina -= 40f;
             PlayerController.GetPlayerController.m_ActiveFlyAttack = false;
-            PlayerController.m_Anim.SetTrigger(FlyAttack);
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(FlyAttack);
 
-            while (!PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FlyAttack"))
+            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FlyAttack"))
                 yield return null;
   
-            PlayerController.GetPlayerController.TrailSwitch(true);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.StartCoroutine(FlyAttackCoolDown());
             PlayerController.GetPlayerController.AddImpact((PlayerController.GetPlayerController.transform.forward), FORCE);
             
@@ -27,15 +32,23 @@ namespace FSM.Player
             startDust.transform.position = PlayerController.GetPlayerController.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(startDust,EPrefabsName.FlyAttackStartDust,1f);
             
-            while (PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FlyAttack"))
+            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime <0.9f)
                 yield return null;
 
-            PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
+            psUpdater.IsActive = false;
+            ObjPool.ObjectPoolInstance.ReturnObject(currentInstance,EPrefabsName.FlyAttackEffect,2.0f);
+            
+            
+            if (PlayerController.GetPlayerController.m_CurState != EPlayerState.DIE)
+            {
+                PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
+            }
         }
 
         public override void OnStateExit()
         {
-            PlayerController.GetPlayerController.TrailSwitch(false);
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            PlayerController.GetPlayerController. m_AttackRightTrail.Deactivate();
             
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
             arrow.transform.position = PlayerController.GetPlayerController.transform.position;

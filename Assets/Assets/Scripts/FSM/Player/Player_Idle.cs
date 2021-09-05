@@ -15,18 +15,25 @@ namespace FSM.Player
 
         public override IEnumerator OnStateEnter()
         {
+            
+            if (PlayerController.GetPlayerController.m_CurState == EPlayerState.DIE)
+            {
+             yield break;;
+            }
             PlayerController.GetPlayerController.m_CurState = EPlayerState.IDLE;
             yield return null;
         }
 
         public override void OnStateFixedUpdate()
         {
+            if (!PlayerController.GetPlayerController.m_IsLive) return;
+            
             m_MoveX = Input.GetAxis("Horizontal");
             m_MoveZ = Input.GetAxis("Vertical");
             if (m_MoveX == 0 && m_MoveZ == 0)
             {
-                PlayerController.m_Anim.SetBool(IsMove, false);
-                PlayerController.m_Anim.SetBool(IsRun, false);
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
                 PlayerController.GetPlayerController.m_CurState = EPlayerState.IDLE;
                 return;
             }
@@ -36,17 +43,17 @@ namespace FSM.Player
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 8f;
                 PlayerController.GetPlayerController.m_CurState = EPlayerState.RUN;
-                PlayerController.m_Anim.SetBool(IsRun, true);
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, true);
             }
             else
             {
                 m_MoveSpeed = 2f;
                 m_RotateSpeed = 8f;
                 PlayerController.GetPlayerController.m_CurState = EPlayerState.MOVE;
-                PlayerController.m_Anim.SetBool(IsRun, false);
+                PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
             }
 
-            PlayerController.m_Anim.SetBool(IsMove, true);
+            PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, true);
 
 
             Debug.Assert(Camera.main != null, "Camera.main != null");
@@ -55,7 +62,7 @@ namespace FSM.Player
             movePos.y = 0f;
             movePos.Normalize();
 
-            PlayerController.m_CharacterController.Move(movePos * (m_MoveSpeed * Time.deltaTime));
+            PlayerController.GetPlayerController.m_CharacterController.Move(movePos * (m_MoveSpeed * Time.deltaTime));
             PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(PlayerController.GetPlayerController.transform.rotation,
                 Quaternion.LookRotation(movePos),
                 m_RotateSpeed * Time.deltaTime);
@@ -63,8 +70,8 @@ namespace FSM.Player
         
         public override void OnStateExit()
         {
-            PlayerController.m_Anim.SetBool(IsMove, false);
-            PlayerController.m_Anim.SetBool(IsRun, false);
+            PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
+            PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
         }
     }
 }

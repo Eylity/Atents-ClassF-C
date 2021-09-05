@@ -20,7 +20,7 @@ namespace Skill
             m_Collider = GetComponent<BoxCollider>();
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (!Physics.Raycast(m_Ray, out var hit) || !other.CompareTag("Dragon")) return;
         
@@ -65,13 +65,13 @@ namespace Skill
             Transform closestBone = null;
             var children = characterTransform.GetComponentsInChildren<Transform>();
 
-            foreach (var child in children)
+            for (var i = 0; i < children.Length; i++)
             {
-                var dist = Vector3.Distance(child.position, hitPos);
+                var dist = Vector3.Distance(children[i].position, hitPos);
                 if (dist < closestPos)
                 {
                     closestPos = dist;
-                    closestBone = child;
+                    closestBone = children[i];
                 }
             }
 

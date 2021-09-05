@@ -12,8 +12,8 @@ namespace PlayerScript
         FlyAttackArrow,
         FlyAttackDust,
         FlyAttackStartDust,
-        ChargingFullAttack,
-        FullSwingBomb,
+        FlyAttackEffect,
+        ChargingFullAttack
     }
 
     public enum EBloodPrefabsName
@@ -44,7 +44,7 @@ namespace PlayerScript
 
         public Prefabs[] m_Prefab;
         public BloodPrefabs[] m_BloodPrefab;
-    
+
         [Serializable]
         public class Prefabs
         {
@@ -53,8 +53,8 @@ namespace PlayerScript
             public EPrefabsName m_ObjectName;
             public Queue<GameObject> m_ObjectQueue = new Queue<GameObject>();
             [HideInInspector] public Transform m_ObjectTransform;
+        }
 
-        }    
         [Serializable]
         public class BloodPrefabs
         {
@@ -63,9 +63,8 @@ namespace PlayerScript
             public EBloodPrefabsName m_ObjectName;
             public Queue<GameObject> m_ObjectQueue = new Queue<GameObject>();
             [HideInInspector] public Transform m_ObjectTransform;
-
         }
-    
+
         #endregion
 
         public static ObjPool ObjectPoolInstance;
@@ -78,6 +77,7 @@ namespace PlayerScript
             {
                 Destroy(this);
             }
+
             ObjectPoolInstance = this;
             CreatePrefabsParent();
         }
@@ -89,14 +89,15 @@ namespace PlayerScript
                 var obj = new GameObject(m_Prefab[i].m_ObjectName.ToString());
                 m_Prefab[i].m_ObjectTransform = obj.transform;
                 obj.transform.SetParent(this.transform);
-                SetPool(m_Prefab[i],m_Prefab[i].m_ProduceCount);
+                SetPool(m_Prefab[i], m_Prefab[i].m_ProduceCount);
             }
+
             for (var i = 0; i < m_BloodPrefab.Length; i++)
             {
                 var obj = new GameObject(m_BloodPrefab[i].m_ObjectName.ToString());
                 m_BloodPrefab[i].m_ObjectTransform = obj.transform;
                 obj.transform.SetParent(this.transform);
-                SetPool(m_BloodPrefab[i],m_BloodPrefab[i].m_ProduceCount);
+                SetPool(m_BloodPrefab[i], m_BloodPrefab[i].m_ProduceCount);
             }
         }
 
@@ -107,6 +108,7 @@ namespace PlayerScript
                 prefab.m_ObjectQueue.Enqueue(CreateNewObj(prefab));
             }
         }
+
         private static void SetPool(BloodPrefabs prefab, int count)
         {
             for (var i = 0; i < count; i++)
@@ -121,7 +123,8 @@ namespace PlayerScript
             obj.SetActive(false);
             obj.transform.SetParent(prefab.m_ObjectTransform);
             return obj;
-        }    
+        }
+
         private static GameObject CreateNewObj(BloodPrefabs prefab)
         {
             var obj = Instantiate(prefab.m_Prefab);
@@ -139,8 +142,10 @@ namespace PlayerScript
                     return ObjectPoolInstance.m_Prefab[i];
                 }
             }
+
             return null;
         }
+
         private static BloodPrefabs FindPrefabName(EBloodPrefabsName name)
         {
             for (var i = 0; i < ObjectPoolInstance.m_BloodPrefab.Length; i++)
@@ -150,12 +155,13 @@ namespace PlayerScript
                     return ObjectPoolInstance.m_BloodPrefab[i];
                 }
             }
+
             return null;
         }
-    
+
         #endregion
 
-    
+
         /// <summary>
         /// Get Object To ObjectPool
         /// </summary>
@@ -169,6 +175,7 @@ namespace PlayerScript
                 Debug.Log($"Can't Find {name.ToString()} In GetObject");
                 return null;
             }
+
             if (currentPrefab.m_ObjectQueue.Count > 0)
             {
                 var obj = currentPrefab.m_ObjectQueue.Dequeue();
@@ -184,6 +191,7 @@ namespace PlayerScript
                 return obj;
             }
         }
+
         /// <summary>
         /// Get Blood Object To ObjectPool
         /// </summary>
@@ -192,11 +200,6 @@ namespace PlayerScript
         public GameObject GetObject(EBloodPrefabsName name)
         {
             var currentPrefab = FindPrefabName(name);
-            if (currentPrefab == null)
-            {
-                Debug.Log($"Can't Find {name.ToString()} In GetObject");
-                return null;
-            }
             if (currentPrefab.m_ObjectQueue.Count > 0)
             {
                 var obj = currentPrefab.m_ObjectQueue.Dequeue();
@@ -221,18 +224,12 @@ namespace PlayerScript
         public void ReturnObject(GameObject obj, EPrefabsName name)
         {
             var currentPrefab = FindPrefabName(name);
-        
-            if (currentPrefab == null)
-            {
-                Debug.Log($"Can't Find {name.ToString()} In ReturnObject");
-            }
-            else
-            {
-                obj.gameObject.SetActive(false);
-                obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
-                currentPrefab.m_ObjectQueue.Enqueue(obj);
-            }
+
+            obj.gameObject.SetActive(false);
+            obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
+            currentPrefab.m_ObjectQueue.Enqueue(obj);
         }
+
         /// <summary>
         /// Blood Object Return To Object Pool If you Want Delay Add Float
         /// </summary>
@@ -241,7 +238,7 @@ namespace PlayerScript
         public void ReturnObject(GameObject obj, EBloodPrefabsName name)
         {
             var currentPrefab = FindPrefabName(name);
-        
+
             if (currentPrefab == null)
             {
                 Debug.Log($"Can't Find {name.ToString()} In ReturnObject");
@@ -268,9 +265,9 @@ namespace PlayerScript
         private IEnumerator DelayReturn(GameObject obj, EPrefabsName name, float time)
         {
             yield return new WaitForSeconds(time);
-            ReturnObject(obj,name);
-        }    
-    
+            ReturnObject(obj, name);
+        }
+
         /// <summary>
         /// Blood Object Delay Return To ObjectPool
         /// </summary>
@@ -285,7 +282,7 @@ namespace PlayerScript
         private IEnumerator DelayReturn(GameObject obj, EBloodPrefabsName name, float time)
         {
             yield return new WaitForSeconds(time);
-            ReturnObject(obj,name);
+            ReturnObject(obj, name);
         }
     }
 }

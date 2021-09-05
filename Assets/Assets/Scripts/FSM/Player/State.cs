@@ -31,7 +31,6 @@ namespace FSM.Player
         FLY_ATTACK,
         FULL_SWING,
         SKILL,
-        STUN,
         EXHAUSTED,
         DIE,
         LENGTH

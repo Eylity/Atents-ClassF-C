@@ -10,11 +10,11 @@ namespace FSM.Player
 
         public override IEnumerator OnStateEnter()
         {
-            PlayerController.m_Anim.SetTrigger(Exhausted);
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(Exhausted);
             PlayerController.GetPlayerController.m_CurState = EPlayerState.EXHAUSTED;
-            while (!PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
+            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
                 yield return null;
-            while (PlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
+            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
                 yield return null;
             PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
             PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());

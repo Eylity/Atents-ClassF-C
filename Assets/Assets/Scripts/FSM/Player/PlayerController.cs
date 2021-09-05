@@ -10,8 +10,8 @@ namespace FSM.Player
     {
         public static PlayerController GetPlayerController { get; private set; }
 
-        public static CharacterController m_CharacterController;
-        public static Animator m_Anim;
+        [HideInInspector] public CharacterController m_CharacterController;
+        [HideInInspector] public Animator m_Anim;
 
         private readonly State[] m_ArrState = new State[(int) EPlayerState.LENGTH];
         private readonly StateMachine m_State;
@@ -40,7 +40,6 @@ namespace FSM.Player
         [SerializeField] private float m_MaxStaminaPoint = 200;
         [Range(5f, 20f)] public float m_SubOrPlusStamina = 10f;
         [SerializeField] private float m_PlayerDamage = 20f;
-        [SerializeField] private int m_StunDamage = 30;
 
         public float Health
         {
@@ -80,7 +79,6 @@ namespace FSM.Player
             m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack();
             m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing();
             m_ArrState[(int) EPlayerState.SKILL] = new Player_Area();
-            m_ArrState[(int) EPlayerState.STUN] = new Player_Stun();
             m_ArrState[(int) EPlayerState.EXHAUSTED] = new Player_Exhausted();
             m_ArrState[(int) EPlayerState.DIE] = new Player_DIe();
 
@@ -243,20 +241,6 @@ namespace FSM.Player
             }
         }
 
-        public void TrailSwitch(bool isActive)
-        {
-            if (isActive)
-            {
-                m_AttackLeftTrail.Activate();
-                m_AttackRightTrail.Activate();
-            }
-            else
-            {
-                m_AttackLeftTrail.Deactivate();
-                m_AttackRightTrail.Deactivate();
-            }
-        }
-
         private void CollSwitch(bool isActive)
         {
             m_AttackLeftCollider.enabled = isActive;
@@ -277,11 +261,6 @@ namespace FSM.Player
             if (Health <= 0)
             {
                 ChangeState(EPlayerState.DIE);
-            }
-
-            else if (damage >= m_StunDamage)
-            {
-                m_State.StateChange(m_ArrState[(int) EPlayerState.STUN]);
             }
         }
 

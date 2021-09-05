@@ -380,10 +380,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimationSpeed: 2
   GroundHeight: 1
-  LightIntensityMultiplier: 0
+  LightIntensityMultiplier: 1
   FreezeDecalDisappearance: 0
-  DecalRenderinMode: 0
-  ClampDecalSideSurface: 1
+  DecalRenderinMode: 1
+  ClampDecalSideSurface: 0
 --- !u!1 &7320868988218991578
 GameObject:
   m_ObjectHideFlags: 0
