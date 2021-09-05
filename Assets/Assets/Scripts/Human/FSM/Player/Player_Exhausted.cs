@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace FSM.Player
+namespace Human.FSM.Player
 {
     public class Player_Exhausted : State
     {
@@ -10,20 +10,20 @@ namespace FSM.Player
 
         public override IEnumerator OnStateEnter()
         {
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(Exhausted);
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.EXHAUSTED;
-            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
+            Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.SetTrigger(Exhausted);
+            Human.FSM.Player.PlayerController.GetPlayerController.m_CurState = EPlayerState.EXHAUSTED;
+            while (!Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
                 yield return null;
-            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
+            while (Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Exhausted"))
                 yield return null;
-            PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
-            PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());
+            Human.FSM.Player.PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
+            Human.FSM.Player.PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());
         }
 
         private IEnumerator ExhaustedTimer()
         {
             yield return m_ExhaustedTime;
-            PlayerController.GetPlayerController.m_NowExhausted = false;
+            Human.FSM.Player.PlayerController.GetPlayerController.m_NowExhausted = false;
         }
     }
 }

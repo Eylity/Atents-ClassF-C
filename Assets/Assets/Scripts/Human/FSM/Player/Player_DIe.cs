@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
-namespace FSM.Player
+namespace Human.FSM.Player
 {
     public class Player_DIe : State
     {
@@ -10,16 +9,16 @@ namespace FSM.Player
 
         public override IEnumerator OnStateEnter()
         {
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(Die);
-            PlayerController.GetPlayerController.m_IsLive = false;
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.DIE;
-            PlayerController.GetPlayerController.StopCoroutine("State");
+            Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.SetTrigger(Die);
+            Human.FSM.Player.PlayerController.GetPlayerController.m_IsLive = false;
+            Human.FSM.Player.PlayerController.GetPlayerController.m_CurState = EPlayerState.DIE;
+            Human.FSM.Player.PlayerController.GetPlayerController.StopCoroutine("State");
 
-            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+            while (!Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Die"))
                 yield return null;
-            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f)
+            while (Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8f)
                 yield return null;
-            PlayerController.GetPlayerController.gameObject.SetActive(false);
+            Human.FSM.Player.PlayerController.GetPlayerController.gameObject.SetActive(false);
         }
     }
 }

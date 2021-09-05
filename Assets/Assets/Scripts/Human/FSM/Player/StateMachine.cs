@@ -1,10 +1,8 @@
-using UnityEngine;
-
-namespace FSM.Player
+namespace Human.FSM.Player
 {
     public class StateMachine
     {
-        private PlayerController m_PlayerController;
+        private Human.FSM.Player.PlayerController m_PlayerController;
         private State m_CurState;
 
         public void StateEnter()
@@ -48,7 +46,7 @@ namespace FSM.Player
             StateEnter();
         }
 
-        public void SetState(State state, PlayerController player)
+        public void SetState(State state, Human.FSM.Player.PlayerController player)
         {
             m_PlayerController = player;
             m_CurState = state;

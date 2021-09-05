@@ -1,19 +1,12 @@
 using System.Collections;
-using FSM.Player;
 using UnityEngine;
 
-namespace Skill
+namespace Human.Skill
 {
     public class Healing : MonoBehaviour
     {
         private readonly WaitForSeconds m_Time = new WaitForSeconds(0.1f);
-        private PlayerController m_Player;
         private bool m_InPlayer;
-
-        private void Awake()
-        {
-            m_Player = FindObjectOfType<PlayerController>();
-        }
 
         private void OnEnable()
         {
@@ -43,8 +36,8 @@ namespace Skill
             {
                 if (m_InPlayer)
                 {
-                    m_Player.Stamina += 1;
-                    m_Player.Health += 1;
+                    FSM.Player.PlayerController.GetPlayerController.Stamina += 1;
+                    FSM.Player.PlayerController.GetPlayerController.Health += 1;
                     yield return m_Time;
                 }
                 else

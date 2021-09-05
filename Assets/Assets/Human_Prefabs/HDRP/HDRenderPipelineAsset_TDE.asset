@@ -153,7 +153,7 @@ MonoBehaviour:
   m_DefaultVolumeProfile: {fileID: 11400000, guid: 37610f99cbb330144a377c8a3f2edf7d, type: 2}
   m_LensAttenuation: 0
   m_UseRenderGraph: 1
-  m_DefaultLookDevProfile: {fileID: 11400000, guid: 0d9cb8a38a85b3a48879ab856e4e7457, type: 2}
+  m_DefaultLookDevProfile: {fileID: 11400000, guid: 4480d0875dcdda74dbdc0b142e358be8, type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
       data1: 140666621394781
@@ -221,10 +221,10 @@ MonoBehaviour:
     supportTransparentBackface: 1
     supportTransparentDepthPrepass: 1
     supportTransparentDepthPostpass: 1
-    colorBufferFormat: 48
+    colorBufferFormat: 74
     supportCustomPass: 1
-    customBufferFormat: 74
-    supportedLitShaderMode: 3
+    customBufferFormat: 12
+    supportedLitShaderMode: 2
     planarReflectionResolution:
       m_Values: 000100000004000000080000
       m_SchemaId:
@@ -239,7 +239,7 @@ MonoBehaviour:
     decalLayerName5: Decal Layer 5
     decalLayerName6: Decal Layer 6
     decalLayerName7: Decal Layer 7
-    msaaSampleCount: 8
+    msaaSampleCount: 1
     supportMotionVectors: 1
     supportRuntimeDebugDisplay: 1
     supportRuntimeAOVAPI: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
       atlasOctahedralDepthResolution: 2048
     lightLoopSettings:
       cookieAtlasSize: 512
-      cookieFormat: 48
+      cookieFormat: 74
       cookieAtlasLastValidMip: 0
       cookieTexArraySize: 16
       planarReflectionAtlasSize: 4096
@@ -440,8 +440,8 @@ MonoBehaviour:
   m_DefaultMaterialQualityLevel: 4
   diffusionProfileSettings: {fileID: 0}
   diffusionProfileSettingsList:
-  - {fileID: 11400000, guid: 35a3c8ba88400d94095dfb1fe155092f, type: 2}
-  - {fileID: 11400000, guid: da254a1db0e8f3d4c9364d8680ceb1bd, type: 2}
+  - {fileID: 11400000, guid: 806bc615be6d3334591a7d0c8813e9ad, type: 2}
+  - {fileID: 11400000, guid: 988d3123dbebe12499731c0dde92a38c, type: 2}
   beforeTransparentCustomPostProcesses: []
   beforeTAACustomPostProcesses: []
   beforePostProcessCustomPostProcesses: []

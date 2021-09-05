@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace FSM.Player
+namespace Human.FSM.Player
 {
     public abstract class State
     {

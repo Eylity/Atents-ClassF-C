@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using PlayerScript;
+using Human.PlayerScript;
 using UnityEngine;
 using XftWeapon;
 
-namespace FSM.Player
+namespace Human.FSM.Player
 {
     public class PlayerController : MonoBehaviour
     {
