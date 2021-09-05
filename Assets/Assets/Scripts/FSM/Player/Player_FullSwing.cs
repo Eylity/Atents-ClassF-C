@@ -10,7 +10,7 @@ namespace FSM.Player
         private GameObject m_RightCharge;
 
 
-        public void OnStateEnter()
+        public override void OnStateEnter()
         {
             PlayerController.GetPlayerController.m_NowReady = false;
             PlayerController.GetPlayerController.Stamina -= 40f;
@@ -26,17 +26,13 @@ namespace FSM.Player
 
         }
 
-        public void OnStateFixedUpdate()
-        {
-        }
-
-        public void OnStateUpdate()
+        public override void OnStateUpdate()
         {
             m_LeftCharge.transform.position = PlayerController.GetPlayerController.m_AttackLeftTrail.transform.position;
             m_RightCharge.transform.position = PlayerController.GetPlayerController.m_AttackRightTrail.transform.position;
         }
 
-        public void OnStateExit()
+        public override void OnStateExit()
         {
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge,EPrefabsName.ChargingFullAttack);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge,EPrefabsName.ChargingFullAttack);

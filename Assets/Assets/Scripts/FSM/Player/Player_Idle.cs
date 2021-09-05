@@ -14,13 +14,13 @@ namespace FSM.Player
         private Camera cam;
         private Vector3 m_MoveDir;
 
-        public void OnStateEnter()
+        public override void OnStateEnter()
         {
             m_PlayerTransform = PlayerController.GetPlayerController.transform;
             cam = Camera.main;
         }
 
-        public void OnStateFixedUpdate()
+        public override void OnStateFixedUpdate()
         {
             if (PlayerController.GetPlayerController.m_NowReady)
             {
@@ -64,12 +64,9 @@ namespace FSM.Player
                 PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);
             }
         }
+        
 
-        public void OnStateUpdate()
-        {
-        }
-
-        public void OnStateExit()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.m_Anim.SetBool(IsMove, false);
             PlayerController.GetPlayerController.m_Anim.SetBool(IsRun, false);

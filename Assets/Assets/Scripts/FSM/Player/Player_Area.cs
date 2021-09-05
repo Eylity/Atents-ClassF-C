@@ -8,7 +8,7 @@ namespace FSM.Player
     {
         private static readonly int Skill = Animator.StringToHash("Skill");
         private float m_Timer;
-        public void OnStateEnter()
+        public override void OnStateEnter()
         {
             m_Timer = 0f;
             
@@ -31,15 +31,7 @@ namespace FSM.Player
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect,EPrefabsName.AreaEffect,7f);
         }
 
-        public void OnStateFixedUpdate()
-        {
-        }
-
-        public void OnStateUpdate()
-        {
-        }
-
-        public void OnStateExit()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.TrailSwitch(false);
         }

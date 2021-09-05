@@ -9,7 +9,7 @@ namespace FSM.Player
         private const float FORCE = 100f;
         private bool m_IsTime;
         private float m_Timer;
-        public void OnStateEnter()
+        public override void OnStateEnter()
         {
             PlayerController.GetPlayerController.m_NowReady = false;
             PlayerController.GetPlayerController.Stamina -= 40f;
@@ -28,7 +28,7 @@ namespace FSM.Player
             m_Timer = 0f;
         }
 
-        public void OnStateUpdate()
+        public override void OnStateUpdate()
         {
             m_Timer += Time.deltaTime;
             if (!m_IsTime && m_Timer >= 0.1f)
@@ -39,11 +39,11 @@ namespace FSM.Player
             }
         }
 
-        public void OnStateFixedUpdate()
+        public override void OnStateFixedUpdate()
         {
         }
 
-        public void OnStateExit()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.TrailSwitch(false);
 

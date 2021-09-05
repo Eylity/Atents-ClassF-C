@@ -7,18 +7,18 @@ namespace FSM.Player
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
 
-        public void OnStateEnter()
+        public override void OnStateEnter()
         {
             PlayerController.GetPlayerController.m_Anim.SetTrigger(Attack);
             PlayerController.GetPlayerController.TrailSwitch(true);
             PlayerController.GetPlayerController.m_NowReady = false;
         }
 
-        public void OnStateFixedUpdate()
+        public override void OnStateFixedUpdate()
         {
         }
 
-        public void OnStateUpdate()
+        public override void OnStateUpdate()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -31,7 +31,7 @@ namespace FSM.Player
             }
         }
 
-        public void OnStateExit()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.TrailSwitch(false);
 

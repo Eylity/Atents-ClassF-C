@@ -1,11 +1,26 @@
 namespace FSM.Player
 {
-    public interface IState
+    public class IState
     {
-        void OnStateEnter();
-        void OnStateFixedUpdate();
-        void OnStateUpdate();
-        void OnStateExit();
+        public virtual void OnStateEnter()
+        {
+            
+        }
+
+        public virtual void OnStateFixedUpdate()
+        {
+            
+        }
+
+        public virtual void OnStateUpdate()
+        {
+            
+        }
+
+        public virtual void OnStateExit()
+        {
+            
+        }
     }
 
     public enum EPlayerState
