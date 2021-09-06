@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Human.FSM.Player
 {
     public abstract class State
     {
+        public List<State> Next = new List<State>();
+
         public virtual IEnumerator OnStateEnter()
         {
             yield return null;

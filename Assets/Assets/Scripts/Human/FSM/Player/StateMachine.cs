@@ -4,6 +4,7 @@ namespace Human.FSM.Player
     {
         private Human.FSM.Player.PlayerController m_PlayerController;
         private State m_CurState;
+        private State m_PrevState;
 
         public void StateEnter()
         {
@@ -13,6 +14,13 @@ namespace Human.FSM.Player
             }
 
             m_PlayerController.StartCoroutine(m_CurState.OnStateEnter());
+        }
+
+        public void ReVert()
+        {
+            m_PrevState = m_CurState;
+            m_CurState = null;
+            StateChange(m_PrevState);
         }
 
         public void StateFixedUpdate()
@@ -41,6 +49,8 @@ namespace Human.FSM.Player
             {
                 return;
             }
+
+            m_PrevState = m_CurState;
 
             m_CurState = state;
             StateEnter();

@@ -19,6 +19,7 @@ namespace Human.FSM.Player
             Human.FSM.Player.PlayerController.GetPlayerController.Stamina -= 40f;
             Human.FSM.Player.PlayerController.GetPlayerController.m_ActiveFlyAttack = false;
             Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.SetTrigger(FlyAttack);
+            Human.FSM.Player.PlayerController.GetPlayerController.AddImpact((Human.FSM.Player.PlayerController.GetPlayerController.transform.forward), FORCE);
 
             while (!Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("FlyAttack"))
                 yield return null;
@@ -26,7 +27,6 @@ namespace Human.FSM.Player
             Human.FSM.Player.PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             Human.FSM.Player.PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             Human.FSM.Player.PlayerController.GetPlayerController.StartCoroutine(FlyAttackCoolDown());
-            Human.FSM.Player.PlayerController.GetPlayerController.AddImpact((Human.FSM.Player.PlayerController.GetPlayerController.transform.forward), FORCE);
             
             var startDust = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackStartDust);
             startDust.transform.position = Human.FSM.Player.PlayerController.GetPlayerController.transform.position;

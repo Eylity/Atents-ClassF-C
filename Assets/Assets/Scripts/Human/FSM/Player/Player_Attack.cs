@@ -6,8 +6,9 @@ namespace Human.FSM.Player
     public class Player_Attack : State
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
-        private bool m_NowStun = false;
-
+        
+        
+        
         public override IEnumerator OnStateEnter()
         {
             Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.SetTrigger(Attack);
@@ -26,20 +27,16 @@ namespace Human.FSM.Player
             while (Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack"))
                 yield return null;
             
+            
+            Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.ResetTrigger(Attack);
             Human.FSM.Player.PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
         }
 
         public override void OnStateUpdate()
         {
-
             if (Input.GetMouseButtonDown(0))
             {
                 Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.SetTrigger(Attack);
-            }
-
-            if (Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("LastAttack"))
-            {
-                Human.FSM.Player.PlayerController.GetPlayerController.m_Anim.ResetTrigger(Attack);
             }
         }
 

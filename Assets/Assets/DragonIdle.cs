@@ -44,7 +44,7 @@ public class DragonIdle : StateMachineBehaviour
         }
         else if (dragon.hp <= 30f && DragonController.instance.dragonfirerain == true && DragonController.instance.dragonfalldown == false)
         {
-            Debug.Log("ÆÄÀÌ¾î·¹ÀÎ");
+            Debug.Log("íŒŒì´ì–´ë ˆì¸");
             animator.SetTrigger("FireRainReady");
         }
 

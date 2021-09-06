@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Human.PlayerScript;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using XftWeapon;
 
@@ -117,6 +118,7 @@ namespace Human.FSM.Player
             m_State.StateUpdate();
             StaminaChange();
 
+            // Debug
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 TakeDamage(35f);
