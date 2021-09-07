@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Human;
 using UnityEngine;
 
 namespace FSM.Player
@@ -55,6 +54,8 @@ namespace FSM.Player
         private IEnumerator AreaCoolDown()
         {
             yield return m_SkillTimer;
+            Debug.Log("Area Active");
+
             PlayerController.GetPlayerController.m_ActiveArea = true;
         } 
         
@@ -63,7 +64,7 @@ namespace FSM.Player
             var timer = 0f;
             while (timer <= 5f)
             {
-                effect.transform.position += Vector3.up * 2f * Time.deltaTime;
+                effect.transform.position += Vector3.up * (2f * Time.deltaTime);
                 yield return timer += Time.deltaTime;
             }
         }

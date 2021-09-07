@@ -1,6 +1,4 @@
-using Human;
 using UnityEngine;
-using XftWeapon;
 
 namespace FSM.Player
 {

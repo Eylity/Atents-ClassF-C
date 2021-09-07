@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Human;
 using UnityEngine;
 
 namespace FSM.Player
@@ -43,10 +42,6 @@ namespace FSM.Player
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.StartCoroutine(FlyAttackCoolDown());
-
-            var startDust = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackStartDust);
-            startDust.transform.position = PlayerController.GetPlayerController.transform.position;
-            ObjPool.ObjectPoolInstance.ReturnObject(startDust, EPrefabsName.FlyAttackStartDust, 1f);
         }
 
         public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
@@ -79,6 +74,7 @@ namespace FSM.Player
         private IEnumerator FlyAttackCoolDown()
         {
             yield return m_FlyAttackTimer;
+            Debug.Log("FlyAttack Active");
             PlayerController.GetPlayerController.m_ActiveFlyAttack = true;
         }
         
