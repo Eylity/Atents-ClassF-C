@@ -1,9 +1,8 @@
-using UnityEngine;
 using Human;
-
+using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Human
+namespace Skill
 {
     public class Weapon : MonoBehaviour
     {

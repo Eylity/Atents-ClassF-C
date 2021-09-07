@@ -1,24 +1,27 @@
 ﻿using System.Collections;
+using Human;
 using UnityEngine;
 
-namespace Human
+namespace FSM.Player
 {
-    public sealed class FullSwing : State<PlayerController>
+    public sealed class Player_FullSwing : State<PlayerController>
     {
         private readonly WaitForSeconds m_FullSwingTimer = new WaitForSeconds(7.0f);
         private GameObject m_RightCharge;
         private readonly int m_FullSwing;
         private GameObject m_LeftCharge;
+        private Animator m_Anim;
 
-        public FullSwing() : base("Base Layer.Skill.FullSwing")
+        public Player_FullSwing() : base("Base Layer.Skill.FullSwing") => m_FullSwing = Animator.StringToHash("FullSwing");
+
+        public override void ONInitialized()
         {
-            m_FullSwing = Animator.StringToHash("FullSwing");
+            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
- 
+
         public override void Begin()
         {
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.FULL_SWING;
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(m_FullSwing);
+            m_Anim.SetTrigger(m_FullSwing);
             PlayerController.GetPlayerController.Stamina -= 40f;
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
@@ -37,7 +40,7 @@ namespace Human
                 PlayerController.GetPlayerController.m_AttackRightTrail.transform.position;
             if (stateInfo.normalizedTime >= 0.9f)
             {
-                PlayerController.GetPlayerController.m_StateMachine.ChangeState<Idle>();
+                PlayerController.GetPlayerController.m_StateMachine.ChangeState<Player_Idle>();
             }
         }
 

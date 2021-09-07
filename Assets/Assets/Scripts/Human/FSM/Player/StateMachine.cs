@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Human;
 using UnityEngine;
 
-namespace Human
+namespace FSM.Player
 {
     public sealed class StateMachine<T>
     {

@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
-using Human;
 
-
-namespace Human
+namespace FSM.Player
 {
     public abstract class State<T>
     {

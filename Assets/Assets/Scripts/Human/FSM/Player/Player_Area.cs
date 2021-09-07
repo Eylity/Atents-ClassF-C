@@ -1,32 +1,35 @@
 ﻿using System.Collections;
-using UnityEngine;
 using Human;
+using UnityEngine;
 
-
-
-    public class Area : State<PlayerController>
+namespace FSM.Player
+{
+    public class Player_Area : State<PlayerController>
     {
         private readonly WaitForSeconds m_SkillTimer = new WaitForSeconds(8.0f);
         private readonly int m_Skill;
+        private Animator m_Anim;
 
-        public Area() : base( "Base Layer.Skill.Skill" )
+        public Player_Area() : base( "Base Layer.Skill.Skill" ) => m_Skill = Animator.StringToHash( "Skill" );
+
+        public override void ONInitialized()
         {
-            m_Skill = Animator.StringToHash( "Skill" );
+            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
+
         
         public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
         {
             if (stateInfo.normalizedTime >= 0.9f)
             {
-                Machine.ChangeState<Idle>();
+                Machine.ChangeState<Player_Idle>();
             }
         }
         
         public override void Begin()
         {
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(m_Skill);
+            m_Anim.SetTrigger(m_Skill);
             PlayerController.GetPlayerController.m_ActiveArea = false;
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.SKILL;
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.StartCoroutine(AreaCoolDown());
@@ -64,4 +67,5 @@ using Human;
             }
         }
     }
+}
 

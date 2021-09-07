@@ -1,21 +1,27 @@
+using Human;
 using UnityEngine;
 
-namespace Human
+namespace FSM.Player
 {
-    public class AttackL : State<PlayerController>
+    public class Player_AttackL : State<PlayerController>
     {
+        private Animator m_Anim;
         private static int _attack;
         private bool m_HasTrigger;
 
-        public AttackL() : base("Base Layer.Attack.AttackL") => _attack = Animator.StringToHash("Attack");
+        public Player_AttackL() : base("Base Layer.Attack.AttackL") => _attack = Animator.StringToHash("Attack");
+
+        public override void ONInitialized()
+        {
+            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+        }
 
         public override void Begin()
         {
             m_HasTrigger = false;
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(_attack);
+            m_Anim.SetTrigger(_attack);
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.ATTACK;
         }
 
         public override void Reason()
@@ -34,13 +40,19 @@ namespace Human
             {
                 if (m_HasTrigger)
                 {
-                    Machine.ChangeState<AttackR>();
+                    Machine.ChangeState<Player_AttackR>();
                 }
                 else
                 {
-                    Machine.ChangeState<Idle>();
+                    Machine.ChangeState<Player_Idle>();
                 }
             }
+        }
+
+        public override void End()
+        {
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
         }
     }
 }

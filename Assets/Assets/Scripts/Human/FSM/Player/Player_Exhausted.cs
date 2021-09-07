@@ -1,22 +1,25 @@
 ﻿using System.Collections;
+using Human;
 using UnityEngine;
 
-namespace Human
+namespace FSM.Player
 {
-    public class Exhausted : State<PlayerController>
+    public class Player_Exhausted : State<PlayerController>
     {
+        private Animator m_Anim;
         private readonly int m_Exhausted;
         private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(8.0f);
 
-        public Exhausted() : base("Base Layer.Exhausted")
+        public Player_Exhausted() : base("Base Layer.Exhausted") => m_Exhausted = Animator.StringToHash("Exhausted");
+        public override void ONInitialized()
         {
-            m_Exhausted = Animator.StringToHash("Exhausted");
+            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
+        
 
         public override void Begin()
         {
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(m_Exhausted);
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.EXHAUSTED;
+            m_Anim.SetTrigger(m_Exhausted);
             PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());
         }
 
@@ -24,7 +27,7 @@ namespace Human
         {
             if (stateInfo.normalizedTime >= 0.9f)
             {
-                PlayerController.GetPlayerController.m_StateMachine.ChangeState<Idle>();
+                Machine.ChangeState<Player_Idle>();
             }
         }
 

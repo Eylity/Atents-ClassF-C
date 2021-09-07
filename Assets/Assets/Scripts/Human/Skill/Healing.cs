@@ -1,7 +1,8 @@
 using System.Collections;
+using FSM.Player;
 using UnityEngine;
 
-namespace Human
+namespace Skill
 {
     public class Healing : MonoBehaviour
     {

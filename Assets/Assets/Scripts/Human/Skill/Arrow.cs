@@ -1,8 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using Human;
 
-namespace Human
+namespace Skill
 {
     public class Arrow : MonoBehaviour
     {
