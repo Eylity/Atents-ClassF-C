@@ -1,21 +1,34 @@
 using System;
-using System.Collections;
-using Human.PlayerScript;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using XftWeapon;
+using Human;
 
-namespace Human.FSM.Player
+namespace Human
 {
+    public enum EPlayerState
+    {
+        IDLE,
+        MOVE,
+        RUN,
+        ATTACK,
+        ATTACKR,
+        FLY_ATTACK,
+        FULL_SWING,
+        SKILL,
+        EXHAUSTED,
+        DIE,
+        LENGTH
+    }
+
     public class PlayerController : MonoBehaviour
     {
+        public StateMachine<PlayerController> m_StateMachine;
+
         public static PlayerController GetPlayerController { get; private set; }
 
         [HideInInspector] public CharacterController m_CharacterController;
         [HideInInspector] public Animator m_Anim;
 
-        private readonly State[] m_ArrState = new State[(int) EPlayerState.LENGTH];
-        private readonly StateMachine m_State;
         private const float MASS = 3f;
         private const float GRAVITY = 9.8f;
         private Vector3 m_Impact = Vector3.zero;
@@ -27,14 +40,15 @@ namespace Human.FSM.Player
         [HideInInspector] public bool m_IsLive = true;
         [HideInInspector] public bool m_NowExhausted;
 
-        [Header("----- Player Attack Collider -----")]
-        [SerializeField] private BoxCollider m_AttackLeftCollider;
+        [Header("----- Player Attack Collider -----")] [SerializeField]
+        private BoxCollider m_AttackLeftCollider;
+
         public XWeaponTrail m_AttackLeftTrail;
         [SerializeField] private BoxCollider m_AttackRightCollider;
         public XWeaponTrail m_AttackRightTrail;
 
-        [Header("----- Player Status -----")] 
-        [SerializeField] private float m_HealthPoint;
+        [Header("----- Player Status -----")] [SerializeField]
+        private float m_HealthPoint;
 
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
@@ -72,20 +86,6 @@ namespace Human.FSM.Player
             }
         }
 
-        private PlayerController()
-        {
-            m_State = new StateMachine();
-            m_ArrState[(int) EPlayerState.IDLE] = new Player_Idle();
-            m_ArrState[(int) EPlayerState.ATTACK] = new Player_Attack();
-            m_ArrState[(int) EPlayerState.FLY_ATTACK] = new Player_FlyAttack();
-            m_ArrState[(int) EPlayerState.FULL_SWING] = new Player_FullSwing();
-            m_ArrState[(int) EPlayerState.SKILL] = new Player_Area();
-            m_ArrState[(int) EPlayerState.EXHAUSTED] = new Player_Exhausted();
-            m_ArrState[(int) EPlayerState.DIE] = new Player_DIe();
-
-            m_State.SetState(m_ArrState[(int) EPlayerState.IDLE], this);
-        }
-
         private void Awake()
         {
             if (GetPlayerController != null && GetPlayerController != this)
@@ -100,22 +100,25 @@ namespace Human.FSM.Player
 
         private void Start()
         {
-            m_State.StateEnter();
+            m_StateMachine = new StateMachine<PlayerController>(m_Anim, this, new Idle());
+            m_StateMachine.AddState(new AttackL());
+            m_StateMachine.AddState(new AttackR());
+            m_StateMachine.AddState(new LastAttack());
+            m_StateMachine.AddState(new Area());
+            m_StateMachine.AddState(new FlyAttack());
+            m_StateMachine.AddState(new FullSwing());
+            m_StateMachine.AddState(new Exhausted());
+            m_StateMachine.AddState(new DIe());
+            m_StateMachine.ONStateChanged += () => { Debug.Log("state changed: " + m_StateMachine.CurrentState); };
+
             Health = m_MaxHealthPoint;
             Stamina = m_MaxStaminaPoint;
-            StartCoroutine(nameof(State));
-        }
-
-        private void FixedUpdate()
-        {
-            m_State.StateFixedUpdate();
         }
 
         private void Update()
         {
             m_CharacterController.Move(Vector3.down * (GRAVITY * Time.deltaTime));
-
-            m_State.StateUpdate();
+            m_StateMachine.Update(Time.deltaTime);
             StaminaChange();
 
             // Debug
@@ -193,55 +196,8 @@ namespace Human.FSM.Player
             obj.transform.position = transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(obj, EPrefabsName.FlyAttackDust, 1f);
         }
-        #endregion 
 
-        private IEnumerator State()
-        {
-            while (m_IsLive)
-            {
-                if (m_CurState == EPlayerState.IDLE || m_CurState == EPlayerState.MOVE ||
-                    m_CurState == EPlayerState.RUN)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        m_State.StateChange(m_ArrState[(int) EPlayerState.ATTACK]);
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.Q) && m_ActiveFlyAttack && Stamina > 40f)
-                    {
-                        m_State.StateChange(m_ArrState[(int) EPlayerState.FLY_ATTACK]);
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        if (m_ActiveFullSwing && Stamina > 40f)
-                        {
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.FULL_SWING]);
-                        }
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        if (m_ActiveArea)
-                        {
-                            m_State.StateChange(m_ArrState[(int) EPlayerState.SKILL]);
-                        }
-                    }
-                }
-                yield return null;
-            }
-        }
-
-        public void ChangeState(EPlayerState stateName)
-        {
-            for (var i = 0; i < (int) EPlayerState.LENGTH; i++)
-            {
-                if ((int) stateName == i)
-                {
-                    m_State.StateChange(m_ArrState[i]);
-                }
-            }
-        }
+        #endregion
 
         private void CollSwitch(bool isActive)
         {
@@ -260,10 +216,10 @@ namespace Human.FSM.Player
 
             Health -= (int) Math.Round(damage);
 
-            if (Health <= 0)
-            {
-                ChangeState(EPlayerState.DIE);
-            }
+            // if (Health <= 0)
+            // {
+            //     ChangeState(EPlayerState.DIE);
+            // }
         }
 
 
@@ -281,12 +237,12 @@ namespace Human.FSM.Player
                     Stamina += m_SubOrPlusStamina * Time.deltaTime;
                     break;
             }
-
-            if (m_StaminaPoint <= 0 && !m_NowExhausted)
-            {
-                m_NowExhausted = true;
-                m_State.StateChange(m_ArrState[(int)EPlayerState.EXHAUSTED]);
-            }
+            //
+            // if (m_StaminaPoint <= 0 && !m_NowExhausted)
+            // {
+            //     m_NowExhausted = true;
+            //     m_State.StateChange(m_ArrState[(int)EPlayerState.EXHAUSTED]);
+            // }
         }
     }
 }

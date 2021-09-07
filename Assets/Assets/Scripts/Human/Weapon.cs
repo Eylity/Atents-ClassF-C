@@ -1,8 +1,9 @@
-using Human.PlayerScript;
 using UnityEngine;
+using Human;
+
 using Random = UnityEngine.Random;
 
-namespace Human.Skill
+namespace Human
 {
     public class Weapon : MonoBehaviour
     {

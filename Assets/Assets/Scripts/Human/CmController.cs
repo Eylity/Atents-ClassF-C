@@ -1,7 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 
-namespace Human.PlayerScript
+namespace Human
 {
     public class CmController : CinemachineExtension
     {

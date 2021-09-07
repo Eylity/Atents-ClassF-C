@@ -1,26 +1,36 @@
 ﻿using System.Collections;
-using Human.PlayerScript;
 using UnityEngine;
+using Human;
 
-namespace Human.FSM.Player
-{
-    public class Player_Area : State
+
+
+    public class Area : State<PlayerController>
     {
-        private static readonly int Skill = Animator.StringToHash("Skill");
         private readonly WaitForSeconds m_SkillTimer = new WaitForSeconds(8.0f);
-        public override IEnumerator OnStateEnter()
+        private readonly int m_Skill;
+
+        public Area() : base( "Base Layer.Skill.Skill" )
         {
-            PlayerController.GetPlayerController.m_Anim.SetTrigger(Skill);
+            m_Skill = Animator.StringToHash( "Skill" );
+        }
+        
+        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
+        {
+            if (stateInfo.normalizedTime >= 0.9f)
+            {
+                Machine.ChangeState<Idle>();
+            }
+        }
+        
+        public override void Begin()
+        {
+            PlayerController.GetPlayerController.m_Anim.SetTrigger(m_Skill);
             PlayerController.GetPlayerController.m_ActiveArea = false;
             PlayerController.GetPlayerController.m_CurState = EPlayerState.SKILL;
-
-            while (!PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
-                yield return null;
-
             PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
             PlayerController.GetPlayerController. m_AttackRightTrail.Activate();
             PlayerController.GetPlayerController.StartCoroutine(AreaCoolDown());
-
+            
             var playerPos = PlayerController.GetPlayerController.transform.position;
             
             var area = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.Area);
@@ -31,17 +41,9 @@ namespace Human.FSM.Player
             areaEffect.transform.position = playerPos;
             PlayerController.GetPlayerController.StartCoroutine(EffectUp(areaEffect));
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect,EPrefabsName.AreaEffect,7f);
-            
-            while (PlayerController.GetPlayerController.m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Skill"))
-                yield return null;
-            
-            if (PlayerController.GetPlayerController.m_CurState != EPlayerState.DIE)
-            {
-                PlayerController.GetPlayerController.ChangeState(EPlayerState.IDLE);
-            }
         }
 
-        public override void OnStateExit()
+        public override void End()
         {
             PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
             PlayerController.GetPlayerController. m_AttackRightTrail.Deactivate();
@@ -62,4 +64,4 @@ namespace Human.FSM.Player
             }
         }
     }
-}
+

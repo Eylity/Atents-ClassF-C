@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Human.Skill
+namespace Human
 {
     public class Healing : MonoBehaviour
     {
@@ -36,8 +36,8 @@ namespace Human.Skill
             {
                 if (m_InPlayer)
                 {
-                    FSM.Player.PlayerController.GetPlayerController.Stamina += 1;
-                    FSM.Player.PlayerController.GetPlayerController.Health += 1;
+                    PlayerController.GetPlayerController.Stamina += 1;
+                    PlayerController.GetPlayerController.Health += 1;
                     yield return m_Time;
                 }
                 else
