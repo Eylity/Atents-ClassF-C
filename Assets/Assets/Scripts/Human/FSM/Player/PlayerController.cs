@@ -9,14 +9,13 @@ namespace FSM.Player
     {
         public static PlayerController GetPlayerController { get; private set; }
         public StateMachine<PlayerController> m_StateMachine;
-
-        [HideInInspector] public CharacterController m_CharacterController;
         [HideInInspector] public bool m_ActiveFlyAttack = true;
         [HideInInspector] public bool m_ActiveFullSwing = true;
         [HideInInspector] public bool m_ActiveArea = true;
         [HideInInspector] public bool m_IsLive = true;
         [HideInInspector] public bool m_NowExhausted;
 
+        private CharacterController m_CharacterController;
         private const float GRAVITY = 9.8f;
 
         [Header("----- Player Attack Collider -----")]
@@ -70,8 +69,8 @@ namespace FSM.Player
                 Destroy(this);
             }
 
-            GetPlayerController = this;
             m_CharacterController = GetComponent<CharacterController>();
+            GetPlayerController = this;
         }
 
         private void Start()
@@ -87,7 +86,6 @@ namespace FSM.Player
             m_StateMachine.AddState(new Player_FullSwing());
             m_StateMachine.AddState(new Player_Exhausted());
             m_StateMachine.AddState(new Player_DIe());
-            m_StateMachine.ONStateChanged += () => { Debug.Log("state changed: " + m_StateMachine.CurrentState); };
 
             Health = m_MaxHealthPoint;
             Stamina = m_MaxStaminaPoint;
@@ -108,7 +106,10 @@ namespace FSM.Player
            
         }
 
-
+        private void FixedUpdate()
+        {
+            m_StateMachine.FixedUpdate(Time.deltaTime);
+        }
 
         #region AnimEvents
 
@@ -117,19 +118,21 @@ namespace FSM.Player
             switch (animName)
             {
                 case "AttackL":
-                    CollSwitch(true, m_AttackLeftCollider);
+                    m_AttackLeftCollider.enabled = true;
                     break;
                 case "AttackR":
-                    CollSwitch(true, m_AttackRightCollider);
+                    m_AttackRightCollider.enabled = true;
                     break;
                 case "LastAttack":
-                    CollSwitch(true);
+                    m_AttackLeftCollider.enabled = true;
+                    m_AttackRightCollider.enabled = true;
                     break;
                 case "FullSwing":
-                    CollSwitch(true);
+                    m_AttackLeftCollider.enabled = true;
+                    m_AttackRightCollider.enabled = true;
                     break;
                 case "FlyAttack":
-                    CollSwitch(true, m_AttackRightCollider);
+                    m_AttackRightCollider.enabled = true;
                     break;
             }
         }
@@ -139,19 +142,21 @@ namespace FSM.Player
             switch (animName)
             {
                 case "AttackL":
-                    CollSwitch(false, m_AttackLeftCollider);
+                    m_AttackLeftCollider.enabled = false;
                     break;
                 case "AttackR":
-                    CollSwitch(false, m_AttackRightCollider);
+                    m_AttackRightCollider.enabled = false;
                     break;
                 case "LastAttack":
-                    CollSwitch(false);
+                    m_AttackLeftCollider.enabled = false;
+                    m_AttackRightCollider.enabled = false;
                     break;
                 case "FullSwing":
-                    CollSwitch(false);
+                    m_AttackLeftCollider.enabled = false;
+                    m_AttackRightCollider.enabled = false;
                     break;
                 case "FlyAttack":
-                    CollSwitch(false, m_AttackRightCollider);
+                    m_AttackRightCollider.enabled = false;
                     break;
             }
         }
@@ -166,17 +171,6 @@ namespace FSM.Player
 
         #endregion
 
-        private void CollSwitch(bool isActive)
-        {
-            m_AttackLeftCollider.enabled = isActive;
-            m_AttackRightCollider.enabled = isActive;
-        }
-
-        private void CollSwitch(bool isActive, Collider leftOrRight)
-        {
-            leftOrRight.enabled = isActive;
-        }
-
         public void TakeDamage(float damage)
         {
             if (!m_IsLive) return;
@@ -188,7 +182,6 @@ namespace FSM.Player
                 m_StateMachine.ChangeState<Player_DIe>();
             }
         }
-
         
         public void StaminaChange(bool isIdle)
         {

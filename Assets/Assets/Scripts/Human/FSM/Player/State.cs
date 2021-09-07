@@ -4,52 +4,51 @@ namespace FSM.Player
 {
     public abstract class State<T>
     {
-        internal int m_StateToHash;
+        internal readonly int m_StateToHash;
         protected StateMachine<T> Machine;
-        protected T Context;
+        private T m_Context;
 
 
-        public State()
+        protected State()
         {
         }
-        
-        public State(string mecanimStateName) : this(Animator.StringToHash(mecanimStateName))
+
+        protected State(string animStateName) : this(Animator.StringToHash(animStateName))
         {
         }
-        
-        public State(int mecanimStateHash)
+
+        protected State(int animStateHash)
         {
-            this.m_StateToHash = mecanimStateHash;
+            this.m_StateToHash = animStateHash;
         }
 
 
         internal void SetMachineAndContext(StateMachine<T> machine, T context)
         {
             Machine = machine;
-            Context = context;
+            m_Context = context;
             ONInitialized();
         }
+
+        protected virtual void ONInitialized()
+        {}
+
+
+        public virtual void OnStateEnter()
+        {}
+
+
+        public virtual void ChangePoint()
+        {}
+
+
+        public abstract void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo);
         
-        public virtual void ONInitialized()
-        {
-        }
+        public virtual void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        {}
 
 
-        public virtual void Begin()
-        {
-        }
-
-
-        public virtual void Reason()
-        {
-        }
-
-
-        public abstract void Update(float deltaTime, AnimatorStateInfo stateInfo);
-
-
-        public virtual void End()
-        {
-        }
+        public virtual void OnStateExit()
+        {}
     }
 }

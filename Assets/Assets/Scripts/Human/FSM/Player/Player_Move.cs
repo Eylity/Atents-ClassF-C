@@ -6,25 +6,27 @@ namespace FSM.Player
     {
         private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
+        private CharacterController m_CharacterController;
+        private Animator m_Anim;
         private float m_RotateSpeed;
         private float m_MoveSpeed;
-        private Animator m_Anim;
         private float m_MoveX;
         private float m_MoveZ;
-        private bool m_IsNotInput = false;
+        private bool m_IsNotInput;
 
-        public override void ONInitialized()
+        protected override void ONInitialized()
         {
+            m_CharacterController = PlayerController.GetPlayerController.GetComponent<CharacterController>();
             m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
 
-        public override void Begin()
+        public override void OnStateEnter()
         {
             m_IsNotInput = false;
             m_Anim.SetBool(m_IsMove, true);
         }
 
-        public override void Reason()
+        public override void ChangePoint()
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -33,14 +35,16 @@ namespace FSM.Player
                 Machine.ChangeState<Player_AttackL>();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && PlayerController.GetPlayerController.Stamina > 40f && PlayerController.GetPlayerController.m_ActiveFlyAttack)
+            if (Input.GetKeyDown(KeyCode.Q) && PlayerController.GetPlayerController.Stamina > 40f &&
+                PlayerController.GetPlayerController.m_ActiveFlyAttack)
             {
                 m_Anim.SetBool(m_IsRun, false);
                 m_Anim.SetBool(m_IsMove, false);
                 Machine.ChangeState<Player_FlyAttack>();
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && PlayerController.GetPlayerController.Stamina > 40f && PlayerController.GetPlayerController.m_ActiveFullSwing)
+            if (Input.GetKeyDown(KeyCode.E) && PlayerController.GetPlayerController.Stamina > 40f &&
+                PlayerController.GetPlayerController.m_ActiveFullSwing)
             {
                 m_Anim.SetBool(m_IsRun, false);
                 m_Anim.SetBool(m_IsMove, false);
@@ -62,30 +66,35 @@ namespace FSM.Player
             }
         }
 
-        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        {
+        }
+
+        public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
             if (!PlayerController.GetPlayerController.m_IsLive) return;
+
+            PlayerController.GetPlayerController.StaminaChange(true);
 
             m_MoveX = Input.GetAxis("Horizontal");
             m_MoveZ = Input.GetAxis("Vertical");
 
             m_Anim.SetBool(m_IsMove, true);
 
-            if (Input.GetKey(KeyCode.LeftShift) &&
-                !PlayerController.GetPlayerController.m_NowExhausted)
+            if (Input.GetKey(KeyCode.LeftShift) && !PlayerController.GetPlayerController.m_NowExhausted)
             {
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
-                m_Anim.SetBool(m_IsRun,true);
+                m_Anim.SetBool(m_IsRun, true);
             }
             else
             {
                 m_MoveSpeed = 4f;
                 m_RotateSpeed = 8f;
-                m_Anim.SetBool(m_IsRun,false);
+                m_Anim.SetBool(m_IsRun, false);
                 PlayerController.GetPlayerController.StaminaChange(false);
             }
-            
+
             var camPos = Camera.main.transform;
             var movePos = camPos.right * m_MoveX + camPos.forward * m_MoveZ;
             movePos.y = 0f;
@@ -96,8 +105,7 @@ namespace FSM.Player
                 return;
             }
 
-            PlayerController.GetPlayerController.m_CharacterController.Move(movePos *
-                                                                            (m_MoveSpeed * deltaTime));
+            m_CharacterController.Move(movePos * (m_MoveSpeed * deltaTime));
             PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(
                 PlayerController.GetPlayerController.transform.rotation,
                 Quaternion.LookRotation(movePos),

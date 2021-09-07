@@ -6,24 +6,25 @@ namespace FSM.Player
 {
     public class Player_Exhausted : State<PlayerController>
     {
-        private Animator m_Anim;
-        private readonly int m_Exhausted;
         private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(8.0f);
+        private readonly int m_Exhausted;
+        private Animator m_Anim;
 
         public Player_Exhausted() : base("Base Layer.Exhausted") => m_Exhausted = Animator.StringToHash("Exhausted");
-        public override void ONInitialized()
+
+        protected override void ONInitialized()
         {
             m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
         
 
-        public override void Begin()
+        public override void OnStateEnter()
         {
             m_Anim.SetTrigger(m_Exhausted);
             PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());
         }
 
-        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
             if (stateInfo.normalizedTime >= 0.9f)
             {

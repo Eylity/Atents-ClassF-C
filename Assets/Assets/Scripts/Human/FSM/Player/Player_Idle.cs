@@ -6,12 +6,8 @@ namespace FSM.Player
 {
     public class Player_Idle : State<PlayerController>
     {
-      
-        private readonly int m_IdleAnim;
 
-        public Player_Idle() : base("Base Layer.Idle") => m_IdleAnim = Animator.StringToHash("Idle");
-
-        public override void Reason()
+        public override void ChangePoint()
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
@@ -38,7 +34,7 @@ namespace FSM.Player
             }
         }
 
-        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
             PlayerController.GetPlayerController.StaminaChange(true);
         }

@@ -12,21 +12,12 @@ namespace FSM.Player
 
         public Player_Area() : base( "Base Layer.Skill.Skill" ) => m_Skill = Animator.StringToHash( "Skill" );
 
-        public override void ONInitialized()
+        protected override void ONInitialized()
         {
             m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
         }
 
-        
-        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
-        {
-            if (stateInfo.normalizedTime >= 0.9f)
-            {
-                Machine.ChangeState<Player_Idle>();
-            }
-        }
-        
-        public override void Begin()
+        public override void OnStateEnter()
         {
             m_Anim.SetTrigger(m_Skill);
             PlayerController.GetPlayerController.m_ActiveArea = false;
@@ -45,8 +36,17 @@ namespace FSM.Player
             PlayerController.GetPlayerController.StartCoroutine(EffectUp(areaEffect));
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect,EPrefabsName.AreaEffect,7f);
         }
+        
+        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        {
+            if (stateInfo.normalizedTime >= 0.9f)
+            {
+                Machine.ChangeState<Player_Idle>();
+            }
+        }
+        
 
-        public override void End()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
             PlayerController.GetPlayerController. m_AttackRightTrail.Deactivate();
@@ -57,6 +57,7 @@ namespace FSM.Player
             yield return m_SkillTimer;
             PlayerController.GetPlayerController.m_ActiveArea = true;
         } 
+        
         private IEnumerator EffectUp(GameObject effect)
         {
             var timer = 0f;

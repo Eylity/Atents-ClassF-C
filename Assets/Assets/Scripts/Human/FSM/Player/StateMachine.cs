@@ -8,8 +8,6 @@ namespace FSM.Player
     public sealed class StateMachine<T>
     {
         private readonly T m_Context;
-        public event Action ONStateChanged;
-
 
         public State<T> CurrentState { get; private set; }
 
@@ -23,8 +21,7 @@ namespace FSM.Player
             m_Context = context;
             AddState(initialState);
             CurrentState = initialState;
-            CurrentState.Begin();
-            Debug.Log("State After Begin");
+            CurrentState.OnStateEnter();
         }
         
         public void AddState(State<T> state)
@@ -40,10 +37,24 @@ namespace FSM.Player
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
                 var tempState = CurrentState;
-                CurrentState.Reason();
+                CurrentState.ChangePoint();
 
                 if (tempState == CurrentState)
-                    CurrentState.Update(deltaTime, currentStateInfo);
+                    CurrentState.OnStateUpdate(deltaTime, currentStateInfo);
+            }
+        }
+
+        public void FixedUpdate(float deltaTime)
+        {
+            var currentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+
+            if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
+            {
+                var tempState = CurrentState;
+                CurrentState.ChangePoint();
+
+                if (tempState == CurrentState)
+                    CurrentState.OnFixedUpdate(deltaTime, currentStateInfo);
             }
         }
         
@@ -53,13 +64,10 @@ namespace FSM.Player
             if (CurrentState.GetType() == newType)
                 return CurrentState as TR;
 
-            CurrentState.End();
+            CurrentState.OnStateExit();
 
             CurrentState = m_States[newType];
-            CurrentState.Begin();
-
-            ONStateChanged?.Invoke();
-
+            CurrentState.OnStateEnter();
             return CurrentState as TR;
         }
     }

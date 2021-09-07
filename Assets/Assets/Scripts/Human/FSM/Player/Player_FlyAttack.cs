@@ -7,33 +7,29 @@ namespace FSM.Player
     public class Player_FlyAttack : State<PlayerController>
     {
         private readonly WaitForSeconds m_FlyAttackTimer = new WaitForSeconds(6.0f);
-        private PSMeshRendererUpdater m_PSUpdater;
-        private Vector3 m_Impact = Vector3.zero;
-        private const float FORCE = 100f;
         private readonly int m_FlyAttack;
-        private bool m_IsGround = false;
-        private const float MASS = 3f;
+        private CharacterController m_CharacterController;
+        private PSMeshRendererUpdater m_PSUpdater;
         private Animator m_Anim;
+        private const float FORCE = 100f;
+        private const float MASS = 3f;
+        private Vector3 m_Impact = Vector3.zero;
+        private bool m_IsGround = false;
 
         public Player_FlyAttack() : base("Base Layer.Skill.FlyAttack") => m_FlyAttack = Animator.StringToHash("FlyAttack");
-        public override void ONInitialized()
+
+        protected override void ONInitialized()
         {
             m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+            m_CharacterController = PlayerController.GetPlayerController.GetComponent<CharacterController>();
         }
 
-        private void AddImpact(Vector3 dir, float force)
-        {
-            dir.Normalize();
-            if (dir.y < 0) dir.y = -dir.y;
-            m_Impact += dir.normalized * force / MASS;
-        }
         
-        public override void Begin()
+        public override void OnStateEnter()
         {
             var currentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
             ObjPool.ObjectPoolInstance.ReturnObject(currentInstance, EPrefabsName.FlyAttackEffect, 4.0f);
-            currentInstance.transform.SetParent(PlayerController.GetPlayerController.gameObject
-                .transform);
+            currentInstance.transform.SetParent(PlayerController.GetPlayerController.gameObject .transform);
             m_PSUpdater = currentInstance.GetComponent<PSMeshRendererUpdater>();
             m_PSUpdater.UpdateMeshEffect(PlayerController.GetPlayerController.gameObject);
             
@@ -52,11 +48,11 @@ namespace FSM.Player
             ObjPool.ObjectPoolInstance.ReturnObject(startDust, EPrefabsName.FlyAttackStartDust, 1f);
         }
 
-        public override void Update(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
             if (m_Impact.magnitude > 0.2)
             {
-                PlayerController.GetPlayerController.m_CharacterController.Move(m_Impact * Time.deltaTime);
+                m_CharacterController.Move(m_Impact * Time.deltaTime);
             }
 
             m_Impact = Vector3.Lerp(m_Impact, Vector3.zero, 5 * Time.deltaTime);
@@ -72,7 +68,7 @@ namespace FSM.Player
             Machine.ChangeState<Player_Idle>();
         }
 
-        public override void End()
+        public override void OnStateExit()
         {
             PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
             PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
@@ -83,6 +79,13 @@ namespace FSM.Player
         {
             yield return m_FlyAttackTimer;
             PlayerController.GetPlayerController.m_ActiveFlyAttack = true;
+        }
+        
+        private void AddImpact(Vector3 dir, float force)
+        {
+            dir.Normalize();
+            if (dir.y < 0) dir.y = -dir.y;
+            m_Impact += dir.normalized * force / MASS;
         }
     }
 }
