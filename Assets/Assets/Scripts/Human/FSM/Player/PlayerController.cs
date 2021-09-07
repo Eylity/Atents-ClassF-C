@@ -95,15 +95,12 @@ namespace FSM.Player
         {
             m_CharacterController.Move(Vector3.down * (GRAVITY * Time.deltaTime));
             m_StateMachine.Update(Time.deltaTime);
-            // StaminaChange();
 
             // Debug
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 TakeDamage(35f);
             }
-
-           
         }
 
         private void FixedUpdate()

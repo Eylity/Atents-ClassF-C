@@ -14,7 +14,7 @@ namespace FSM.Player
         private const float FORCE = 100f;
         private const float MASS = 3f;
         private Vector3 m_Impact = Vector3.zero;
-        private bool m_IsGround = false;
+        private bool m_IsGround;
 
         public Player_FlyAttack() : base("Base Layer.Skill.FlyAttack") => m_FlyAttack = Animator.StringToHash("FlyAttack");
 
@@ -27,6 +27,7 @@ namespace FSM.Player
         
         public override void OnStateEnter()
         {
+            
             var currentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
             ObjPool.ObjectPoolInstance.ReturnObject(currentInstance, EPrefabsName.FlyAttackEffect, 4.0f);
             currentInstance.transform.SetParent(PlayerController.GetPlayerController.gameObject .transform);

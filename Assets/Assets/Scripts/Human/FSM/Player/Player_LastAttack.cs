@@ -15,8 +15,8 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
+            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
             m_Anim.SetTrigger(m_LastAttack);
         }
 

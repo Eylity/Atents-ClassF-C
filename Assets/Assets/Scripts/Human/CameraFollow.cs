@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Human
@@ -8,6 +10,7 @@ namespace Human
         public Transform m_Player;
         public float m_RigYPos;
         private float m_MouseX;
+
         void CamMove()
         {
             if (Input.GetMouseButton(1))
