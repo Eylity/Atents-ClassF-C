@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Human;
 using UnityEngine;
 
 namespace FSM.Player
@@ -54,8 +55,6 @@ namespace FSM.Player
         private IEnumerator FullSwingCoolDown()
         {
             yield return m_FullSwingTimer;
-            Debug.Log("FullSwing Active");
-
             PlayerController.GetPlayerController.m_ActiveFullSwing = true;
         }
     }

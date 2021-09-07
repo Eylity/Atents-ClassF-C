@@ -6,7 +6,7 @@ namespace FSM.Player
     {
         internal readonly int m_StateToHash;
         protected StateMachine<T> Machine;
-        private T m_Owner;
+        private T m_Context;
 
 
         protected State()
@@ -17,7 +17,7 @@ namespace FSM.Player
         {
         }
 
-        private State(int animStateHash)
+        protected State(int animStateHash)
         {
             this.m_StateToHash = animStateHash;
         }
@@ -26,7 +26,7 @@ namespace FSM.Player
         internal void SetMachineAndContext(StateMachine<T> machine, T context)
         {
             Machine = machine;
-            m_Owner = context;
+            m_Context = context;
             ONInitialized();
         }
 
@@ -46,6 +46,7 @@ namespace FSM.Player
         
         public virtual void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {}
+
 
         public virtual void OnStateExit()
         {}

@@ -1141,46 +1141,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[3].m_Prefab
-      value: 
-      objectReference: {fileID: 6810435682384956457, guid: c0325f7bc8c6e4c4db16ac87907ed880, type: 3}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[4].m_Prefab
-      value: 
-      objectReference: {fileID: 1034206889835440, guid: 5672e10481c53cc45b19ef995be4fb85, type: 3}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[5].m_Prefab
-      value: 
-      objectReference: {fileID: 1034206889835440, guid: 5672e10481c53cc45b19ef995be4fb85, type: 3}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[3].m_ObjectName
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[4].m_ObjectName
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[5].m_ObjectName
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[3].m_ProduceCount
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[4].m_ProduceCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377323213430487082, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
-      propertyPath: m_Prefab.Array.data[5].m_ProduceCount
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1bad416cfbe9e47ae1ba76d7fbc0a2, type: 3}
 --- !u!1 &1183343686 stripped
@@ -1404,11 +1364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7708478398841095787, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
       propertyPath: m_MaxHealthPoint
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 7708478398841095787, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
-      propertyPath: m_MaxStaminaPoint
-      value: 10000
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7708478398841095787, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
       propertyPath: m_CamSwitch.m_PersistentCalls.m_Calls.Array.size
@@ -1470,14 +1426,6 @@ PrefabInstance:
       propertyPath: m_CamSwitch.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 8827997989660461924, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8827997989660461924, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
-      propertyPath: m_Materials.Array.data[2]
-      value: 
-      objectReference: {fileID: 2100000, guid: abb2094df4b62354b926ad30b1fb8ed0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
 --- !u!1001 &1963230197

@@ -1,24 +1,27 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CmController : CinemachineExtension
+namespace Human
 {
-    private const float PPU = 32f;
-    
-    protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
+    public class CmController : CinemachineExtension
     {
-        if (stage == CinemachineCore.Stage.Body)
+        private const float PPU = 32f;
+    
+        protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
         {
-            Vector3 pos = state.FinalPosition;
+            if (stage == CinemachineCore.Stage.Body)
+            {
+                Vector3 pos = state.FinalPosition;
 
-            Vector3 pos2 = new Vector3(Round(pos.x), Round(pos.y), pos.z);
+                Vector3 pos2 = new Vector3(Round(pos.x), Round(pos.y), pos.z);
 
-            state.PositionCorrection += pos2 - pos;
-        }
+                state.PositionCorrection += pos2 - pos;
+            }
 
-        float Round(float x)
-        {
-            return Mathf.Round(x * PPU) / PPU;
+            float Round(float x)
+            {
+                return Mathf.Round(x * PPU) / PPU;
+            }
         }
     }
 }
