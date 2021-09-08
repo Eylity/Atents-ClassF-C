@@ -13,6 +13,7 @@ namespace Skill
         private Collider m_Collider;
         private Ray m_Ray;
     
+        private float m_PlayerDamage = 20f;
         public Transform m_RayTransform;
 
         private void Awake()

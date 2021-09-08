@@ -18,19 +18,20 @@ namespace FSM.Player
         private CharacterController m_CharacterController;
         private const float GRAVITY = 9.8f;
 
-        [Header("----- Player Attack Collider -----")]
-        [SerializeField] private BoxCollider m_AttackLeftCollider;
+        [Header("----- Player Attack Collider -----")] [SerializeField]
+        private BoxCollider m_AttackLeftCollider;
+
         public XWeaponTrail m_AttackLeftTrail;
         [SerializeField] private BoxCollider m_AttackRightCollider;
         public XWeaponTrail m_AttackRightTrail;
 
-        [Header("----- Player Status -----")] 
-        [SerializeField] private float m_HealthPoint;
+        [Header("----- Player Status -----")] [SerializeField]
+        private float m_HealthPoint;
+
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
         [Range(5f, 20f)] public float m_SubOrPlusStamina = 10f;
-        [SerializeField] private float m_PlayerDamage = 20f;
 
         public float Health
         {
@@ -174,29 +175,29 @@ namespace FSM.Player
 
             Health -= (int) Math.Round(damage);
 
-            if (Health <= 0)
+            if (Health > 0)
             {
-                m_StateMachine.ChangeState<Player_DIe>();
+                return;
             }
+
+            m_StateMachine.ChangeState<Player_DIe>();
         }
-        
+
         public void StaminaChange(bool isIdle)
         {
-            switch (isIdle)
+            Stamina = isIdle switch
             {
-                case true:
-                    Stamina += m_SubOrPlusStamina * Time.deltaTime;
-                    break;
-                case false:
-                    Stamina -= m_SubOrPlusStamina * Time.deltaTime;
-                    break;
-            }
-            
-            if (m_StaminaPoint <= 0 && !m_NowExhausted)
+                true => Stamina += m_SubOrPlusStamina * Time.deltaTime,
+                false => Stamina -= m_SubOrPlusStamina * Time.deltaTime
+            };
+
+            if (m_StaminaPoint > 0 || m_NowExhausted)
             {
-                m_NowExhausted = true;
-                m_StateMachine.ChangeState<Player_Exhausted>();
+                return;
             }
+
+            m_NowExhausted = true;
+            m_StateMachine.ChangeState<Player_Exhausted>();
         }
     }
 }

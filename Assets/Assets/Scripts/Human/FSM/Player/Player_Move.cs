@@ -74,8 +74,6 @@ namespace FSM.Player
         {
             if (!PlayerController.GetPlayerController.m_IsLive) return;
 
-            PlayerController.GetPlayerController.StaminaChange(true);
-
             m_MoveX = Input.GetAxis("Horizontal");
             m_MoveZ = Input.GetAxis("Vertical");
 
@@ -86,13 +84,13 @@ namespace FSM.Player
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
                 m_Anim.SetBool(m_IsRun, true);
+                PlayerController.GetPlayerController.StaminaChange(false);
             }
             else
             {
                 m_MoveSpeed = 4f;
                 m_RotateSpeed = 8f;
                 m_Anim.SetBool(m_IsRun, false);
-                PlayerController.GetPlayerController.StaminaChange(false);
             }
 
             var camPos = Camera.main.transform;

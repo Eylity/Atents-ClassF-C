@@ -399,19 +399,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &273898712 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1461754905204617969, guid: 519969cc515303d48bbefcd44198e260, type: 3}
-  m_PrefabInstance: {fileID: 637705165}
-  m_PrefabAsset: {fileID: 0}
---- !u!33 &273898720
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273898712}
-  m_Mesh: {fileID: 3701364060914114076, guid: 2371e1c7734176c498d2bf1acb25a738, type: 3}
 --- !u!1 &283215168 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6039710441136938979, guid: 519969cc515303d48bbefcd44198e260, type: 3}
@@ -931,7 +918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 901188543325737303, guid: 519969cc515303d48bbefcd44198e260, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 901188543325737303, guid: 519969cc515303d48bbefcd44198e260, type: 3}
       propertyPath: m_TagString
@@ -2066,7 +2053,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954845564}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 3701364060914114076, guid: 2371e1c7734176c498d2bf1acb25a738, type: 3}
 --- !u!1 &960907558 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3225578644608195760, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
