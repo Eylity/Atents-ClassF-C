@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FSM.Player
 {
@@ -31,28 +30,38 @@ namespace FSM.Player
         {
             if (Input.GetMouseButtonDown(0))
             {
+                m_Anim.SetBool(m_IsMove, false);
+                m_Anim.SetBool(m_IsRun, false);
                 Machine.ChangeState<Player_AttackL>();
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && PlayerController.GetPlayerController.Stamina > 40f &&
                 PlayerController.GetPlayerController.m_ActiveFlyAttack)
             {
+                m_Anim.SetBool(m_IsRun, false);
+                m_Anim.SetBool(m_IsMove, false);
                 Machine.ChangeState<Player_FlyAttack>();
             }
 
             if (Input.GetKeyDown(KeyCode.E) && PlayerController.GetPlayerController.Stamina > 40f &&
                 PlayerController.GetPlayerController.m_ActiveFullSwing)
             {
+                m_Anim.SetBool(m_IsRun, false);
+                m_Anim.SetBool(m_IsMove, false);
                 Machine.ChangeState<Player_FullSwing>();
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && PlayerController.GetPlayerController.m_ActiveArea)
             {
+                m_Anim.SetBool(m_IsRun, false);
+                m_Anim.SetBool(m_IsMove, false);
                 Machine.ChangeState<Player_Area>();
             }
 
             if (m_IsNotInput)
             {
+                m_Anim.SetBool(m_IsRun, false);
+                m_Anim.SetBool(m_IsMove, false);
                 Machine.ChangeState<Player_Idle>();
             }
         }
@@ -65,6 +74,7 @@ namespace FSM.Player
         {
             if (!PlayerController.GetPlayerController.m_IsLive) return;
 
+            PlayerController.GetPlayerController.StaminaChange(true);
 
             m_MoveX = Input.GetAxis("Horizontal");
             m_MoveZ = Input.GetAxis("Vertical");
@@ -76,47 +86,30 @@ namespace FSM.Player
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
                 m_Anim.SetBool(m_IsRun, true);
-                PlayerController.GetPlayerController.StaminaChange(false);
             }
             else
             {
                 m_MoveSpeed = 4f;
                 m_RotateSpeed = 8f;
                 m_Anim.SetBool(m_IsRun, false);
-                PlayerController.GetPlayerController.StaminaChange(true);
+                PlayerController.GetPlayerController.StaminaChange(false);
             }
 
-            try
+            var camPos = Camera.main.transform;
+            var movePos = camPos.right * m_MoveX + camPos.forward * m_MoveZ;
+            movePos.y = 0f;
+            movePos.Normalize();
+            if (movePos == Vector3.zero)
             {
-                var camPos = Camera.main.transform;
-                var movePos = camPos.right * m_MoveX + camPos.forward * m_MoveZ;
-                movePos.y = 0f;
-                movePos.Normalize();
-                if (movePos == Vector3.zero)
-                {
-                    m_IsNotInput = true;
-                    return;
-                }
+                m_IsNotInput = true;
+                return;
+            }
 
-                m_CharacterController.Move(movePos * (m_MoveSpeed * deltaTime));
-                PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(
-                    PlayerController.GetPlayerController.transform.rotation,
-                    Quaternion.LookRotation(movePos),
-                    m_RotateSpeed * deltaTime);
-            }
-            catch (NullReferenceException Error)
-            {
-                Debug.LogError($"Player Camera Is Null\n{Error}");
-                throw;
-            }
+            m_CharacterController.Move(movePos * (m_MoveSpeed * deltaTime));
+            PlayerController.GetPlayerController.transform.rotation = Quaternion.Slerp(
+                PlayerController.GetPlayerController.transform.rotation,
+                Quaternion.LookRotation(movePos),
+                m_RotateSpeed * deltaTime);
         }
-    
-
-    public override void OnStateExit()
-    {
-    m_Anim.SetBool(m_IsMove, false);
-    m_Anim.SetBool(m_IsRun, false);
     }
-}
-
 }
