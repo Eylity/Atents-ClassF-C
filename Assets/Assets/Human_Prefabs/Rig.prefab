@@ -358,7 +358,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rig: {fileID: 6529824933639176563}
-  m_Player: {fileID: 0}
-  m_Main: {fileID: 6529824934423817676}
-  m_Second: {fileID: 0}
+  m_Player: {fileID: 2848630132904904202, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
   m_RigYPos: 5
