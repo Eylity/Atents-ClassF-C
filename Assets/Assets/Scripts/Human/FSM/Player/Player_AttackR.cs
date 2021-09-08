@@ -1,5 +1,4 @@
-﻿using Human;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FSM.Player
 {

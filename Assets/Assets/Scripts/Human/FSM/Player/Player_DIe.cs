@@ -1,5 +1,4 @@
-﻿using Human;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FSM.Player
 {
@@ -22,10 +21,10 @@ namespace FSM.Player
         }
         public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
-            if (stateInfo.normalizedTime >= 9.0f)
-            {
-                PlayerController.GetPlayerController.gameObject.SetActive(false);
-            }
+            if (stateInfo.normalizedTime < 0.9f)
+                return;
+             
+            PlayerController.GetPlayerController.gameObject.SetActive(false);
         }
     }
 }

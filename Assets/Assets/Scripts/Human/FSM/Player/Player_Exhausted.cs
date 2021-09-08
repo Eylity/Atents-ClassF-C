@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Human;
 using UnityEngine;
 
 namespace FSM.Player

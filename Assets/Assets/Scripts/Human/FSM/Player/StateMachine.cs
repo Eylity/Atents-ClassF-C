@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Human;
 using UnityEngine;
 
 namespace FSM.Player
@@ -9,15 +7,15 @@ namespace FSM.Player
     {
         private readonly T m_Context;
 
-        public State<T> CurrentState { get; private set; }
+        private State<T> CurrentState { get; set; }
 
-        public readonly Animator Animator;
+        private readonly Animator m_Animator;
 
         private readonly Dictionary<System.Type, State<T>> m_States = new Dictionary<System.Type, State<T>>();
         
         public StateMachine(Animator animator, T context, State<T> initialState)
         {
-            this.Animator = animator;
+            this.m_Animator = animator;
             m_Context = context;
             AddState(initialState);
             CurrentState = initialState;
@@ -32,7 +30,7 @@ namespace FSM.Player
         
         public void Update(float deltaTime)
         {
-            var currentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+            var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
@@ -46,7 +44,7 @@ namespace FSM.Player
 
         public void FixedUpdate(float deltaTime)
         {
-            var currentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+            var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {

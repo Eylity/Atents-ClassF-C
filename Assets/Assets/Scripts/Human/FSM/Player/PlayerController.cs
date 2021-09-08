@@ -1,5 +1,4 @@
 using System;
-using Human;
 using UnityEngine;
 using XftWeapon;
 
@@ -11,9 +10,9 @@ namespace FSM.Player
         public StateMachine<PlayerController> m_StateMachine;
         [HideInInspector] public bool m_ActiveFlyAttack = true;
         [HideInInspector] public bool m_ActiveFullSwing = true;
+        [HideInInspector] public bool m_NowExhausted = false;
         [HideInInspector] public bool m_ActiveArea = true;
         [HideInInspector] public bool m_IsLive = true;
-        [HideInInspector] public bool m_NowExhausted;
 
         private CharacterController m_CharacterController;
         private const float GRAVITY = 9.8f;
@@ -24,7 +23,7 @@ namespace FSM.Player
         [SerializeField] private BoxCollider m_AttackRightCollider;
         public XWeaponTrail m_AttackRightTrail;
 
-        [Header("----- Player Status -----")] 
+        [Header("----- Player Status -----")]
         [SerializeField] private float m_HealthPoint;
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
@@ -32,12 +31,14 @@ namespace FSM.Player
         [Range(5f, 20f)] public float m_SubOrPlusStamina = 10f;
         [SerializeField] private float m_PlayerDamage = 20f;
 
+
         public float Health
         {
             get => m_HealthPoint;
             set
             {
-                if (!m_IsLive) return;
+                if (!m_IsLive)
+                    return;
 
                 m_HealthPoint = value;
                 if (m_HealthPoint > m_MaxHealthPoint)
@@ -52,7 +53,8 @@ namespace FSM.Player
             get => m_StaminaPoint;
             set
             {
-                if (!m_IsLive) return;
+                if (!m_IsLive)
+                    return;
 
                 m_StaminaPoint = value;
                 if (m_StaminaPoint >= m_MaxStaminaPoint)
@@ -68,9 +70,8 @@ namespace FSM.Player
             {
                 Destroy(this);
             }
-
-            m_CharacterController = GetComponent<CharacterController>();
             GetPlayerController = this;
+            m_CharacterController = GetComponent<CharacterController>();
         }
 
         private void Start()
@@ -157,15 +158,6 @@ namespace FSM.Player
                     break;
             }
         }
-
-        // State Name "FlyAttack"
-        private void IsGround()
-        {
-            var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackDust);
-            obj.transform.position = transform.position;
-            ObjPool.ObjectPoolInstance.ReturnObject(obj, EPrefabsName.FlyAttackDust, 1f);
-        }
-
         #endregion
 
         public void TakeDamage(float damage)
@@ -174,12 +166,12 @@ namespace FSM.Player
 
             Health -= (int) Math.Round(damage);
 
-            if (Health <= 0)
-            {
-                m_StateMachine.ChangeState<Player_DIe>();
-            }
+            if (Health > 0)
+                return;
+
+            m_StateMachine.ChangeState<Player_DIe>();
         }
-        
+
         public void StaminaChange(bool isIdle)
         {
             switch (isIdle)
@@ -191,12 +183,12 @@ namespace FSM.Player
                     Stamina -= m_SubOrPlusStamina * Time.deltaTime;
                     break;
             }
-            
-            if (m_StaminaPoint <= 0 && !m_NowExhausted)
-            {
-                m_NowExhausted = true;
-                m_StateMachine.ChangeState<Player_Exhausted>();
-            }
+
+            if (m_StaminaPoint > 0 && !m_NowExhausted)
+                return;
+
+            m_NowExhausted = true;
+            m_StateMachine.ChangeState<Player_Exhausted>();
         }
     }
 }
