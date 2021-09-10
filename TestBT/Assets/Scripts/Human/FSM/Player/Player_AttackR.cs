@@ -20,25 +20,23 @@ namespace FSM.Player
             m_HasTrigger = false;
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
-            m_Anim.SetTrigger(m_Attack);
         }
 
         public override void ChangePoint()
         {
             if (Input.GetMouseButtonDown(0))
             {
+                m_Anim.SetTrigger(m_Attack);
                 m_HasTrigger = true;
             }
         }
 
-        public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
-            if (stateInfo.normalizedTime < 0.8f)
+            if (stateInfo.normalizedTime >= 0.9f)
             {
-                return;
+                m_Owner.m_CurState = m_HasTrigger ? EPlayerState.LastAttack : EPlayerState.Idle;
             }
-
-            m_Owner.m_CurState = m_HasTrigger ? EPlayerState.LastAttack : EPlayerState.Idle;
         }
 
         public override void OnStateExit()

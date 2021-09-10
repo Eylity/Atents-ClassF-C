@@ -32,14 +32,17 @@ namespace FSM.Player
             m_RightCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullAttack);
         }
 
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
             m_LeftCharge.transform.position =
                 m_Owner.m_AttackLeftTrail.transform.position;
             m_RightCharge.transform.position =
                 m_Owner.m_AttackRightTrail.transform.position;
-            Debug.Log(stateInfo.fullPathHash);
-            Debug.Log(m_StateToHash);
+
+            if (stateInfo.normalizedTime >= 0.9f)
+            {
+                m_Owner.m_CurState = EPlayerState.Idle;
+            }
         }
 
         public override void OnStateExit()

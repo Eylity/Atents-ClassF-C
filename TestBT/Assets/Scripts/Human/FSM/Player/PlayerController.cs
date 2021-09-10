@@ -107,7 +107,7 @@ namespace FSM.Player
         private void Update()
         {
             m_CharacterController.Move(Vector3.down * (GRAVITY * Time.deltaTime));
-            m_StateMachine.Update(Time.deltaTime);
+            m_StateMachine.Update();
             StaminaChange();
 
             // Debug

@@ -15,26 +15,24 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            m_Anim =m_Owner.GetComponent<Animator>();
+            m_Anim = m_Owner.GetComponent<Animator>();
         }
 
 
         public override void OnStateEnter()
         {
-            m_Anim.SetBool(IsMove,false);
-            m_Anim.SetBool(IsRun,false);
+            m_Anim.SetBool(IsMove, false);
+            m_Anim.SetBool(IsRun, false);
             m_Anim.SetTrigger(m_Exhausted);
             m_Owner.StartCoroutine(ExhaustedTimer());
         }
 
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
-            if (stateInfo.normalizedTime < 0.9f)
+            if (stateInfo.normalizedTime >= 0.9f)
             {
-                return;
+                m_Owner.m_CurState = EPlayerState.Idle;
             }
-
-            m_Owner.m_CurState = EPlayerState.Idle;
         }
 
         private IEnumerator ExhaustedTimer()

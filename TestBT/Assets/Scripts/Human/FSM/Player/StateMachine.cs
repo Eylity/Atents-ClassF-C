@@ -13,7 +13,7 @@ namespace FSM.Player
         private readonly Animator m_Animator;
 
         private readonly Dictionary<System.Type, State<T>> m_States = new Dictionary<System.Type, State<T>>();
-        
+
         public StateMachine(Animator animator, T context, State<T> initialState)
         {
             this.m_Animator = animator;
@@ -22,44 +22,39 @@ namespace FSM.Player
             CurrentState = initialState;
             CurrentState.OnStateEnter();
         }
-        
+
         public void AddState(State<T> state)
         {
             state.SetMachineAndContext(m_Context);
             m_States[state.GetType()] = state;
         }
-        
-        public void Update(float deltaTime)
+
+        public void Update()
         {
             var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+            var tempState = CurrentState;
+            CurrentState.ChangePoint();
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
-                var tempState = CurrentState;
-                CurrentState.ChangePoint();
-
                 if (tempState == CurrentState)
-                    CurrentState.OnStateUpdate(deltaTime, currentStateInfo);
-                
-                return;
+                    CurrentState.OnStateUpdate(currentStateInfo);
             }
-            CurrentState.OnStateExit();
         }
 
         public void FixedUpdate(float deltaTime)
         {
             var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+            var tempState = CurrentState;
+            CurrentState.ChangePoint();
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
-                var tempState = CurrentState;
-                CurrentState?.ChangePoint();
-
                 if (tempState == CurrentState)
-                    CurrentState?.OnFixedUpdate(deltaTime, currentStateInfo);
+                    CurrentState.OnFixedUpdate(deltaTime, currentStateInfo);
             }
         }
-        
+
         public TR ChangeState<TR>() where TR : State<T>
         {
             var newType = typeof(TR);

@@ -21,7 +21,6 @@ namespace FSM.Player
             this.m_StateToHash = animStateHash;
         }
 
-
         internal void SetMachineAndContext(T context)
         {
             m_Owner = context;
@@ -40,7 +39,7 @@ namespace FSM.Player
         {}
 
 
-        public virtual void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public virtual void OnStateUpdate(AnimatorStateInfo stateInfo)
         {}
         
         public virtual void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)

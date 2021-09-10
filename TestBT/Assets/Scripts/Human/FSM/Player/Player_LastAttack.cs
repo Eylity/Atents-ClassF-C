@@ -7,7 +7,8 @@ namespace FSM.Player
         private readonly int m_LastAttack;
         private Animator m_Anim;
 
-        public Player_LastAttack() : base("Base Layer.Attack.LastAttack") => m_LastAttack = Animator.StringToHash("Attack");
+        public Player_LastAttack() : base("Base Layer.Attack.LastAttack") =>
+            m_LastAttack = Animator.StringToHash("Attack");
 
         protected override void ONInitialized()
         {
@@ -21,16 +22,14 @@ namespace FSM.Player
             m_Anim.SetTrigger(m_LastAttack);
         }
 
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
             m_Anim.ResetTrigger(m_LastAttack);
 
-            if (stateInfo.normalizedTime < 0.9f)
+            if (stateInfo.normalizedTime >= 0.9f)
             {
-                return;
+                m_Owner.m_CurState = EPlayerState.Idle;
             }
-
-            m_Owner.m_CurState = EPlayerState.Idle;
         }
 
         public override void OnStateExit()

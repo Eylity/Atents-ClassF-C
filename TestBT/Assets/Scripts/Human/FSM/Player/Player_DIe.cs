@@ -18,20 +18,18 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Anim.SetBool(IsMove,false);
-            m_Anim.SetBool(IsRun,false);
+            m_Anim.SetBool(IsMove, false);
+            m_Anim.SetBool(IsRun, false);
             m_Anim.SetTrigger(m_Die);
             m_Owner.m_IsLive = false;
         }
 
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
-            if (stateInfo.normalizedTime < 9.0f)
+            if (stateInfo.normalizedTime >= 9.0f)
             {
-                return;
+                m_Owner.gameObject.SetActive(false);
             }
-
-            m_Owner.gameObject.SetActive(false);
         }
     }
 }

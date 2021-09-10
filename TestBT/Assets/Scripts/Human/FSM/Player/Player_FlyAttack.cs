@@ -47,7 +47,7 @@ namespace FSM.Player
             ObjPool.ObjectPoolInstance.ReturnObject(startDust, EPrefabsName.FlyAttackStartDust, 1f);
         }
 
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
         {
             if (!(stateInfo.normalizedTime > 0.9f))
             {

@@ -30,44 +30,30 @@ namespace FSM.Player
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_Anim.SetBool(m_IsMove, false);
-                m_Anim.SetBool(m_IsRun, false);
                 m_Owner.m_CurState = EPlayerState.AttackL;
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
             {
-                m_Anim.SetBool(m_IsRun, false);
-                m_Anim.SetBool(m_IsMove, false);
                 m_Owner.m_CurState = EPlayerState.FlyAttack;
             }
 
             if (Input.GetKeyDown(KeyCode.E) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFullSwing)
             {
-                m_Anim.SetBool(m_IsRun, false);
-                m_Anim.SetBool(m_IsMove, false);
                 m_Owner.m_CurState = EPlayerState.FullSwing;
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && m_Owner.m_ActiveArea)
             {
-                m_Anim.SetBool(m_IsRun, false);
-                m_Anim.SetBool(m_IsMove, false);
                 m_Owner.m_CurState = EPlayerState.Area;
             }
 
             if (m_IsNotInput)
             {
-                m_Anim.SetBool(m_IsRun, false);
-                m_Anim.SetBool(m_IsMove, false);
                 m_Owner.m_CurState = EPlayerState.Idle;
             }
         }
-
-        public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
-        {
-        }
-
+        
         public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
             if (!m_Owner.m_IsLive)
@@ -109,6 +95,12 @@ namespace FSM.Player
             m_Owner.transform.rotation = Quaternion.Slerp(m_Owner.transform.rotation,
                 Quaternion.LookRotation(movePos),
                 m_RotateSpeed * deltaTime);
+        }
+
+        public override void OnStateExit()
+        {
+            m_Anim.SetBool(m_IsMove, false);
+            m_Anim.SetBool(m_IsRun, false);
         }
     }
 }

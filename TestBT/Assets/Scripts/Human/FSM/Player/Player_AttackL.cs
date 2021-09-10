@@ -27,19 +27,17 @@ namespace FSM.Player
         {
             if (Input.GetMouseButtonDown(0))
             {
+                m_Anim.SetTrigger(m_Attack);
                 m_HasTrigger = true;
             }
         }
 
         public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
         {
-            if (stateInfo.normalizedTime < 0.8f)
+            if (stateInfo.normalizedTime >= 0.9f)
             {
-                return;
+                m_Owner.m_CurState = m_HasTrigger ? EPlayerState.AttackR : EPlayerState.Idle;
             }
-
-            m_Owner.m_CurState =
-                m_HasTrigger ? EPlayerState.AttackR : EPlayerState.Idle;
         }
 
         public override void OnStateExit()
