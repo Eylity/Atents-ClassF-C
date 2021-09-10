@@ -19,8 +19,8 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
-            m_CharacterController = PlayerController.GetPlayerController.GetComponent<CharacterController>();
+            m_Anim = m_Owner.GetComponent<Animator>();
+            m_CharacterController = m_Owner.GetComponent<CharacterController>();
         }
 
         
@@ -29,22 +29,21 @@ namespace FSM.Player
             
             var currentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
             ObjPool.ObjectPoolInstance.ReturnObject(currentInstance, EPrefabsName.FlyAttackEffect, 4.0f);
-            currentInstance.transform.SetParent(PlayerController.GetPlayerController.gameObject .transform);
+            currentInstance.transform.SetParent(m_Owner.gameObject .transform);
             m_PSUpdater = currentInstance.GetComponent<PSMeshRendererUpdater>();
-            m_PSUpdater.UpdateMeshEffect(PlayerController.GetPlayerController.gameObject);
+            m_PSUpdater.UpdateMeshEffect(m_Owner.gameObject);
             
-            PlayerController.GetPlayerController.Stamina -= 40f;
-            PlayerController.GetPlayerController.m_ActiveFlyAttack = false;
+            m_Owner.Stamina -= 40f;
+            m_Owner.m_ActiveFlyAttack = false;
             m_Anim.SetTrigger(m_FlyAttack);
-            AddImpact((PlayerController.GetPlayerController.transform.forward),
-                FORCE);
+            AddImpact((m_Owner.transform.forward), FORCE);
             
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
-            PlayerController.GetPlayerController.StartCoroutine(FlyAttackCoolDown());
+            m_Owner.m_AttackLeftTrail.Activate();
+            m_Owner.m_AttackRightTrail.Activate();
+            m_Owner.StartCoroutine(FlyAttackCoolDown());
 
             var startDust = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackStartDust);
-            startDust.transform.position = PlayerController.GetPlayerController.transform.position;
+            startDust.transform.position = m_Owner.transform.position;
             ObjPool.ObjectPoolInstance.ReturnObject(startDust, EPrefabsName.FlyAttackStartDust, 1f);
         }
 
@@ -62,8 +61,8 @@ namespace FSM.Player
             m_PSUpdater.IsActive = false;
             var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
             ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 3f);
-            arrow.transform.position = PlayerController.GetPlayerController.transform.position;
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.Idle;
+            arrow.transform.position = m_Owner.transform.position;
+            m_Owner.m_CurState = EPlayerState.Idle;
         }
 
         public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
@@ -78,15 +77,15 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
+            m_Owner.m_AttackRightTrail.Deactivate();
+            m_Owner.m_AttackLeftTrail.Deactivate();
             m_IsGround = false;
         }
 
         private IEnumerator FlyAttackCoolDown()
         {
             yield return m_FlyAttackTimer;
-            PlayerController.GetPlayerController.m_ActiveFlyAttack = true;
+            m_Owner.m_ActiveFlyAttack = true;
         }
         
         private void AddImpact(Vector3 dir, float force)

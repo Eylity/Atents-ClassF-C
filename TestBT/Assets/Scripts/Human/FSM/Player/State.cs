@@ -5,7 +5,7 @@ namespace FSM.Player
     public abstract class State<T>
     {
         internal readonly int m_StateToHash;
-        private T m_Context;
+        protected T m_Owner;
 
 
         protected State()
@@ -24,7 +24,7 @@ namespace FSM.Player
 
         internal void SetMachineAndContext(T context)
         {
-            m_Context = context;
+            m_Owner = context;
             ONInitialized();
         }
 

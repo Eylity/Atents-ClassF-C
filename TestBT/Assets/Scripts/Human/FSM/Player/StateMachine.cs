@@ -40,7 +40,10 @@ namespace FSM.Player
 
                 if (tempState == CurrentState)
                     CurrentState.OnStateUpdate(deltaTime, currentStateInfo);
+                
+                return;
             }
+            CurrentState.OnStateExit();
         }
 
         public void FixedUpdate(float deltaTime)

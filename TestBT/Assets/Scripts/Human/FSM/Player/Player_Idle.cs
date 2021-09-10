@@ -10,26 +10,26 @@ namespace FSM.Player
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
-                PlayerController.GetPlayerController.m_CurState = EPlayerState.Move;
+                m_Owner.m_CurState = EPlayerState.Move;
             }
             if (Input.GetMouseButtonDown(0))
             {
-                PlayerController.GetPlayerController.m_CurState = EPlayerState.AttackL;
+                m_Owner.m_CurState = EPlayerState.AttackL;
             }
 
-            if (Input.GetKey(KeyCode.Q) && PlayerController.GetPlayerController.Stamina > 40f && PlayerController.GetPlayerController.m_ActiveFlyAttack)
+            if (Input.GetKey(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
             {
-                PlayerController.GetPlayerController.m_CurState = EPlayerState.FlyAttack;
+                m_Owner.m_CurState = EPlayerState.FlyAttack;
             }
 
-            if (Input.GetKey(KeyCode.E) && PlayerController.GetPlayerController.Stamina > 40f && PlayerController.GetPlayerController.m_ActiveFullSwing)
+            if (Input.GetKey(KeyCode.E) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFullSwing)
             {
-                PlayerController.GetPlayerController.m_CurState = EPlayerState.FullSwing;
+                m_Owner.m_CurState = EPlayerState.FullSwing;
             }
 
-            if (Input.GetKey(KeyCode.Space) && PlayerController.GetPlayerController.m_ActiveArea)
+            if (Input.GetKey(KeyCode.Space) && m_Owner.m_ActiveArea)
             {
-                PlayerController.GetPlayerController.m_CurState = EPlayerState.Area;
+                m_Owner.m_CurState = EPlayerState.Area;
             }
         }
     }

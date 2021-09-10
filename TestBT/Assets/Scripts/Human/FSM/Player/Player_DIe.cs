@@ -13,7 +13,7 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+            m_Anim = m_Owner.GetComponent<Animator>();
         }
 
         public override void OnStateEnter()
@@ -21,7 +21,7 @@ namespace FSM.Player
             m_Anim.SetBool(IsMove,false);
             m_Anim.SetBool(IsRun,false);
             m_Anim.SetTrigger(m_Die);
-            PlayerController.GetPlayerController.m_IsLive = false;
+            m_Owner.m_IsLive = false;
         }
 
         public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
@@ -31,7 +31,7 @@ namespace FSM.Player
                 return;
             }
 
-            PlayerController.GetPlayerController.gameObject.SetActive(false);
+            m_Owner.gameObject.SetActive(false);
         }
     }
 }

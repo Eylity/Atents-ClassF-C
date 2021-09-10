@@ -7,18 +7,17 @@ namespace FSM.Player
         private readonly int m_LastAttack;
         private Animator m_Anim;
 
-        public Player_LastAttack() : base("Base Layer.Attack.LastAttack") =>
-            m_LastAttack = Animator.StringToHash("Attack");
+        public Player_LastAttack() : base("Base Layer.Attack.LastAttack") => m_LastAttack = Animator.StringToHash("Attack");
 
         protected override void ONInitialized()
         {
-            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+            m_Anim = m_Owner.GetComponent<Animator>();
         }
 
         public override void OnStateEnter()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            m_Owner.m_AttackLeftTrail.Activate();
+            m_Owner.m_AttackRightTrail.Activate();
             m_Anim.SetTrigger(m_LastAttack);
         }
 
@@ -31,13 +30,13 @@ namespace FSM.Player
                 return;
             }
 
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.Idle;
+            m_Owner.m_CurState = EPlayerState.Idle;
         }
 
         public override void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            m_Owner.m_AttackLeftTrail.Deactivate();
+            m_Owner.m_AttackRightTrail.Deactivate();
         }
     }
 }

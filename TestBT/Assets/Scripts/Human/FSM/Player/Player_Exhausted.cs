@@ -15,7 +15,7 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+            m_Anim =m_Owner.GetComponent<Animator>();
         }
 
 
@@ -24,7 +24,7 @@ namespace FSM.Player
             m_Anim.SetBool(IsMove,false);
             m_Anim.SetBool(IsRun,false);
             m_Anim.SetTrigger(m_Exhausted);
-            PlayerController.GetPlayerController.StartCoroutine(ExhaustedTimer());
+            m_Owner.StartCoroutine(ExhaustedTimer());
         }
 
         public override void OnStateUpdate(float deltaTime, AnimatorStateInfo stateInfo)
@@ -34,13 +34,13 @@ namespace FSM.Player
                 return;
             }
 
-            PlayerController.GetPlayerController.m_CurState = EPlayerState.Idle;
+            m_Owner.m_CurState = EPlayerState.Idle;
         }
 
         private IEnumerator ExhaustedTimer()
         {
             yield return m_ExhaustedTime;
-            PlayerController.GetPlayerController.m_NowExhausted = false;
+            m_Owner.m_NowExhausted = false;
         }
     }
 }

@@ -16,8 +16,7 @@ public enum EPrefabsName
 
 public enum EBloodPrefabsName
 {
-    BloodAttach = 0,
-    Blood1,
+    Blood1 = 0,
     Blood2,
     Blood2L,
     Blood2R,

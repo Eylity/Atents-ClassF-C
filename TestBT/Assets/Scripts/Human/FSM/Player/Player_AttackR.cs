@@ -12,14 +12,14 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            m_Anim = PlayerController.GetPlayerController.GetComponent<Animator>();
+            m_Anim = m_Owner.GetComponent<Animator>();
         }
 
         public override void OnStateEnter()
         {
             m_HasTrigger = false;
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Activate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Activate();
+            m_Owner.m_AttackLeftTrail.Activate();
+            m_Owner.m_AttackRightTrail.Activate();
             m_Anim.SetTrigger(m_Attack);
         }
 
@@ -38,13 +38,13 @@ namespace FSM.Player
                 return;
             }
 
-            PlayerController.GetPlayerController.m_CurState = m_HasTrigger ? EPlayerState.LastAttack : EPlayerState.Idle;
+            m_Owner.m_CurState = m_HasTrigger ? EPlayerState.LastAttack : EPlayerState.Idle;
         }
 
         public override void OnStateExit()
         {
-            PlayerController.GetPlayerController.m_AttackLeftTrail.Deactivate();
-            PlayerController.GetPlayerController.m_AttackRightTrail.Deactivate();
+            m_Owner.m_AttackLeftTrail.Deactivate();
+            m_Owner.m_AttackRightTrail.Deactivate();
         }
     }
 }
