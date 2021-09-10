@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using FSM.Player;
 using UnityEngine;
 
 public class DragonController : MonoBehaviour
@@ -8,7 +7,7 @@ public class DragonController : MonoBehaviour
     public static DragonController instance;
 
     public GameObject playerobject;
-    public PlayerController player;
+    public FSM.Player.PlayerController player;
     public float speed = 3.0f;
 
     public float hp = 100f;
@@ -21,6 +20,9 @@ public class DragonController : MonoBehaviour
     public GameObject rushsmoke;
     public GameObject falldowncrack;
     public GameObject collectfire2;
+
+    public GameObject dragonskin;
+    public GameObject dragonfirerainobject;
 
     private void Awake()
     {
@@ -56,8 +58,9 @@ public class DragonController : MonoBehaviour
         {
             falldowncrack.SetActive(false);
         }
+
         playerobject = GameObject.FindWithTag("Player");
-        player = playerobject.GetComponent<PlayerController>();
+        player = playerobject.GetComponent<FSM.Player.PlayerController>();
     }
 
     void Start()

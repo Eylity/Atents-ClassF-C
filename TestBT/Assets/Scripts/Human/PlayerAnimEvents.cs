@@ -58,15 +58,6 @@ public class PlayerAnimEvents : MonoBehaviour
                     break;
             }
         }
-
-        // State Name "FlyAttack"
-        private void IsGround()
-        {
-            var obj = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackDust);
-            obj.transform.position = transform.position;
-            ObjPool.ObjectPoolInstance.ReturnObject(obj, EPrefabsName.FlyAttackDust, 1f);
-        }
-
         #endregion
 
 }

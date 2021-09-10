@@ -10,9 +10,9 @@ namespace FSM.Player
 
         private State<T> CurrentState { get; set; }
 
-        private readonly Animator m_Animator;
+        internal readonly Animator m_Animator;
 
-        private readonly Dictionary<System.Type, State<T>> m_States = new Dictionary<System.Type, State<T>>();
+        private readonly Dictionary<Type, State<T>> m_States = new Dictionary<Type, State<T>>();
 
         public StateMachine(Animator animator, T context, State<T> initialState)
         {
@@ -20,38 +20,44 @@ namespace FSM.Player
             m_Context = context;
             AddState(initialState);
             CurrentState = initialState;
-            CurrentState.OnStateEnter();
+            CurrentState?.OnStateEnter();
+        }
+
+        public bool IsEnd()
+        {
+            var nowAnim = m_Animator.GetCurrentAnimatorStateInfo(0);
+            return nowAnim.normalizedTime >= 1f && CurrentState.m_StateToHash == nowAnim.fullPathHash;
         }
 
         public void AddState(State<T> state)
         {
-            state.SetMachineAndContext(m_Context);
+            state.SetMachineAndContext(this, m_Context);
             m_States[state.GetType()] = state;
         }
 
         public void Update()
         {
             var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-            var tempState = CurrentState;
-            CurrentState.ChangePoint();
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
+                var tempState = CurrentState;
+                CurrentState?.ChangePoint();
                 if (tempState == CurrentState)
-                    CurrentState.OnStateUpdate(currentStateInfo);
+                    CurrentState?.OnStateUpdate();
             }
         }
 
         public void FixedUpdate(float deltaTime)
         {
             var currentStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-            var tempState = CurrentState;
-            CurrentState.ChangePoint();
 
             if (CurrentState.m_StateToHash == 0 || currentStateInfo.fullPathHash == CurrentState.m_StateToHash)
             {
+                var tempState = CurrentState;
+                CurrentState?.ChangePoint();
                 if (tempState == CurrentState)
-                    CurrentState.OnFixedUpdate(deltaTime, currentStateInfo);
+                    CurrentState?.OnFixedUpdate(deltaTime);
             }
         }
 

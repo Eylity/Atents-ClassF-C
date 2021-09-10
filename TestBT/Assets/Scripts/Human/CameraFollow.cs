@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Vector3 m_RigOffset;
     private float m_MouseX;
+    private float m_MouseY;
     
     [SerializeField] private Transform m_Player;
 
@@ -14,8 +15,9 @@ public class CameraFollow : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             m_MouseX += Input.GetAxis("Mouse X");
-
-            transform.rotation = Quaternion.Euler(new Vector3(0f,
+            m_MouseY += Input.GetAxis("Mouse Y");
+            m_MouseY = Mathf.Clamp(m_MouseY, -30f, 0f);
+            transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x + m_MouseY,
                 transform.rotation.y + m_MouseX, 0));
         }
     }

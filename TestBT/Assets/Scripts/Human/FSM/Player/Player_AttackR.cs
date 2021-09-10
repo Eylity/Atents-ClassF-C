@@ -5,19 +5,12 @@ namespace FSM.Player
     public class Player_AttackR : State<PlayerController>
     {
         private readonly int m_Attack;
-        private Animator m_Anim;
         private bool m_HasTrigger;
 
         public Player_AttackR() : base("Base Layer.Attack.AttackR") => m_Attack = Animator.StringToHash("Attack");
 
-        protected override void ONInitialized()
-        {
-            m_Anim = m_Owner.GetComponent<Animator>();
-        }
-
         public override void OnStateEnter()
         {
-            m_HasTrigger = false;
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
         }
@@ -26,16 +19,16 @@ namespace FSM.Player
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_Anim.SetTrigger(m_Attack);
-                m_HasTrigger = true;
+                m_Machine.m_Animator.SetTrigger(m_Attack);
+                m_Machine.ChangeState<Player_LastAttack>();
             }
         }
 
-        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate()
         {
-            if (stateInfo.normalizedTime >= 0.9f)
+            if (m_Machine.IsEnd())
             {
-                m_Owner.m_CurState = m_HasTrigger ? EPlayerState.LastAttack : EPlayerState.Idle;
+                m_Machine.ChangeState<Player_Idle>();
             }
         }
 

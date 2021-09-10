@@ -37,8 +37,8 @@ namespace Skill
             {
                 if (m_InPlayer)
                 {
-                    PlayerController.GetPlayerController.Stamina += 1;
-                    PlayerController.GetPlayerController.Health += 1;
+                    FSM.Player.PlayerController.GetPlayerController.Stamina += 1;
+                    FSM.Player.PlayerController.GetPlayerController.Health += 1;
                     yield return m_Time;
                 }
                 else

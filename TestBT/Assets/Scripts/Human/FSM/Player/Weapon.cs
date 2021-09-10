@@ -5,7 +5,6 @@ namespace Skill
 {
     public class Weapon : MonoBehaviour
     {
-        private readonly Vector3 m_Direction = Vector3.zero;
         private const int FirstBloodPrefab = 1;
         private const int LastBloodPrefab = 17;
         private Collider m_Collider;

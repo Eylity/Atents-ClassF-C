@@ -1,35 +1,30 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace FSM.Player
 {
     public sealed class Player_DIe : State<PlayerController>
     {
-        private Animator m_Anim;
         private readonly int m_Die;
+        private readonly WaitForSeconds m_Timer = new WaitForSeconds(2.2f);
         private static readonly int IsMove = Animator.StringToHash("IsMove");
         private static readonly int IsRun = Animator.StringToHash("IsRun");
 
-        public Player_DIe() : base("Base Layer.RunLeft") => m_Die = Animator.StringToHash("Die");
-
-        protected override void ONInitialized()
-        {
-            m_Anim = m_Owner.GetComponent<Animator>();
-        }
+        public Player_DIe() : base("Base Layer.Die") => m_Die = Animator.StringToHash("Die");
 
         public override void OnStateEnter()
         {
-            m_Anim.SetBool(IsMove, false);
-            m_Anim.SetBool(IsRun, false);
-            m_Anim.SetTrigger(m_Die);
+            m_Machine.m_Animator.SetBool(IsMove, false);
+            m_Machine.m_Animator.SetBool(IsRun, false);
+            m_Machine.m_Animator.SetTrigger(m_Die);
             m_Owner.m_IsLive = false;
+            m_Owner.StartCoroutine(Die());
         }
 
-        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
+        private IEnumerator Die()
         {
-            if (stateInfo.normalizedTime >= 9.0f)
-            {
-                m_Owner.gameObject.SetActive(false);
-            }
+            yield return m_Timer;
+            m_Owner.gameObject.SetActive(false);
         }
     }
 }

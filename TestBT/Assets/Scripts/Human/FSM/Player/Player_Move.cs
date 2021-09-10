@@ -7,7 +7,6 @@ namespace FSM.Player
         private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
         private CharacterController m_CharacterController;
-        private Animator m_Anim;
         private float m_RotateSpeed;
         private float m_MoveSpeed;
         private float m_MoveX;
@@ -17,44 +16,46 @@ namespace FSM.Player
         protected override void ONInitialized()
         {
             m_CharacterController = m_Owner.GetComponent<CharacterController>();
-            m_Anim = m_Owner.GetComponent<Animator>();
         }
 
         public override void OnStateEnter()
         {
             m_IsNotInput = false;
-            m_Anim.SetBool(m_IsMove, true);
+            m_Machine.m_Animator.SetBool(m_IsMove, true);
         }
 
         public override void ChangePoint()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_Owner.m_CurState = EPlayerState.AttackL;
+                m_Machine.ChangeState<Player_AttackL>();
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
             {
-                m_Owner.m_CurState = EPlayerState.FlyAttack;
+                m_Machine.ChangeState<Player_FlyAttack>();
+
             }
 
             if (Input.GetKeyDown(KeyCode.E) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFullSwing)
             {
-                m_Owner.m_CurState = EPlayerState.FullSwing;
+                m_Machine.ChangeState<Player_FullSwing>();
+
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && m_Owner.m_ActiveArea)
             {
-                m_Owner.m_CurState = EPlayerState.Area;
+                m_Machine.ChangeState<Player_Area>();
+
             }
 
             if (m_IsNotInput)
             {
-                m_Owner.m_CurState = EPlayerState.Idle;
+                m_Machine.ChangeState<Player_Idle>();
             }
         }
         
-        public override void OnFixedUpdate(float deltaTime, AnimatorStateInfo stateInfo)
+        public override void OnFixedUpdate(float deltaTime)
         {
             if (!m_Owner.m_IsLive)
             {
@@ -64,21 +65,19 @@ namespace FSM.Player
             m_MoveX = Input.GetAxis("Horizontal");
             m_MoveZ = Input.GetAxis("Vertical");
 
-            m_Anim.SetBool(m_IsMove, true);
-
             if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
             {
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
-                m_Anim.SetBool(m_IsRun, true);
-                m_Owner.m_CurState = EPlayerState.Run;
+                m_Machine.m_Animator.SetBool(m_IsRun, true);
+                m_Owner.m_NowRun = true;
             }
             else
             {
                 m_MoveSpeed = 4f;
                 m_RotateSpeed = 8f;
-                m_Anim.SetBool(m_IsRun, false);
-                m_Owner.m_CurState = EPlayerState.Move;
+                m_Machine.m_Animator.SetBool(m_IsRun, false);
+                m_Owner.m_NowRun = false;
             }
 
             var camPos = Camera.main.transform;
@@ -99,8 +98,9 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            m_Anim.SetBool(m_IsMove, false);
-            m_Anim.SetBool(m_IsRun, false);
+            m_Owner.m_NowRun = false;
+            m_Machine.m_Animator.SetBool(m_IsMove, false);
+            m_Machine.m_Animator.SetBool(m_IsRun, false);
         }
     }
 }

@@ -7,18 +7,12 @@ namespace FSM.Player
     {
         private readonly WaitForSeconds m_SkillTimer = new WaitForSeconds(8.0f);
         private readonly int m_Skill;
-        private Animator m_Anim;
 
         public Player_Area() : base("Base Layer.Skill.Skill") => m_Skill = Animator.StringToHash("Skill");
-
-        protected override void ONInitialized()
-        {
-            m_Anim = m_Owner.GetComponent<Animator>();
-        }
-
+        
         public override void OnStateEnter()
         {
-            m_Anim.SetTrigger(m_Skill);
+            m_Machine.m_Animator.SetTrigger(m_Skill);
             m_Owner.m_ActiveArea = false;
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
@@ -36,16 +30,13 @@ namespace FSM.Player
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect, EPrefabsName.AreaEffect, 7f);
         }
 
-        public override void OnStateUpdate(AnimatorStateInfo stateInfo)
+        public override void OnStateUpdate()
         {
-            if (stateInfo.normalizedTime < 0.9f)
+            if (m_Machine.IsEnd())
             {
-                return;
+                m_Machine.ChangeState<Player_Idle>();
             }
-
-            m_Owner.m_CurState = EPlayerState.Idle;
         }
-
 
         public override void OnStateExit()
         {

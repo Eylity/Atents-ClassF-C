@@ -8,10 +8,9 @@ public enum EPrefabsName
     Area = 0,
     AreaEffect,
     FlyAttackArrow,
-    FlyAttackDust,
-    FlyAttackStartDust,
     FlyAttackEffect,
-    ChargingFullAttack
+    ChargingFullSwing,
+    FullSwingEffect
 }
 
 public enum EBloodPrefabsName

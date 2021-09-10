@@ -10,26 +10,26 @@ namespace FSM.Player
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
-                m_Owner.m_CurState = EPlayerState.Move;
+                m_Machine.ChangeState<Player_Move>();
             }
             if (Input.GetMouseButtonDown(0))
             {
-                m_Owner.m_CurState = EPlayerState.AttackL;
+                m_Machine.ChangeState<Player_AttackL>();
             }
 
             if (Input.GetKey(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
             {
-                m_Owner.m_CurState = EPlayerState.FlyAttack;
+                m_Machine.ChangeState<Player_FlyAttack>();
             }
 
             if (Input.GetKey(KeyCode.E) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFullSwing)
             {
-                m_Owner.m_CurState = EPlayerState.FullSwing;
+                m_Machine.ChangeState<Player_FullSwing>();
             }
 
             if (Input.GetKey(KeyCode.Space) && m_Owner.m_ActiveArea)
             {
-                m_Owner.m_CurState = EPlayerState.Area;
+                m_Machine.ChangeState<Player_Area>();
             }
         }
     }
