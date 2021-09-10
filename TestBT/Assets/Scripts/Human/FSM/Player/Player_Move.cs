@@ -6,12 +6,11 @@ namespace FSM.Player
     {
         private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
+        private const float GRAVITY = 9.81f;
         private CharacterController m_CharacterController;
+        private Vector3 m_GravityVec;
         private float m_RotateSpeed;
         private float m_MoveSpeed;
-        private float m_MoveX;
-        private float m_MoveZ;
-        private bool m_IsNotInput;
 
         protected override void ONInitialized()
         {
@@ -20,7 +19,6 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_IsNotInput = false;
             m_Machine.m_Animator.SetBool(m_IsMove, true);
         }
 
@@ -48,22 +46,12 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Area>();
 
             }
-
-            if (m_IsNotInput)
-            {
-                m_Machine.ChangeState<Player_Idle>();
-            }
         }
         
         public override void OnFixedUpdate(float deltaTime)
         {
-            if (!m_Owner.m_IsLive)
-            {
-                return;
-            }
-
-            m_MoveX = Input.GetAxis("Horizontal");
-            m_MoveZ = Input.GetAxis("Vertical");
+            var moveX = Input.GetAxis("Horizontal");
+            var moveZ = Input.GetAxis("Vertical");
 
             if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
             {
@@ -79,21 +67,26 @@ namespace FSM.Player
                 m_Machine.m_Animator.SetBool(m_IsRun, false);
                 m_Owner.m_NowRun = false;
             }
-
-            var camPos = Camera.main.transform;
-            var movePos = camPos.right * m_MoveX + camPos.forward * m_MoveZ;
+            var movePos = (Camera.main.transform.right * moveX + Camera.main.transform.forward * moveZ); 
             movePos.y = 0f;
             movePos.Normalize();
             if (movePos == Vector3.zero)
             {
-                m_IsNotInput = true;
+                m_Machine.ChangeState<Player_Idle>();
                 return;
             }
 
-            m_CharacterController.Move(movePos * (m_MoveSpeed * deltaTime));
             m_Owner.transform.rotation = Quaternion.Slerp(m_Owner.transform.rotation,
                 Quaternion.LookRotation(movePos),
                 m_RotateSpeed * deltaTime);
+
+            if (!m_CharacterController.isGrounded)
+            {
+                m_GravityVec += Vector3.down * GRAVITY * deltaTime;
+            }
+
+            movePos = movePos * m_MoveSpeed + m_GravityVec;
+            m_CharacterController.Move(movePos * Time.deltaTime);
         }
 
         public override void OnStateExit()

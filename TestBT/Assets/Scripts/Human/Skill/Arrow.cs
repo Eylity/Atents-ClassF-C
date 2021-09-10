@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,28 +7,26 @@ namespace Skill
     public class Arrow : MonoBehaviour
     {
         private bool m_InEnemy;
+        private Collider m_Box;
+
+        private void Awake()
+        {
+            m_Box = GetComponent<BoxCollider>();
+        }
 
         private void OnEnable()
         {
             m_InEnemy = false;
-            StartCoroutine(nameof(ArrowAttack));
+            m_Box.enabled = true;
         }
-
-        private void OnDisable()
-        {
-            StopCoroutine(nameof(ArrowAttack));
-        }
-
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("Dragon")) return;
-            m_InEnemy = true;
-        }
-
-        private IEnumerator ArrowAttack()
-        {
-            while (!m_InEnemy) yield return null;
-        
+            if (other.CompareTag("Dragon"))
+            {
+                DragonController.instance.hp -= 5;
+                m_Box.enabled = false;
+                Debug.Log($"Dragon Arrow Hit\n{DragonController.instance.hp}");
+            }
         }
     }
 }

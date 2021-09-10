@@ -6,18 +6,19 @@ namespace FSM.Player
 {
     public sealed class StateMachine<T>
     {
-        private readonly T m_Context;
 
         private State<T> CurrentState { get; set; }
 
         internal readonly Animator m_Animator;
-
+        private readonly T m_Owner;
         private readonly Dictionary<Type, State<T>> m_States = new Dictionary<Type, State<T>>();
 
-        public StateMachine(Animator animator, T context, State<T> initialState)
+
+
+        public StateMachine(Animator animator, T owner, State<T> initialState)
         {
             this.m_Animator = animator;
-            m_Context = context;
+            m_Owner = owner;
             AddState(initialState);
             CurrentState = initialState;
             CurrentState?.OnStateEnter();
@@ -31,7 +32,7 @@ namespace FSM.Player
 
         public void AddState(State<T> state)
         {
-            state.SetMachineAndContext(this, m_Context);
+            state.SetMachineAndContext(this, m_Owner);
             m_States[state.GetType()] = state;
         }
 

@@ -22,10 +22,10 @@ namespace FSM.Player
             this.m_StateToHash = animStateHash;
         }
 
-        internal void SetMachineAndContext(StateMachine<T> machine ,T context)
+        internal void SetMachineAndContext(StateMachine<T> machine ,T owner)
         {
             m_Machine = machine;
-            m_Owner = context;
+            m_Owner = owner;
             ONInitialized();
         }
 

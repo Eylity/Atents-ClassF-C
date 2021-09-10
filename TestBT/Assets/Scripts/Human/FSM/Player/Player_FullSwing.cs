@@ -16,6 +16,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.Stamina -= 40f;
             m_Owner.m_AttackLeftTrail.Activate();

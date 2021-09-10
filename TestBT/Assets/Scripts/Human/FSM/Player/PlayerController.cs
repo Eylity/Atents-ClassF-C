@@ -15,21 +15,17 @@ namespace FSM.Player
         [HideInInspector] public bool m_IsLive = true;
         [HideInInspector] public bool m_NowExhausted;
         [HideInInspector] public bool m_NowRun;
-       
+
         public bool m_Debug = false;
-        [TextArea] public string m_DebugText = "탭 누르면 35대미지\n캡스락 누르면 스태미너 -40\n스킬 쿨 x\n";
 
-        private CharacterController m_CharacterController;
-        private const float GRAVITY = 9.8f;
+        [Space] [Header("----- Player Attack Trail -----")] [SerializeField]
+        internal XWeaponTrail m_AttackLeftTrail;
 
-        [Space][Header("----- Player Attack Trail -----")]
-
-        [SerializeField] internal XWeaponTrail m_AttackLeftTrail;
         [SerializeField] internal XWeaponTrail m_AttackRightTrail;
 
-        [Space][Header("----- Player Status -----")]
+        [Space] [Header("----- Player Status -----")] [SerializeField]
+        private float m_HealthPoint;
 
-        [SerializeField] private float m_HealthPoint;
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
@@ -73,7 +69,6 @@ namespace FSM.Player
             }
 
             GetPlayerController = this;
-            m_CharacterController = GetComponent<CharacterController>();
         }
 
         private void Start()
@@ -96,8 +91,7 @@ namespace FSM.Player
 
         private void Update()
         {
-            m_CharacterController.Move(Vector3.down * (GRAVITY * Time.deltaTime));
-            m_StateMachine.Update();
+            m_StateMachine?.Update();
             StaminaChange();
 
             if (m_Debug)
@@ -120,21 +114,22 @@ namespace FSM.Player
 
         private void FixedUpdate()
         {
-            m_StateMachine.FixedUpdate(Time.deltaTime);
+            m_StateMachine?.FixedUpdate(Time.deltaTime);
         }
 
         public void TakeDamage(float damage)
         {
-            if (!m_IsLive) return;
-
-            Health -= (int) Math.Round(damage);
-
-            if (Health > 0)
+            if (!m_IsLive)
             {
                 return;
             }
 
-            m_StateMachine.ChangeState<Player_DIe>();
+            Health -= (int) Math.Round(damage);
+
+            if (Health <= 0)
+            {
+                m_StateMachine.ChangeState<Player_DIe>();
+            }
         }
 
         private void StaminaChange()
@@ -145,14 +140,12 @@ namespace FSM.Player
                 _ => Stamina += SUB_OR_PLUS_STAMINA * Time.deltaTime,
             };
 
-            if (m_StaminaPoint > 0 || m_NowExhausted)
+            if (m_StaminaPoint <= 0 && !m_NowExhausted)
             {
-                return;
+                m_NowExhausted = true;
+                m_NowRun = false;
+                m_StateMachine.ChangeState<Player_Exhausted>();
             }
-
-            m_NowExhausted = true;
-            m_NowRun = false;
-            m_StateMachine.ChangeState<Player_Exhausted>();
         }
     }
 }

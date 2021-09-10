@@ -5,12 +5,12 @@ namespace Skill
 {
     public class Weapon : MonoBehaviour
     {
-        private const int FirstBloodPrefab = 1;
+        private const int FirstBloodPrefab = 0;
         private const int LastBloodPrefab = 17;
         private Collider m_Collider;
         private Ray m_Ray;
     
-        [SerializeField] private float m_PlayerDamage = 20f;
+        [SerializeField] private float m_PlayerDamage;
         public Transform m_RayTransform;
 
         private void Awake()
@@ -22,7 +22,8 @@ namespace Skill
         {
             if (!Physics.Raycast(m_Ray, out var hit) || !other.CompareTag("Dragon")) return;
 
-            Debug.Log("Hit Weapon");
+            DragonController.instance.hp -= m_PlayerDamage;
+            Debug.Log($"Hit Weapon\n{DragonController.instance.hp}");
             var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
 
             var effectIdx = (EBloodPrefabsName) Random.Range(FirstBloodPrefab, LastBloodPrefab);

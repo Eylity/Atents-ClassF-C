@@ -12,6 +12,7 @@ namespace FSM.Player
         
         public override void OnStateEnter()
         {
+            Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_Skill);
             m_Owner.m_ActiveArea = false;
             m_Owner.m_AttackLeftTrail.Activate();

@@ -15,6 +15,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetBool(IsMove, false);
             m_Machine.m_Animator.SetBool(IsRun, false);
             m_Machine.m_Animator.SetTrigger(m_Exhausted);

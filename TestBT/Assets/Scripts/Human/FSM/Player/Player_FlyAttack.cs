@@ -24,6 +24,8 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            Debug.Log($"StateEnter {ToString()}");
+            
             m_Owner.Stamina -= 40f;
             m_Owner.m_ActiveFlyAttack = false;
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
@@ -34,7 +36,6 @@ namespace FSM.Player
             currentInstance.transform.SetParent(m_Owner.gameObject.transform);
             m_PSUpdater = currentInstance.GetComponent<PSMeshRendererUpdater>();
             m_PSUpdater.UpdateMeshEffect(m_Owner.gameObject);
-
 
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
@@ -56,10 +57,10 @@ namespace FSM.Player
         {
             if (m_Impact.magnitude > 0.2)
             {
-                m_CharacterController.Move(m_Impact * Time.deltaTime);
+                m_CharacterController.SimpleMove(m_Impact);
             }
 
-            m_Impact = Vector3.Lerp(m_Impact, Vector3.zero, 5 * Time.deltaTime);
+            m_Impact = Vector3.Lerp(m_Impact, Vector3.zero, 5 * deltaTime);
         }
 
         public override void OnStateExit()
