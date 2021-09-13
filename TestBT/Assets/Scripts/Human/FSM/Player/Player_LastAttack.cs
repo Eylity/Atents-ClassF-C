@@ -26,11 +26,5 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Idle>();
             }
         }
-
-        public override void OnStateExit()
-        {
-            m_Owner.m_AttackLeftTrail.Deactivate();
-            m_Owner.m_AttackRightTrail.Deactivate();
-        }
     }
 }

@@ -35,8 +35,6 @@ namespace FSM.Player
         public override void OnStateExit()
         {
             m_Machine.m_Animator.ResetTrigger(m_Attack);
-            m_Owner.m_AttackLeftTrail.Deactivate();
-            m_Owner.m_AttackRightTrail.Deactivate();
         }
     }
 }

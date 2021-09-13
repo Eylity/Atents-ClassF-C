@@ -56,7 +56,7 @@ namespace FSM.Player
             var moveX = Input.GetAxis("Horizontal");
             var moveZ = Input.GetAxis("Vertical");
 
-            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted && moveX + moveZ != 0)
+            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
             {
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
@@ -97,6 +97,43 @@ namespace FSM.Player
             m_Owner.m_NowRun = false;
             m_Machine.m_Animator.SetBool(m_IsMove, false);
             m_Machine.m_Animator.SetBool(m_IsRun, false);
+        }
+
+        private void Move()
+        {
+            var moveX = Input.GetAxis("Horizontal");
+            var moveZ = Input.GetAxis("Vertical");
+
+            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted && moveX + moveZ != 0)
+            {
+                m_MoveSpeed = 6f;
+                m_RotateSpeed = 12f;
+                m_Machine.m_Animator.SetBool(m_IsRun, true);
+                m_Owner.m_NowRun = true;
+            }
+            else
+            {
+                m_MoveSpeed = 4f;
+                m_RotateSpeed = 8f;
+                m_Machine.m_Animator.SetBool(m_IsRun, false);
+                m_Owner.m_NowRun = false;
+            }
+            if (!m_CharacterController.isGrounded)
+            {
+                m_GravityVec += Vector3.down * GRAVITY * Time.deltaTime;
+            }
+            var movePos = (m_CamPos.right * moveX + m_CamPos.forward * moveZ); 
+            movePos = movePos * m_MoveSpeed + m_GravityVec;
+            movePos.y = 0f;
+            movePos.Normalize();
+            if (movePos == Vector3.zero)
+            {
+                m_Machine.ChangeState<Player_Idle>();
+                return;
+            }
+            
+
+            m_CharacterController.Move(movePos * Time.deltaTime);
         }
     }
 }
