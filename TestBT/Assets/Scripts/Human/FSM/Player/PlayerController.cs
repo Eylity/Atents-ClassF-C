@@ -18,9 +18,8 @@ namespace FSM.Player
 
         public bool m_Debug = false;
 
-        [Space] [Header("----- Player Attack Trail -----")] [SerializeField]
-        internal XWeaponTrail m_AttackLeftTrail;
-
+        [Space] [Header("----- Player Attack Trail -----")]
+        [SerializeField] internal XWeaponTrail m_AttackLeftTrail;
         [SerializeField] internal XWeaponTrail m_AttackRightTrail;
 
         [Space] [Header("----- Player Status -----")] [SerializeField]
@@ -29,10 +28,12 @@ namespace FSM.Player
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
-        private const float SUB_OR_PLUS_STAMINA = 10f;
+        [SerializeField] private float m_SubOrPlusStamina = 10f;
+
 
         public float Health
         {
+            
             get => m_HealthPoint;
             set
             {
@@ -69,6 +70,8 @@ namespace FSM.Player
             }
 
             GetPlayerController = this;
+            Stamina = m_MaxStaminaPoint;
+            Health = m_MaxHealthPoint;
         }
 
         private void Start()
@@ -84,9 +87,6 @@ namespace FSM.Player
             m_StateMachine.AddState(new Player_FullSwing());
             m_StateMachine.AddState(new Player_Exhausted());
             m_StateMachine.AddState(new Player_DIe());
-
-            Health = m_MaxHealthPoint;
-            Stamina = m_MaxStaminaPoint;
         }
 
         private void Update()
@@ -136,8 +136,8 @@ namespace FSM.Player
         {
             Stamina = m_NowRun switch
             {
-                true => Stamina -= SUB_OR_PLUS_STAMINA * Time.deltaTime,
-                _ => Stamina += SUB_OR_PLUS_STAMINA * Time.deltaTime,
+                true => Stamina -= m_SubOrPlusStamina * Time.deltaTime,
+                _ => Stamina += m_SubOrPlusStamina * Time.deltaTime,
             };
 
             if (m_StaminaPoint <= 0 && !m_NowExhausted)

@@ -5,10 +5,10 @@ namespace FSM.Player
 {
     public sealed class Player_DIe : State<PlayerController>
     {
-        private readonly int m_Die;
-        private readonly WaitForSeconds m_Timer = new WaitForSeconds(2.2f);
         private static readonly int IsMove = Animator.StringToHash("IsMove");
         private static readonly int IsRun = Animator.StringToHash("IsRun");
+        private readonly WaitForSeconds m_Timer = new WaitForSeconds(2.2f);
+        private readonly int m_Die;
 
         public Player_DIe() : base("Base Layer.Die") => m_Die = Animator.StringToHash("Die");
 
@@ -25,7 +25,6 @@ namespace FSM.Player
         private IEnumerator Die()
         {
             yield return m_Timer;
-            m_Owner.gameObject.SetActive(false);
         }
     }
 }

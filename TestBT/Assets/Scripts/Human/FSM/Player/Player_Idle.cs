@@ -9,22 +9,18 @@ namespace FSM.Player
         private const float GRAVITY = 9.81f;
         private Vector3 m_GravityVec;
 
-        protected override void ONInitialized()
-        {
-            m_CharacterController = m_Owner.GetComponent<CharacterController>();
-        }
+        protected override void ONInitialized() => m_CharacterController = m_Owner.GetComponent<CharacterController>();
 
-        public override void OnStateEnter()
-        {
-            Debug.Log($"StateEnter {ToString()}");
-        }
+        public override void OnStateEnter() => Debug.Log($"StateEnter {ToString()}");
 
         public override void ChangePoint()
         {
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) ||
+                Input.GetKey(KeyCode.S))
             {
                 m_Machine.ChangeState<Player_Move>();
             }
+
             if (Input.GetMouseButtonDown(0))
             {
                 m_Machine.ChangeState<Player_AttackL>();

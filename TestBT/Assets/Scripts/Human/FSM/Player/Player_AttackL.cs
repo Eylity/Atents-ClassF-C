@@ -18,7 +18,7 @@ namespace FSM.Player
 
         public override void ChangePoint()
         {
-            if (Input.GetMouseButtonDown(0) && m_Machine.m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <0.8f)
+            if (Input.GetMouseButtonDown(0))
             {
                 m_Machine.ChangeState<Player_AttackR>();
             }

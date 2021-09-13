@@ -6,14 +6,16 @@ namespace FSM.Player
     {
         private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
-        private const float GRAVITY = 9.81f;
         private CharacterController m_CharacterController;
+        private Transform m_CamPos;
+        private const float GRAVITY = 9.81f;
         private Vector3 m_GravityVec;
         private float m_RotateSpeed;
         private float m_MoveSpeed;
 
         protected override void ONInitialized()
         {
+            m_CamPos = Camera.main.transform;
             m_CharacterController = m_Owner.GetComponent<CharacterController>();
         }
 
@@ -46,6 +48,7 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Area>();
 
             }
+            
         }
         
         public override void OnFixedUpdate(float deltaTime)
@@ -53,7 +56,7 @@ namespace FSM.Player
             var moveX = Input.GetAxis("Horizontal");
             var moveZ = Input.GetAxis("Vertical");
 
-            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
+            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted && moveX + moveZ != 0)
             {
                 m_MoveSpeed = 6f;
                 m_RotateSpeed = 12f;
@@ -67,7 +70,7 @@ namespace FSM.Player
                 m_Machine.m_Animator.SetBool(m_IsRun, false);
                 m_Owner.m_NowRun = false;
             }
-            var movePos = (Camera.main.transform.right * moveX + Camera.main.transform.forward * moveZ); 
+            var movePos = (m_CamPos.right * moveX + m_CamPos.forward * moveZ); 
             movePos.y = 0f;
             movePos.Normalize();
             if (movePos == Vector3.zero)

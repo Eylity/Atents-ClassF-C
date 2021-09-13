@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 namespace FSM.Player
@@ -27,7 +28,7 @@ namespace FSM.Player
 
             var areaEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.AreaEffect);
             areaEffect.transform.position = playerPos;
-            m_Owner.StartCoroutine(EffectUp(areaEffect));
+            areaEffect.transform.DOMoveY(5.0f, 2.0f).SetEase(Ease.OutQuad);
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect, EPrefabsName.AreaEffect, 7f);
         }
 
@@ -49,16 +50,6 @@ namespace FSM.Player
         {
             yield return m_SkillTimer;
             m_Owner.m_ActiveArea = true;
-        }
-
-        private IEnumerator EffectUp(GameObject effect)
-        {
-            var timer = 0f;
-            while (timer <= 5f)
-            {
-                effect.transform.position += Vector3.up * 2f * Time.deltaTime;
-                yield return timer += Time.deltaTime;
-            }
         }
     }
 }

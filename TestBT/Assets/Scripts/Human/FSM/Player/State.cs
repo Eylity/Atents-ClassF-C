@@ -17,12 +17,9 @@ namespace FSM.Player
         {
         }
 
-        private State(int animStateHash)
-        {
-            this.m_StateToHash = animStateHash;
-        }
+        private State(int animStateHash) => this.m_StateToHash = animStateHash;
 
-        internal void SetMachineAndContext(StateMachine<T> machine ,T owner)
+        internal void SetMachineAndContext(StateMachine<T> machine, T owner)
         {
             m_Machine = machine;
             m_Owner = owner;
@@ -30,25 +27,31 @@ namespace FSM.Player
         }
 
         protected virtual void ONInitialized()
-        {}
+        {
+        }
 
 
         public virtual void OnStateEnter()
-        {}
+        {
+        }
 
 
         public virtual void ChangePoint()
-        {}
+        {
+        }
 
 
         public virtual void OnStateUpdate()
-        {}
-        
+        {
+        }
+
         public virtual void OnFixedUpdate(float deltaTime)
-        {}
+        {
+        }
 
 
         public virtual void OnStateExit()
-        {}
+        {
+        }
     }
 }

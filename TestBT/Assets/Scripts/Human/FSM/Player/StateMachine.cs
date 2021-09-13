@@ -9,9 +9,9 @@ namespace FSM.Player
 
         private State<T> CurrentState { get; set; }
 
-        internal readonly Animator m_Animator;
-        private readonly T m_Owner;
         private readonly Dictionary<Type, State<T>> m_States = new Dictionary<Type, State<T>>();
+        private readonly T m_Owner;
+        internal readonly Animator m_Animator;
 
 
 

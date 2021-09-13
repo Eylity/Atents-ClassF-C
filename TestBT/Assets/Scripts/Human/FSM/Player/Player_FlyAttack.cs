@@ -7,10 +7,10 @@ namespace FSM.Player
     {
         private readonly WaitForSeconds m_FlyAttackTimer = new WaitForSeconds(6.0f);
         private readonly int m_FlyAttack;
-        private CharacterController m_CharacterController;
-        private PSMeshRendererUpdater m_PSUpdater;
         private const float FORCE = 100f;
         private const float MASS = 3f;
+        private CharacterController m_CharacterController;
+        private PSMeshRendererUpdater m_PSUpdater;
         private Vector3 m_Impact = Vector3.zero;
 
         public Player_FlyAttack() : base("Base Layer.Skill.FlyAttack") =>

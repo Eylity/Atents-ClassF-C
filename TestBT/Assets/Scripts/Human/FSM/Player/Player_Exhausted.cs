@@ -5,10 +5,10 @@ namespace FSM.Player
 {
     public class Player_Exhausted : State<PlayerController>
     {
-        private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(8.0f);
-        private readonly int m_Exhausted;
         private static readonly int IsMove = Animator.StringToHash("IsMove");
         private static readonly int IsRun = Animator.StringToHash("IsRun");
+        private readonly WaitForSeconds m_ExhaustedTime = new WaitForSeconds(8.0f);
+        private readonly int m_Exhausted;
 
         public Player_Exhausted() : base("Base Layer.Exhausted") => m_Exhausted = Animator.StringToHash("Exhausted");
         

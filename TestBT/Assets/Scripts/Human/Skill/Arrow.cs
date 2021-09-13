@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
+using FSM.Player;
 using UnityEngine;
 
 namespace Skill
 {
     public class Arrow : MonoBehaviour
     {
-        private bool m_InEnemy;
         private Collider m_Box;
 
         private void Awake()
@@ -16,7 +16,6 @@ namespace Skill
 
         private void OnEnable()
         {
-            m_InEnemy = false;
             m_Box.enabled = true;
         }
         private void OnTriggerEnter(Collider other)
