@@ -16,11 +16,11 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.m_PlayerDamage += 10;
             Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.Stamina -= 40f;
-       
+            m_Owner.m_AttackLeftTrail.Activate();
+            m_Owner.m_AttackRightTrail.Activate();
             m_Owner.m_ActiveFullSwing = false;
             m_Owner.StartCoroutine(FullSwingCoolDown());
             
@@ -49,12 +49,11 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            m_Owner.m_PlayerDamage -= 10;
+            m_PSUpdater.IsActive = false;
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge, EPrefabsName.ChargingFullSwing);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge, EPrefabsName.ChargingFullSwing);
             m_Owner.m_AttackRightTrail.Deactivate();
             m_Owner.m_AttackLeftTrail.Deactivate();
-            m_PSUpdater.IsActive = false;
         }
 
         private IEnumerator FullSwingCoolDown()

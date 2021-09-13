@@ -11,7 +11,7 @@ namespace FSM.Player
         private readonly int m_Exhausted;
 
         public Player_Exhausted() : base("Base Layer.Exhausted") => m_Exhausted = Animator.StringToHash("Exhausted");
-
+        
 
         public override void OnStateEnter()
         {
@@ -24,10 +24,8 @@ namespace FSM.Player
 
         public override void OnStateUpdate()
         {
-            Debug.Log("!");
             if (m_Machine.IsEnd())
             {
-                Debug.Log("!In");
                 m_Machine.ChangeState<Player_Idle>();
             }
         }

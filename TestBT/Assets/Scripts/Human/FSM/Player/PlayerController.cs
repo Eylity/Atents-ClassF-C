@@ -12,24 +12,28 @@ namespace FSM.Player
         [HideInInspector] public bool m_ActiveFlyAttack = true;
         [HideInInspector] public bool m_ActiveFullSwing = true;
         [HideInInspector] public bool m_ActiveArea = true;
+        [HideInInspector] public bool m_IsLive = true;
         [HideInInspector] public bool m_NowExhausted;
         [HideInInspector] public bool m_NowRun;
 
-        public bool m_Debug;
+        public bool m_Debug = false;
 
         [Space] [Header("----- Player Attack Trail -----")]
         [SerializeField] internal XWeaponTrail m_AttackLeftTrail;
         [SerializeField] internal XWeaponTrail m_AttackRightTrail;
-        [SerializeField] private float m_HealthPoint;
+
+        [Space] [Header("----- Player Status -----")] [SerializeField]
+        private float m_HealthPoint;
+
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
         [SerializeField] private float m_SubOrPlusStamina = 10f;
-        [SerializeField] internal float m_PlayerDamage = 5f;
-        internal bool m_IsLive = true;
+
 
         public float Health
         {
+            
             get => m_HealthPoint;
             set
             {
@@ -57,6 +61,7 @@ namespace FSM.Player
                 }
             }
         }
+
         private void Awake()
         {
             if (GetPlayerController != null && GetPlayerController != this)

@@ -28,7 +28,7 @@ namespace FSM.Player
 
             var areaEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.AreaEffect);
             areaEffect.transform.position = playerPos;
-            areaEffect.transform.DOMoveY(5.0f, 2.5f).SetEase(Ease.OutQuad);
+            areaEffect.transform.DOMoveY(5.0f, 2.0f).SetEase(Ease.OutQuad);
             ObjPool.ObjectPoolInstance.ReturnObject(areaEffect, EPrefabsName.AreaEffect, 7f);
         }
 

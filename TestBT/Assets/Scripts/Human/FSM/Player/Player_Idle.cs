@@ -1,4 +1,5 @@
 using UnityEngine;
+using XftWeapon;
 
 namespace FSM.Player
 {
@@ -10,12 +11,7 @@ namespace FSM.Player
 
         protected override void ONInitialized() => m_CharacterController = m_Owner.GetComponent<CharacterController>();
 
-        public override void OnStateEnter()
-        {
-            m_Owner.m_AttackLeftTrail.Deactivate();
-            m_Owner.m_AttackRightTrail.Deactivate();
-            Debug.Log($"StateEnter {ToString()}");
-        }
+        public override void OnStateEnter() => Debug.Log($"StateEnter {ToString()}");
 
         public override void ChangePoint()
         {

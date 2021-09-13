@@ -194,7 +194,7 @@ namespace XftWeapon {
         public void Deactivate() {
             mActivated = false;
             gameObject.SetActive(false);
-            mVertexPool?.SetMeshObjectActive(false);
+            mVertexPool.SetMeshObjectActive(false);
         }
 
         public void StopSmoothly(float fadeTime) {
