@@ -1,5 +1,4 @@
 using System.Collections;
-using FSM.Player;
 using UnityEngine;
 
 namespace Skill

@@ -8,6 +8,7 @@ namespace Skill
     public class Arrow : MonoBehaviour
     {
         private Collider m_Box;
+        private const int DAMAGE = 5;
 
         private void Awake()
         {
@@ -22,7 +23,7 @@ namespace Skill
         {
             if (other.CompareTag("Dragon"))
             {
-                DragonController.instance.hp -= 5;
+                DragonController.instance.hp -= DAMAGE;
                 m_Box.enabled = false;
                 Debug.Log($"Dragon Arrow Hit\n{DragonController.instance.hp}");
             }

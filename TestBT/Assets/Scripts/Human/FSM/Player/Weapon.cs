@@ -1,13 +1,10 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace FSM.Player
 {
     public class Weapon : MonoBehaviour
     {
-        [SerializeField] private float m_PlayerDamage;
         private const int FirstBloodPrefab = 0;
         private const int LastBloodPrefab = 17;
         private Collider m_Collider;
@@ -19,14 +16,17 @@ namespace FSM.Player
 
         public CameraShake Shake;
 
-        private void Awake() => m_Collider = GetComponent<BoxCollider>();
+        private void Awake()
+        {
+            m_Collider = GetComponent<BoxCollider>();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
             if (Physics.Raycast(m_Ray, out var hit) && other.CompareTag("Dragon"))
             {
                 Shake();
-                DragonController.instance.hp -= m_PlayerDamage;
+                DragonController.instance.hp -= PlayerController.GetPlayerController.m_PlayerDamage;
                 Debug.Log($"Hit Weapon\nCurrent Dragon HP : {DragonController.instance.hp}");
 
                 var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;

@@ -25,6 +25,8 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             Debug.Log($"StateEnter {ToString()}");
+
+            m_Owner.m_PlayerDamage += 5;
             
             m_Owner.Stamina -= 40f;
             m_Owner.m_ActiveFlyAttack = false;
@@ -68,6 +70,7 @@ namespace FSM.Player
             m_PSUpdater.IsActive = false;
             m_Owner.m_AttackRightTrail.Deactivate();
             m_Owner.m_AttackLeftTrail.Deactivate();
+            m_Owner.m_PlayerDamage -= 5;
         }
 
         private IEnumerator FlyAttackCoolDown()

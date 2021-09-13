@@ -12,13 +12,11 @@ namespace FSM.Player
         {
             Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_Attack);
-            m_Owner.m_AttackLeftTrail.Activate();
-            m_Owner.m_AttackRightTrail.Activate();
         }
 
         public override void ChangePoint()
         {
-            if (Input.GetMouseButtonDown(0) && m_Machine.m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <0.8f)
+            if (Input.GetMouseButtonDown(0))
             {
                 m_Machine.ChangeState<Player_LastAttack>();
             }
@@ -34,8 +32,7 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            m_Owner.m_AttackLeftTrail.Deactivate();
-            m_Owner.m_AttackRightTrail.Deactivate();
+            m_Machine.m_Animator.ResetTrigger(m_Attack);
         }
     }
 }
