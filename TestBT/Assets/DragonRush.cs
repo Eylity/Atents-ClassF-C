@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DragonRush : StateMachineBehaviour
-{
+{ 
+
     float rushtime = 0f;
 
     DragonController dragon;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        DragonController.instance.rushcollider = true;
+
         animator.ResetTrigger("RushEnd");
         dragon = animator.GetComponent<DragonController>();
 
@@ -27,6 +30,7 @@ public class DragonRush : StateMachineBehaviour
 
         if(rushtime>3f)
         {
+            DragonController.instance.rushcollider = false;
             animator.SetTrigger("RushEnd");
             rushtime = 0f;
         }

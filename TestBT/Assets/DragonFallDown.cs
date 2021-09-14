@@ -21,6 +21,9 @@ public class DragonFallDown : StateMachineBehaviour
         animator.ResetTrigger("FallDownEnd");
         dragon = animator.GetComponent<DragonController>();
 
+        DragonController.instance.falldowncollider = true;
+        DragonController.instance.falldowncollision.SetActive(true);
+
         if (dragon.falldownsmoke.activeSelf == false)
         {
             dragon.falldownsmoke.SetActive(true);
@@ -29,13 +32,16 @@ public class DragonFallDown : StateMachineBehaviour
         dragonnav = animator.GetComponent<NavMeshAgent>();       
 
         target = dragon.playerobject.transform;
+
+        iTween.MoveTo(animator.gameObject, iTween.Hash("x", target.transform.position.x, "y", target.transform.position.y + 2, "z", target.transform.position.z, "time", 3.0f, "easeType", iTween.EaseType.easeInQuart));
+
         directvector = target.position - animator.transform.position;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.transform.Translate(directvector.normalized * Time.deltaTime * accel, Space.World);
-        dragonnav.baseOffset -= Time.deltaTime * accel;
+        //animator.transform.Translate(directvector.normalized * Time.deltaTime * accel, Space.World);
+        //dragonnav.baseOffset -= Time.deltaTime * (accel + 1);
 
         if (animator.transform.position.y < 3f)
         {
@@ -46,7 +52,7 @@ public class DragonFallDown : StateMachineBehaviour
             animator.SetTrigger("FallDownEnd");
         }
 
-        accel += Time.deltaTime * 12f;
+        //accel += Time.deltaTime * 20f;
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

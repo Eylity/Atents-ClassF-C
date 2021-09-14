@@ -22,18 +22,15 @@ public class MeteorStrike : MonoBehaviour
         this.transform.LookAt(Target.transform.position);
 
         direct = Target.transform.position - this.transform.position;
-
-        Debug.Log(this.gameObject.tag);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
 
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("플레이어충돌");
+            FSM.Player.PlayerController.GetPlayerController.TakeDamage(DragonController.instance.fireraindamage);
 
             speed = 0f;
 
@@ -43,8 +40,6 @@ public class MeteorStrike : MonoBehaviour
             || (other.gameObject.tag == "Blue" && this.gameObject.tag == "Blue")
             || (other.gameObject.tag == "Green" && this.gameObject.tag == "Green"))
         {
-            Debug.Log("같은색충돌");
-
             speed = 0f;
 
             StartCoroutine(meteorend());

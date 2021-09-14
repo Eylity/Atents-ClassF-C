@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using FSM.Player;
 using UnityEngine;
 
 public class DragonController : MonoBehaviour
@@ -18,6 +17,8 @@ public class DragonController : MonoBehaviour
 
     public GameObject collectfire;
     public GameObject falldownsmoke;
+    public GameObject falldowncollision;
+
     public GameObject rushsmoke;
     public GameObject falldowncrack;
     public GameObject collectfire2;
@@ -25,8 +26,22 @@ public class DragonController : MonoBehaviour
     public GameObject dragonskin;
     public GameObject dragonfirerainobject;
 
+    public float taildamage;
+    public float rushdamage;
+    public float breathdamage;
+    public float falldowndamage;
+    public float fireraindamage;
+
+    public bool tailcollider;
+    public bool rushcollider;
+    public bool falldowncollider;
+
     private void Awake()
     {
+        tailcollider = false;
+        rushcollider = false;
+        falldowncollider = false;
+
         dragonfalldown = true;
         dragonfirerain = true;
 
@@ -61,12 +76,16 @@ public class DragonController : MonoBehaviour
         }
 
         playerobject = GameObject.FindWithTag("Player");
-        player = playerobject.GetComponent<PlayerController>();
+        player = playerobject.GetComponent<FSM.Player.PlayerController>();
     }
 
     void Start()
     {
-
+        taildamage = 15f;
+        rushdamage = 20f;
+        breathdamage = 25f;
+        falldowndamage = 30f;
+        fireraindamage = 50f;
     }
 
     // Update is called once per frame

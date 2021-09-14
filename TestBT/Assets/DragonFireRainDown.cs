@@ -23,6 +23,7 @@ public class DragonFireRainDown : StateMachineBehaviour
 
         if (animator.transform.position.y < 3f)
         {
+            dragonnav.baseOffset = 0f;
             animator.SetTrigger("FireRainEnd");
         }
     }

@@ -8,6 +8,9 @@ public class DragonFireRain : MonoBehaviour
 
     float radian;
 
+    public GameObject fireraintarget;
+    bool firerainstart;
+
     Vector3 axis;
 
     Vector3 newposition;
@@ -34,6 +37,7 @@ public class DragonFireRain : MonoBehaviour
 
     private void Awake()
     {
+        firerainstart = false;
         count = 0f;
 
         float dragonheight = this.transform.position.y;
@@ -50,6 +54,10 @@ public class DragonFireRain : MonoBehaviour
 
     void Start()
     {
+        this.transform.position = DragonController.instance.transform.position;
+
+        this.transform.LookAt(fireraintarget.transform.position);
+
         pillarred.SetActive(true);
         pillarblue.SetActive(true);
         pillargreen.SetActive(true);
@@ -69,29 +77,38 @@ public class DragonFireRain : MonoBehaviour
 
     IEnumerator FireRainEnd()
     {
-        yield return new WaitForSeconds(4f);
+        iTween.MoveTo(gameObject, iTween.Hash("x", DragonController.instance.transform.position.x, "y", DragonController.instance.transform.position.y, "z", DragonController.instance.transform.position.z, "time", 6.0f, "easeType", iTween.EaseType.easeInOutQuad));
+
+        yield return new WaitForSeconds(8f);
 
         this.gameObject.SetActive(false);
     }
 
+    bool firerainend = false;
 
-    void Update()
+    void FireRain()
     {
-        CircleMove();
+        Debug.Log("시작");
+        firerainstart = true;
+
+        if (firerainend == false)
+        {
+            CircleMove();
+        }
 
         radian += Time.deltaTime * 10f;
 
         counttime += Time.deltaTime;
 
-        if(counttime > 1f && bcolor == true && count < 3f)
+        if (counttime > 3f && bcolor == true && count < 3f)
         {
             random = Random.Range(0, 3);
 
-            if(random == 0)
+            if (random == 0)
             {
                 redeffect.SetActive(true);
             }
-            else if( random == 1)
+            else if (random == 1)
             {
                 blueeffect.SetActive(true);
             }
@@ -103,7 +120,7 @@ public class DragonFireRain : MonoBehaviour
             bcolor = false;
         }
 
-        if(counttime >12f && count < 3f)
+        if (counttime > 15f && count < 3f)
         {
             if (random == 0)
             {
@@ -126,9 +143,34 @@ public class DragonFireRain : MonoBehaviour
             bcolor = true;
         }
 
-        if(count == 3f)
+        if (count == 3f)
         {
+            this.transform.LookAt(DragonController.instance.transform.position);
+            firerainend = true;
             StartCoroutine(FireRainEnd());
+        }
+    }
+
+    float startcount = 0;
+
+    void Update()
+    {
+        if (firerainstart != true)
+        {
+            iTween.MoveTo(gameObject, iTween.Hash("x", fireraintarget.transform.position.x, "y", fireraintarget.transform.position.y, "z", fireraintarget.transform.position.z, "time", 6.0f, "easeType", iTween.EaseType.easeInOutQuad, "oncomplete","FireRain"));
+
+            startcount += Time.deltaTime;
+
+            if (startcount > 6f)
+            {
+                firerainstart = true;
+            }
+            //iTween.MoveBy(gameObject, iTween.Hash("y", 60, "time", 5f, "easeType", iTween.EaseType.linear));
+            //iTween.MoveBy(gameObject, iTween.Hash("z", 90, "time", 5f, "easeType", iTween.EaseType.linear));
+        }
+        else
+        {
+            FireRain();
         }
     }
 }

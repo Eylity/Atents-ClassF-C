@@ -13,12 +13,20 @@ public class DragonFallDownEnd : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dragon = animator.GetComponent<DragonController>();
+
+        DragonController.instance.falldowncollider = false;
+        DragonController.instance.falldowncollision.SetActive(false);
+
+       Vector3 dragonposition = dragon.transform.position;
+
         dragonnav = animator.GetComponent<NavMeshAgent>();
         dragonnav.baseOffset = 0f;
 
 
         if (dragon.falldowncrack.activeSelf == false)
         {
+            dragon.falldowncrack.transform.position = dragonposition;
+
             dragon.falldowncrack.SetActive(true);
         }
 

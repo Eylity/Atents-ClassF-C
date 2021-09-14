@@ -21,11 +21,14 @@ namespace FSM.Player
         private Vector3 m_GravityVec;
         [SerializeField] private bool m_Debug;
 
-        [Space] [Header("----- Player Attack Trail -----")] 
-        [HideInInspector] public XWeaponTrail m_AttackLeftTrail;
+        [Space] [Header("----- Player Attack Trail -----")] [HideInInspector]
+        public XWeaponTrail m_AttackLeftTrail;
+
         [HideInInspector] public XWeaponTrail m_AttackRightTrail;
-        [Space] [Header("----- Player Status -----")] 
-        [SerializeField] private float m_HealthPoint;
+
+        [Space] [Header("----- Player Status -----")] [SerializeField]
+        private float m_HealthPoint;
+
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
@@ -116,15 +119,8 @@ namespace FSM.Player
         private void FixedUpdate()
         {
             m_StateMachine?.FixedUpdate(Time.deltaTime);
-            if (!m_CharacterController.isGrounded)
-            {
-                m_GravityVec.y -= GRAVITY * Time.deltaTime;
-                m_CharacterController.Move(m_GravityVec * Time.deltaTime);
-            }
-            else
-            {
-                m_GravityVec = Vector3.zero;
-            }
+            m_GravityVec.y -= GRAVITY * Time.deltaTime;
+            m_CharacterController.Move(m_GravityVec * Time.deltaTime);
         }
 
         public void TakeDamage(float damage)
@@ -136,6 +132,7 @@ namespace FSM.Player
 
             Health -= (int) Math.Round(damage);
 
+            Debug.Log(Health);
             if (Health <= 0)
             {
                 m_StateMachine.ChangeState<Player_DIe>();
