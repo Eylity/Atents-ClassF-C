@@ -4,11 +4,6 @@ namespace FSM.Player
 {
     public class Player_Idle : State<PlayerController>
     {
-        private CharacterController m_CharacterController;
-        private const float GRAVITY = 9.81f;
-        private Vector3 m_GravityVec;
-
-        protected override void ONInitialized() => m_CharacterController = m_Owner.GetComponent<CharacterController>();
 
         public override void OnStateEnter()
         {
@@ -43,15 +38,6 @@ namespace FSM.Player
             if (Input.GetKey(KeyCode.Space) && m_Owner.m_ActiveArea)
             {
                 m_Machine.ChangeState<Player_Area>();
-            }
-        }
-
-        public override void OnFixedUpdate(float deltaTime)
-        {
-            if (!m_CharacterController.isGrounded)
-            {
-                m_GravityVec += Vector3.down * GRAVITY * deltaTime;
-                m_CharacterController.Move(m_GravityVec * deltaTime);
             }
         }
     }

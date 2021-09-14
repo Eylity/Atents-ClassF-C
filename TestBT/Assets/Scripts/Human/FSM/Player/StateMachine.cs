@@ -4,23 +4,23 @@ using UnityEngine;
 
 namespace FSM.Player
 {
-    public sealed class StateMachine<T>
+    public class StateMachine<T>
     {
 
         private State<T> CurrentState { get; set; }
 
         private readonly Dictionary<Type, State<T>> m_States = new Dictionary<Type, State<T>>();
         private readonly T m_Owner;
-        internal readonly Animator m_Animator;
+        public readonly Animator m_Animator;
 
 
 
-        public StateMachine(Animator animator, T owner, State<T> initialState)
+        public StateMachine(Animator animator, T owner, State<T> state)
         {
             this.m_Animator = animator;
             m_Owner = owner;
-            AddState(initialState);
-            CurrentState = initialState;
+            AddState(state);
+            CurrentState = state;
             CurrentState?.OnStateEnter();
         }
 

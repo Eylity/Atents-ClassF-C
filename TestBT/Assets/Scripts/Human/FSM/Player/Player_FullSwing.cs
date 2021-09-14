@@ -16,9 +16,9 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.m_PlayerDamage += 10;
             Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
+            m_Owner.m_PlayerDamage += 5;
             m_Owner.Stamina -= 40f;
        
             m_Owner.m_ActiveFullSwing = false;

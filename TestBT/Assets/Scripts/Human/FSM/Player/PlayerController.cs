@@ -14,19 +14,23 @@ namespace FSM.Player
         [HideInInspector] public bool m_ActiveArea = true;
         [HideInInspector] public bool m_NowExhausted;
         [HideInInspector] public bool m_NowRun;
+        [HideInInspector] public bool m_IsLive = true;
 
-        public bool m_Debug;
+        private CharacterController m_CharacterController;
+        private const float GRAVITY = 9.81f;
+        private Vector3 m_GravityVec;
+        [SerializeField] private bool m_Debug;
 
-        [Space] [Header("----- Player Attack Trail -----")]
-        [SerializeField] internal XWeaponTrail m_AttackLeftTrail;
-        [SerializeField] internal XWeaponTrail m_AttackRightTrail;
+        [Space] [Header("----- Player Attack Trail -----")] 
+        [HideInInspector] public XWeaponTrail m_AttackLeftTrail;
+        [HideInInspector] public XWeaponTrail m_AttackRightTrail;
+        [Space] [Header("----- Player Status -----")] 
         [SerializeField] private float m_HealthPoint;
         [SerializeField] private float m_MaxHealthPoint = 100;
         [SerializeField] private float m_StaminaPoint;
         [SerializeField] private float m_MaxStaminaPoint = 200;
-        [SerializeField] private float m_SubOrPlusStamina = 10f;
+        [SerializeField] private float m_RunStamina = 10f;
         [SerializeField] internal float m_PlayerDamage = 5f;
-        internal bool m_IsLive = true;
 
         public float Health
         {
@@ -57,6 +61,7 @@ namespace FSM.Player
                 }
             }
         }
+
         private void Awake()
         {
             if (GetPlayerController != null && GetPlayerController != this)
@@ -64,6 +69,7 @@ namespace FSM.Player
                 Destroy(this);
             }
 
+            m_CharacterController = GetComponent<CharacterController>();
             GetPlayerController = this;
             Stamina = m_MaxStaminaPoint;
             Health = m_MaxHealthPoint;
@@ -110,6 +116,15 @@ namespace FSM.Player
         private void FixedUpdate()
         {
             m_StateMachine?.FixedUpdate(Time.deltaTime);
+            if (!m_CharacterController.isGrounded)
+            {
+                m_GravityVec.y -= GRAVITY * Time.deltaTime;
+                m_CharacterController.Move(m_GravityVec * Time.deltaTime);
+            }
+            else
+            {
+                m_GravityVec = Vector3.zero;
+            }
         }
 
         public void TakeDamage(float damage)
@@ -131,8 +146,8 @@ namespace FSM.Player
         {
             Stamina = m_NowRun switch
             {
-                true => Stamina -= m_SubOrPlusStamina * Time.deltaTime,
-                _ => Stamina += m_SubOrPlusStamina * Time.deltaTime,
+                true => Stamina -= m_RunStamina * Time.deltaTime,
+                _ => Stamina += m_RunStamina * Time.deltaTime,
             };
 
             if (m_StaminaPoint <= 0 && !m_NowExhausted)

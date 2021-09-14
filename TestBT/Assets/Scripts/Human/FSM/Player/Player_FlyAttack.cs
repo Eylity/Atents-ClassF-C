@@ -26,8 +26,6 @@ namespace FSM.Player
         {
             Debug.Log($"StateEnter {ToString()}");
 
-            m_Owner.m_PlayerDamage += 5;
-            
             m_Owner.Stamina -= 40f;
             m_Owner.m_ActiveFlyAttack = false;
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);

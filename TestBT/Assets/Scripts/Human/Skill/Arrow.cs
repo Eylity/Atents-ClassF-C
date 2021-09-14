@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
-using FSM.Player;
 using UnityEngine;
 
 namespace Skill
 {
     public class Arrow : MonoBehaviour
     {
-        private Collider m_Box;
         private const int DAMAGE = 5;
+        private Collider m_Box;
 
         private void Awake()
         {
