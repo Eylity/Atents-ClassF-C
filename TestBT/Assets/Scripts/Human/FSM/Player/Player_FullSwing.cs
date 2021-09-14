@@ -16,7 +16,6 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
             m_Owner.Stamina -= 40f;
@@ -52,8 +51,6 @@ namespace FSM.Player
             m_Owner.m_PlayerDamage -= 10;
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge, EPrefabsName.ChargingFullSwing);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge, EPrefabsName.ChargingFullSwing);
-            m_Owner.m_AttackRightTrail.Deactivate();
-            m_Owner.m_AttackLeftTrail.Deactivate();
             m_PSUpdater.IsActive = false;
         }
 

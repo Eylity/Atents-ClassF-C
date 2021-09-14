@@ -51,18 +51,18 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0.28709936, b: 1, a: 1}
+    m_Value: {r: 0.20825917, g: 0.21345675, b: 0.2264151, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0.4481132, g: 0.60295844, b: 1, a: 1}
+    m_Value: {r: 0.12522252, g: 0.12716663, b: 0.13207549, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   bottom:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 1
     showAlpha: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   compensation:
     m_OverrideState: 0
     m_Value: 0

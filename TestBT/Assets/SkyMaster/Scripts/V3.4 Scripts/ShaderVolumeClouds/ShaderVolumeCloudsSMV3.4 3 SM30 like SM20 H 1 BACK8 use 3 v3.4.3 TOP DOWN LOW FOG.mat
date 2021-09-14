@@ -61,15 +61,15 @@ Material:
     - _CloudDensity: 1
     - _CloudSharpness: 0.8
     - _CloudSize: 1
-    - _ColorDiff: -1.44
+    - _ColorDiff: -1.29
     - _ColorDiffOffset: 0.3
-    - _Coverage: -0.62
+    - _Coverage: -0.82
     - _CoverageOffset: 0.46
     - _CullMode: 0
-    - _CutHeight: 10
+    - _CutHeight: 100
     - _CutHeight2: 1222
     - _Cutoff: 0.465
-    - _Density: 0.0000084
+    - _Density: 0.0127
     - _DepthBlendMul: 2.29
     - _DepthBlendMult: 2
     - _DepthColor: 0
@@ -78,10 +78,10 @@ Material:
     - _Dithering: 1280
     - _EdgeBlend: 0.11
     - _EdgeFactor: 0.51
-    - _FogFactor: 0.19
+    - _FogFactor: 0.38
     - _FogUnity: 1
     - _Forward: 0
-    - _HorizonFactor: 0
+    - _HorizonFactor: -2.6
     - _IndirectContribution: 1
     - _MipLevel: 0
     - _Mode: 0
@@ -93,7 +93,7 @@ Material:
     - _TimeMult: 0.1
     - _TimeMultSecondLayer: 4
     - _TranspOffset: 6.62
-    - _Transparency: -0.51
+    - _Transparency: -0.6
     - _TransparencyOffset: 0
     - _TransparencyThres: -1.69
     - _Velocity1: 22
@@ -108,17 +108,17 @@ Material:
     - _Brightness: {r: 1, g: 1, b: 1, a: 1}
     - _CloudNormalsDirection: {r: 1, g: -1, b: 1, a: 0}
     - _CloudSpeed: {r: 0.001, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+    - _Color: {r: 0.043137256, g: 0.043137256, b: 0.043137256, a: 1}
     - _Control: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
     - _EdgeFactors: {r: 0, g: 0.52, b: -1, a: 0}
-    - _FogColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+    - _FogColor: {r: 0.76862746, g: 0.85882354, b: 0.91764706, a: 1}
     - _LightingControl: {r: 1, g: 1, b: -1, a: 0}
     - _Shading: {r: 0.27681658, g: 0.29418916, b: 0.4705882, a: 0.172}
-    - _ShadowColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0.5529412}
-    - _SunColor: {r: 0.6037736, g: 0.6009256, b: 0.6009256, a: 0.8603922}
+    - _ShadowColor: {r: 0.53475434, g: 0.53475434, b: 0.5754717, a: 0}
+    - _SunColor: {r: 0.9622642, g: 0.9577252, b: 0.9577252, a: 4.002549}
     - _SunDir: {r: 0, g: 1, b: 0, a: 0}
-    - _Velocity1: {r: 19.112045, g: 0.0000022785518, b: 0, a: 0.13378453}
-    - _Velocity2: {r: 65.9501, g: 0.000007861877, b: 0, a: 2}
+    - _Velocity1: {r: 19.119934, g: 0.0000022794904, b: 0, a: 0.13383994}
+    - _Velocity2: {r: 66.015884, g: 0.0000078697185, b: 0, a: 2}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
     - pointLightPos: {r: -1279.0642, g: 627.7856, b: -803.54034, a: 0}

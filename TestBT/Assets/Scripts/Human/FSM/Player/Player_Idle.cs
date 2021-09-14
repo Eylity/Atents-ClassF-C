@@ -9,7 +9,6 @@ namespace FSM.Player
         {
             m_Owner.m_AttackLeftTrail.Deactivate();
             m_Owner.m_AttackRightTrail.Deactivate();
-            Debug.Log($"StateEnter {ToString()}");
         }
 
         public override void ChangePoint()

@@ -10,7 +10,6 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            Debug.Log($"StateEnter {ToString()}");
             m_Machine.m_Animator.SetTrigger(m_Attack);
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
@@ -18,7 +17,7 @@ namespace FSM.Player
 
         public override void ChangePoint()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && m_Machine.m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.8)
             {
                 m_Machine.ChangeState<Player_AttackR>();
             }
@@ -31,7 +30,7 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Idle>();
             }
         }
-
+        
         public override void OnStateExit()
         {
             m_Machine.m_Animator.ResetTrigger(m_Attack);

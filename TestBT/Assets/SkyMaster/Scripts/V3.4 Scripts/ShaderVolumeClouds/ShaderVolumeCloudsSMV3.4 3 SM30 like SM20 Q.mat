@@ -99,25 +99,25 @@ Material:
     - _ditherTiling: 1
     - _shadowAlpha: 0.75
     - _shadowSharpness: 1
-    - pointLightPower: 0.44409057
+    - pointLightPower: 2
     m_Colors:
     - _Ambient: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.3534673, g: 0.5399116, b: 0.50106907, a: 0.81180966}
     - _Brightness: {r: 7.93, g: 0.88, b: 1, a: -1.6}
     - _CloudNormalsDirection: {r: 1, g: -1, b: 1, a: 0}
     - _CloudSpeed: {r: 0.001, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.043137256, g: 0.039215688, b: 0.039215688, a: 1}
+    - _Color: {r: 0.8867924, g: 0.8407796, b: 0.8612762, a: 1}
     - _Control: {r: 0.19993512, g: 0.2907487, b: 0.31617647, a: 1}
     - _EdgeFactors: {r: 0, g: 0.52, b: -1, a: 0}
-    - _FogColor: {r: 1, g: 0, b: 0.4453454, a: 0.98039216}
+    - _FogColor: {r: 0.3008188, g: 0.3008188, b: 0.3773585, a: 1}
     - _LightingControl: {r: 1, g: 1, b: -1, a: 0}
     - _Shading: {r: 0.27681658, g: 0.29418916, b: 0.4705882, a: 0.172}
-    - _ShadowColor: {r: 0.3018868, g: 0.104233354, b: 0.089711644, a: 0.4627451}
-    - _SunColor: {r: 0.754717, g: 0.39149815, b: 0.12459949, a: 0.19607843}
+    - _ShadowColor: {r: 3.069805, g: 3.0624778, b: 3.509434, a: 0.78431374}
+    - _SunColor: {r: 0.24339624, g: 0.22863902, b: 0.20780528, a: 0.023529414}
     - _SunDir: {r: 0, g: 1, b: 0, a: 0}
-    - _Velocity1: {r: 3.0014553, g: 0.0000003578013, b: 0, a: 0.021011358}
-    - _Velocity2: {r: 4.507132, g: 0.0000005372919, b: 0, a: 2}
+    - _Velocity1: {r: 3.0026846, g: 0.00000035794784, b: 0, a: 0.021020923}
+    - _Velocity2: {r: 4.507184, g: 0.0000005372981, b: 0, a: 2}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - pointLightPos: {r: -1284.2717, g: 800.085, b: -1275.0769, a: 0}
+    - pointLightPos: {r: -1315.7546, g: 672.6888, b: -1984.1831, a: 0}
   m_BuildTextureStacks: []

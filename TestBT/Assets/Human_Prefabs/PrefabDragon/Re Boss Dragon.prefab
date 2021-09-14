@@ -46646,7 +46646,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4325019278250126667}
-  - component: {fileID: 8771566281553572924}
   m_Layer: 0
   m_Name: Bip002-Spine1
   m_TagString: Dragon
@@ -46671,22 +46670,6 @@ Transform:
   m_Father: {fileID: 2096621460760683032}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &8771566281553572924
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4646859570074859797}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &4660042787866706775
 GameObject:
   m_ObjectHideFlags: 0
@@ -46818,7 +46801,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1241583468342077218}
-  - component: {fileID: 1906296465788833591}
   m_Layer: 0
   m_Name: Bip002-Neck
   m_TagString: Dragon
@@ -46843,22 +46825,6 @@ Transform:
   m_Father: {fileID: 5418632845950987795}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1906296465788833591
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4776549563704747750}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &4873975955888645946
 GameObject:
   m_ObjectHideFlags: 0
