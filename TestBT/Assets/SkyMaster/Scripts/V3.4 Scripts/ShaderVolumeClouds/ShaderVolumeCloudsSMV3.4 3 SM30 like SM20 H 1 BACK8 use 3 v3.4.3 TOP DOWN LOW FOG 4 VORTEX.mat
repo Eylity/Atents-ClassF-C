@@ -117,11 +117,10 @@ Material:
     - _ShadowColor: {r: 0.53475434, g: 0.53475434, b: 0.5754717, a: 0}
     - _SunColor: {r: 0.6784888, g: 0.70205027, b: 0.745283, a: 50.77255}
     - _SunDir: {r: 0, g: 1, b: 0, a: 0}
-    - _Velocity1: {r: 10.0256195, g: 0.0000011952338, b: 0, a: 0.07018166}
-    - _Velocity2: {r: 30.009459, g: 0.0000035774092, b: 0, a: 2}
+    - _Velocity1: {r: 10.025711, g: 0.0000011952447, b: 0, a: 0.07018233}
+    - _Velocity2: {r: 30.00949, g: 0.0000035774128, b: 0, a: 2}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
     - pointLightPos: {r: 486.26868, g: -124.51496, b: -2597.4204, a: 0}
     - vortexControl: {r: 30, g: 1, b: 1, a: 1}
     - vortexPosRadius: {r: 0, g: 0, b: 0, a: 1}
-  m_BuildTextureStacks: []

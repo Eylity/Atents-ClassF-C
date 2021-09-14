@@ -232,7 +232,7 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   maxShadowDistance:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 32622.44
     min: 0
   directionalTransmissionMultiplier:
@@ -317,17 +317,17 @@ MonoBehaviour:
     m_Value: 0
   sunSize:
     m_OverrideState: 1
-    m_Value: 0.181
+    m_Value: 0.1
     min: 0
     max: 1
   sunSizeConvergence:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 4
     min: 1
     max: 10
   atmosphereThickness:
     m_OverrideState: 1
-    m_Value: 3.18
+    m_Value: 3
     min: 0
     max: 5
   skyTint:

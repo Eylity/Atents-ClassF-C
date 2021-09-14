@@ -33,31 +33,31 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Thickness: 0.37
-    - _ColorDiff: -4.46
+    - _ColorDiff: 0.3
     - _ColorDiffOffset: -0.1
-    - _Coverage: 0.09
+    - _Coverage: 0.03
     - _CoverageOffset: -0.34
     - _CullMode: 2
     - _CutHeight: 1627
     - _CutHeight2: 1285
     - _Cutoff: 0.5
     - _Density: 0.00015
-    - _FogFactor: 5
+    - _FogFactor: 0
     - _FogUnity: 1
     - _HorizonFactor: 0.02
     - _TranspOffset: -0.01
     - _Transparency: 0.51
-    - pointLightPower: 8.8102885e-14
+    - pointLightPower: 2
     m_Colors:
-    - _Color: {r: 0.6792453, g: 0.24670699, b: 0.439226, a: 1}
+    - _Color: {r: 0.043137256, g: 0.039215688, b: 0.039215688, a: 1}
     - _Control: {r: 1, g: 1, b: 1, a: 1}
     - _EdgeFactors: {r: 0, g: 0.52, b: -1, a: 0}
-    - _FogColor: {r: 0.21615599, g: 0.19490923, b: 0.5660378, a: 1}
+    - _FogColor: {r: 1, g: 0, b: 0.4453454, a: 0.98039216}
     - _LightingControl: {r: 1, g: 1, b: -1, a: 0}
-    - _ShadowColor: {r: 0.21624698, g: 0.21146315, b: 0.4528302, a: 0.19607843}
-    - _SunColor: {r: 0.6698113, g: 0.47063988, b: 0.18640976, a: -0.13156861}
-    - _Velocity1: {r: 2.1320424, g: 0.0000002541592, b: 0, a: 0.014924332}
-    - _Velocity2: {r: 3.7489355, g: 0.00000044690788, b: 0, a: 2}
+    - _ShadowColor: {r: 0.3018868, g: 0.104233354, b: 0.089711644, a: 0.4627451}
+    - _SunColor: {r: 0.754717, g: 0.39149815, b: 0.12459949, a: 0.19607843}
+    - _Velocity1: {r: 3.009999, g: 0.0000003588198, b: 0, a: 0.021069517}
+    - _Velocity2: {r: 4.6334095, g: 0.00000055234534, b: 0, a: 2}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - pointLightPos: {r: -672.9732, g: 647.4563, b: -1578.5314, a: 0}
+    - pointLightPos: {r: -597.99805, g: 621.8218, b: -1315.6511, a: 0}
   m_BuildTextureStacks: []

@@ -66,7 +66,7 @@ Material:
     - _Coverage: -0.62
     - _CoverageOffset: 0.46
     - _CullMode: 0
-    - _CutHeight: 133.68
+    - _CutHeight: 10
     - _CutHeight2: 1222
     - _Cutoff: 0.465
     - _Density: 0.0000084
@@ -117,9 +117,9 @@ Material:
     - _ShadowColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0.5529412}
     - _SunColor: {r: 0.6037736, g: 0.6009256, b: 0.6009256, a: 0.8603922}
     - _SunDir: {r: 0, g: 1, b: 0, a: 0}
-    - _Velocity1: {r: 15.392881, g: 0.000001835095, b: 0, a: 0.10775021}
-    - _Velocity2: {r: 44.93718, g: 0.000005356933, b: 0, a: 2}
+    - _Velocity1: {r: 19.112045, g: 0.0000022785518, b: 0, a: 0.13378453}
+    - _Velocity2: {r: 65.9501, g: 0.000007861877, b: 0, a: 2}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - pointLightPos: {r: -153.82587, g: 659.8085, b: -964.8349, a: 0}
+    - pointLightPos: {r: -1279.0642, g: 627.7856, b: -803.54034, a: 0}
   m_BuildTextureStacks: []
