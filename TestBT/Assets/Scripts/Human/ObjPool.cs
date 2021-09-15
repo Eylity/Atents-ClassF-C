@@ -10,7 +10,8 @@ public enum EPrefabsName
     FlyAttackArrow,
     FlyAttackEffect,
     ChargingFullSwing,
-    FullSwingEffect
+    FullSwingEffect,
+    HealWeapon
 }
 
 public enum EBloodPrefabsName

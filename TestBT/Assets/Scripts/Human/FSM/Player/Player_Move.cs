@@ -26,7 +26,7 @@ namespace FSM.Player
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_Machine.ChangeState<Player_AttackL>();
+                m_Machine.ChangeState<Player_Attack>();
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)

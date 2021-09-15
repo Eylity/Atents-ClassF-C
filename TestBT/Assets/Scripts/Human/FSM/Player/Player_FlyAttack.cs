@@ -29,10 +29,10 @@ namespace FSM.Player
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
             AddImpact((m_Owner.transform.forward), FORCE);
             
-            var currentInstance = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
-            ObjPool.ObjectPoolInstance.ReturnObject(currentInstance, EPrefabsName.FlyAttackEffect, 4.0f);
-            currentInstance.transform.SetParent(m_Owner.gameObject.transform);
-            m_PSUpdater = currentInstance.GetComponent<PSMeshRendererUpdater>();
+            var currentEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
+            ObjPool.ObjectPoolInstance.ReturnObject(currentEffect, EPrefabsName.FlyAttackEffect, 4.0f);
+            currentEffect.transform.SetParent(m_Owner.gameObject.transform);
+            m_PSUpdater = currentEffect.GetComponent<PSMeshRendererUpdater>();
             m_PSUpdater.UpdateMeshEffect(m_Owner.gameObject);
 
             m_Owner.m_AttackLeftTrail.Activate();

@@ -7,15 +7,16 @@ namespace FSM.Player
     {
         private readonly WaitForSeconds m_FullSwingTimer = new WaitForSeconds(7.0f);
         private readonly int m_FullSwing;
+        private PSMeshRendererUpdater m_PSUpdater;
         private GameObject m_RightCharge;
         private GameObject m_LeftCharge;
-        private PSMeshRendererUpdater m_PSUpdater;
 
         public Player_FullSwing() : base("Base Layer.Skill.FullSwing") =>
             m_FullSwing = Animator.StringToHash("FullSwing");
 
         public override void OnStateEnter()
         {
+            PlayerManager.Instance.PlaySound(EPlayerSound.FullSwing);
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
             m_Owner.Stamina -= 40f;
@@ -48,7 +49,7 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            m_Owner.m_PlayerDamage -= 10;
+            m_Owner.m_PlayerDamage -= 5;
             ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge, EPrefabsName.ChargingFullSwing);
             ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge, EPrefabsName.ChargingFullSwing);
             m_PSUpdater.IsActive = false;

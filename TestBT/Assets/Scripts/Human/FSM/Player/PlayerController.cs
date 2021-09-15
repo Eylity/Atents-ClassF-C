@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using XftWeapon;
 
@@ -21,19 +22,15 @@ namespace FSM.Player
         private Vector3 m_GravityVec;
         [SerializeField] private bool m_Debug;
 
-        [Space] [Header("----- Player Attack Trail -----")] [HideInInspector]
-        public XWeaponTrail m_AttackLeftTrail;
-
-        [HideInInspector] public XWeaponTrail m_AttackRightTrail;
-
-        [Space] [Header("----- Player Status -----")] [SerializeField]
-        private float m_HealthPoint;
-
-        [SerializeField] private float m_MaxHealthPoint = 100;
-        [SerializeField] private float m_StaminaPoint;
-        [SerializeField] private float m_MaxStaminaPoint = 200;
-        [SerializeField] private float m_RunStamina = 10f;
-        [SerializeField] internal float m_PlayerDamage = 5f;
+        [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackLeftTrail;
+        [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackRightTrail;
+        
+        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_HealthPoint;
+        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_MaxHealthPoint = 100;
+        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_StaminaPoint;
+        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_MaxStaminaPoint = 200;
+        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_RunStamina = 10f;
+        [FoldoutGroup("PlayerStatus")][SerializeField] internal float m_PlayerDamage = 5f;
 
         public float Health
         {
@@ -83,9 +80,7 @@ namespace FSM.Player
             var anim = GetComponent<Animator>();
             m_StateMachine = new StateMachine<PlayerController>(anim, this, new Player_Idle());
             m_StateMachine.AddState(new Player_Move());
-            m_StateMachine.AddState(new Player_AttackL());
-            m_StateMachine.AddState(new Player_AttackR());
-            m_StateMachine.AddState(new Player_LastAttack());
+            m_StateMachine.AddState(new Player_Attack());
             m_StateMachine.AddState(new Player_Area());
             m_StateMachine.AddState(new Player_FlyAttack());
             m_StateMachine.AddState(new Player_FullSwing());
@@ -100,11 +95,6 @@ namespace FSM.Player
 
             if (m_Debug)
             {
-                if (Input.GetKeyDown(KeyCode.Tab))
-                {
-                    TakeDamage(35f);
-                }
-
                 if (Input.GetKeyDown(KeyCode.CapsLock))
                 {
                     Stamina -= 50f;
@@ -119,10 +109,14 @@ namespace FSM.Player
         private void FixedUpdate()
         {
             m_StateMachine?.FixedUpdate(Time.deltaTime);
-            m_GravityVec.y -= GRAVITY * Time.deltaTime;
-            m_CharacterController.Move(m_GravityVec * Time.deltaTime);
+            if (!m_CharacterController.isGrounded)
+            {
+                m_GravityVec.y -= GRAVITY * Time.deltaTime;
+                m_CharacterController.Move(m_GravityVec * Time.deltaTime);
+            }
         }
 
+        [Button]
         public void TakeDamage(float damage)
         {
             if (!m_IsLive)
