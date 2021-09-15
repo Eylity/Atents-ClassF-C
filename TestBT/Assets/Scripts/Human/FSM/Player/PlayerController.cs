@@ -1,7 +1,6 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using XftWeapon;
 
 namespace FSM.Player
 {
@@ -17,13 +16,7 @@ namespace FSM.Player
         [HideInInspector] public bool m_NowRun;
         [HideInInspector] public bool m_IsLive = true;
 
-        private CharacterController m_CharacterController;
-        private const float GRAVITY = 9.81f;
-        private Vector3 m_GravityVec;
         [SerializeField] private bool m_Debug;
-
-        [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackLeftTrail;
-        [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackRightTrail;
         
         [FoldoutGroup("PlayerStatus")][SerializeField] private float m_HealthPoint;
         [FoldoutGroup("PlayerStatus")][SerializeField] private float m_MaxHealthPoint = 100;
@@ -70,7 +63,6 @@ namespace FSM.Player
             }
             GetPlayerController = this;
 
-            m_CharacterController = GetComponent<CharacterController>();
             Stamina = m_MaxStaminaPoint;
             Health = m_MaxHealthPoint;
         }
@@ -109,14 +101,9 @@ namespace FSM.Player
         private void FixedUpdate()
         {
             m_StateMachine?.FixedUpdate(Time.deltaTime);
-            if (!m_CharacterController.isGrounded)
-            {
-                m_GravityVec.y -= GRAVITY * Time.deltaTime;
-                m_CharacterController.Move(m_GravityVec * Time.deltaTime);
-            }
         }
 
-        [Button]
+        [Button(ButtonStyle.CompactBox)]
         public void TakeDamage(float damage)
         {
             if (!m_IsLive)

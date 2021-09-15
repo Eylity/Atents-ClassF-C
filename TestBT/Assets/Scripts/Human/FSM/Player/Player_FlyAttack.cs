@@ -16,11 +16,7 @@ namespace FSM.Player
         public Player_FlyAttack() : base("Base Layer.Skill.FlyAttack") =>
             m_FlyAttack = Animator.StringToHash("FlyAttack");
 
-        protected override void ONInitialized()
-        {
-            m_CharacterController = m_Owner.GetComponent<CharacterController>();
-        }
-
+        protected override void ONInitialized() => m_CharacterController = m_Owner.GetComponent<CharacterController>();
 
         public override void OnStateEnter()
         {
@@ -28,15 +24,10 @@ namespace FSM.Player
             m_Owner.m_ActiveFlyAttack = false;
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
             AddImpact((m_Owner.transform.forward), FORCE);
-            
-            var currentEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackEffect);
-            ObjPool.ObjectPoolInstance.ReturnObject(currentEffect, EPrefabsName.FlyAttackEffect, 4.0f);
-            currentEffect.transform.SetParent(m_Owner.gameObject.transform);
-            m_PSUpdater = currentEffect.GetComponent<PSMeshRendererUpdater>();
-            m_PSUpdater.UpdateMeshEffect(m_Owner.gameObject);
 
-            m_Owner.m_AttackLeftTrail.Activate();
-            m_Owner.m_AttackRightTrail.Activate();
+            var player = m_Owner.gameObject;
+            PlayerManager.Instance.TrailSwitch();
+            m_PSUpdater = PlayerManager.Instance.GetEffect(player,EPrefabsName.FlyAttackEffect,4f,player.transform);
             m_Owner.StartCoroutine(FlyAttackCoolDown());
         }
 
@@ -44,9 +35,6 @@ namespace FSM.Player
         {
             if (m_Machine.IsEnd())
             {
-                var arrow = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FlyAttackArrow);
-                ObjPool.ObjectPoolInstance.ReturnObject(arrow, EPrefabsName.FlyAttackArrow, 3f);
-                arrow.transform.position = m_Owner.transform.position;
                 m_Machine.ChangeState<Player_Idle>();
             }
         }
@@ -63,6 +51,7 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
+            PlayerManager.Instance.GetEffect(m_Owner.gameObject, EPrefabsName.FlyAttackArrow, 3f);
             m_PSUpdater.IsActive = false;
         }
 

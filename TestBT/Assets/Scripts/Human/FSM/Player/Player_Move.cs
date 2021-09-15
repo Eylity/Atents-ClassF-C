@@ -1,26 +1,27 @@
 ﻿using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 namespace FSM.Player
 {
     public class Player_Move : State<PlayerController>
     {
-        private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
+        private readonly int m_IsRun = Animator.StringToHash("IsRun");
+        private const float GRAVITY = 9.81f;
         private CharacterController m_CharacterController;
         private Transform m_CamPos;
+        private Vector3 m_GravityVec = Vector3.zero;
         private float m_RotateSpeed;
         private float m_MoveSpeed;
 
         protected override void ONInitialized()
         {
+            Debug.Assert(Camera.main != null, $"{ToString()}\nCamera.main Is null");
             m_CamPos = Camera.main.transform;
             m_CharacterController = m_Owner.GetComponent<CharacterController>();
         }
 
-        public override void OnStateEnter()
-        {
-            m_Machine.m_Animator.SetBool(m_IsMove, true);
-        }
+        public override void OnStateEnter() => m_Machine.m_Animator.SetBool(m_IsMove, true);
 
         public override void ChangePoint()
         {
@@ -78,7 +79,12 @@ namespace FSM.Player
                 Quaternion.LookRotation(movePos),
                 m_RotateSpeed * deltaTime);
 
-            m_CharacterController.Move(movePos * m_MoveSpeed * Time.deltaTime);
+            if (!m_CharacterController.isGrounded)
+            {
+                m_GravityVec.y -= GRAVITY * Time.deltaTime;
+            }
+
+            m_CharacterController.Move((movePos + m_GravityVec) * (m_MoveSpeed * Time.deltaTime));
         }
 
         public override void OnStateExit()

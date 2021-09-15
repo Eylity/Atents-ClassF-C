@@ -6,14 +6,13 @@ namespace FSM.Player
     public class Player_Attack : State<PlayerController>
     {
         private int m_Attack;
-        protected override void ONInitialized() => m_Attack = Animator.StringToHash("Attack");
 
+        protected override void ONInitialized() => m_Attack = Animator.StringToHash("Attack");
         public override void OnStateEnter()
         {
-            m_Owner.StartCoroutine(WaitForAnim());
+            PlayerManager.Instance.TrailSwitch();
             m_Machine.m_Animator.SetTrigger(m_Attack);
-            m_Owner.m_AttackLeftTrail.Activate();
-            m_Owner.m_AttackRightTrail.Activate();
+            m_Owner.StartCoroutine(WaitForAnim());
         }
         private IEnumerator WaitForAnim()
         {

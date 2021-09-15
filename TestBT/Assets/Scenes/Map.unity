@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3349728, g: 0.2530936, b: 0.16925023, a: 1}
+  m_IndirectSpecularColor: {r: 0.3378116, g: 0.25542834, b: 0.17121582, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -680,11 +680,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3339870544523702808, guid: cfac9d365a5888e4eb36bea3136d0655, type: 3}
   m_PrefabInstance: {fileID: 3339870546100057711}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1724709190 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1236260753016208069, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+  m_PrefabInstance: {fileID: 1236260751858299645}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1747728828 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1236260753214870712, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
   m_PrefabInstance: {fileID: 1236260751858299645}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1870364551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1236260753024042651, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+  m_PrefabInstance: {fileID: 1236260751858299645}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2071889366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3952525313561182185, guid: 3dc0885bdc15f5f459e3e73f7acb3606, type: 3}
@@ -788,6 +810,22 @@ PrefabInstance:
     - target: {fileID: 1236260751557787412, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236260751559687902, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_RunStamina
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236260751559687902, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_HealthPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236260751559687902, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_StaminaPoint
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236260751559687902, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_MaxStaminaPoint
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1236260751559827170, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
       propertyPath: m_TagString
@@ -1121,6 +1159,14 @@ PrefabInstance:
       propertyPath: m_LastAttack
       value: 
       objectReference: {fileID: 8300000, guid: 97e7a42bd37eb7a49af76f69b4cc4738, type: 3}
+    - target: {fileID: 1236260753214870715, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_AttackLeftTrail
+      value: 
+      objectReference: {fileID: 1870364551}
+    - target: {fileID: 1236260753214870715, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
+      propertyPath: m_AttackRightTrail
+      value: 
+      objectReference: {fileID: 1724709190}
     - target: {fileID: 1236260753221180891, guid: d4fe21a84d0a84e4ea4dfc74183e91e3, type: 3}
       propertyPath: m_TagString
       value: Player

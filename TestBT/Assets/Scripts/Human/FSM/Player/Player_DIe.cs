@@ -17,8 +17,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.m_AttackRightTrail.Deactivate();
-            m_Owner.m_AttackLeftTrail.Deactivate();
+            PlayerManager.Instance.TrailSwitch(false);
             m_Machine.m_Animator.SetBool(IsMove, false);
             m_Machine.m_Animator.SetBool(IsRun, false);
             m_Machine.m_Animator.ResetTrigger(Attack);

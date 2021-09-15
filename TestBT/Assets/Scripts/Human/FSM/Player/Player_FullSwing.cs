@@ -19,26 +19,23 @@ namespace FSM.Player
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
             m_Owner.Stamina -= 40f;
-       
+
             m_Owner.m_ActiveFullSwing = false;
             m_Owner.StartCoroutine(FullSwingCoolDown());
-            
-            var currentEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.FullSwingEffect);
-            ObjPool.ObjectPoolInstance.ReturnObject(currentEffect, EPrefabsName.FullSwingEffect, 8.0f);
-            currentEffect.transform.SetParent(m_Owner.gameObject.transform);
-            m_PSUpdater = currentEffect.GetComponent<PSMeshRendererUpdater>();
-            m_PSUpdater.UpdateMeshEffect(m_Owner.gameObject);
 
-            m_LeftCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullSwing);
-            m_RightCharge = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.ChargingFullSwing);
+            var gameObject = m_Owner.gameObject;
+            var playerPos = m_Owner.transform.position;
+            PlayerManager.Instance.TrailSwitch();
+            m_PSUpdater = PlayerManager.Instance.GetEffect(gameObject, EPrefabsName.FullSwingEffect, 8.0f, gameObject.transform);
+            PlayerManager.Instance.GetEffectObj(playerPos, EPrefabsName.ChargingFullSwing, out m_LeftCharge,5f);
+            PlayerManager.Instance.GetEffectObj(playerPos, EPrefabsName.ChargingFullSwing, out m_RightCharge,5f);
         }
 
         public override void OnStateUpdate()
         {
-            m_LeftCharge.transform.position =
-                m_Owner.m_AttackLeftTrail.transform.position;
-            m_RightCharge.transform.position =
-                m_Owner.m_AttackRightTrail.transform.position;
+            var playerPos = m_Owner.transform.position;
+            m_LeftCharge.transform.position = playerPos;
+            m_RightCharge.transform.position = playerPos;
 
             if (m_Machine.IsEnd())
             {
@@ -49,8 +46,6 @@ namespace FSM.Player
         public override void OnStateExit()
         {
             m_Owner.m_PlayerDamage -= 5;
-            ObjPool.ObjectPoolInstance.ReturnObject(m_LeftCharge, EPrefabsName.ChargingFullSwing);
-            ObjPool.ObjectPoolInstance.ReturnObject(m_RightCharge, EPrefabsName.ChargingFullSwing);
             m_PSUpdater.IsActive = false;
         }
 

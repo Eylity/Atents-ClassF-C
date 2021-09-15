@@ -20,14 +20,18 @@ namespace Skill
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("Player")) return;
-            m_InPlayer = true;
+            if (other.CompareTag("Player"))
+            {
+                m_InPlayer = true;
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.CompareTag("Player")) return;
-            m_InPlayer = false;
+            if (other.CompareTag("Player"))
+            {
+                m_InPlayer = false;
+            }
         }
 
         private IEnumerator Heal()

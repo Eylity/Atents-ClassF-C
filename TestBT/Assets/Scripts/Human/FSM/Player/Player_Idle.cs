@@ -7,8 +7,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.m_AttackLeftTrail.Deactivate();
-            m_Owner.m_AttackRightTrail.Deactivate();
+            PlayerManager.Instance.TrailSwitch(false);
         }
 
         public override void ChangePoint()

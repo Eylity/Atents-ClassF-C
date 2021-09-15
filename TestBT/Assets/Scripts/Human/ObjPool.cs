@@ -64,18 +64,18 @@ public class ObjPool : MonoBehaviour
 
     #endregion
 
-    public static ObjPool ObjectPoolInstance;
+    public static ObjPool Instance { get; private set; }
 
     #region Make Parent
 
     private void Awake()
     {
-        if (ObjectPoolInstance != null && ObjectPoolInstance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
 
-        ObjectPoolInstance = this;
+        Instance = this;
         CreatePrefabsParent();
     }
 
@@ -132,11 +132,11 @@ public class ObjPool : MonoBehaviour
 
     private static Prefabs FindPrefabName(EPrefabsName name)
     {
-        for (var i = 0; i < ObjectPoolInstance.m_Prefab.Length; i++)
+        for (var i = 0; i < Instance.m_Prefab.Length; i++)
         {
-            if (ObjectPoolInstance.m_Prefab[i].m_ObjectName == name)
+            if (Instance.m_Prefab[i].m_ObjectName == name)
             {
-                return ObjectPoolInstance.m_Prefab[i];
+                return Instance.m_Prefab[i];
             }
         }
 
@@ -145,11 +145,11 @@ public class ObjPool : MonoBehaviour
 
     private static BloodPrefabs FindPrefabName(EBloodPrefabsName name)
     {
-        for (var i = 0; i < ObjectPoolInstance.m_BloodPrefab.Length; i++)
+        for (var i = 0; i < Instance.m_BloodPrefab.Length; i++)
         {
-            if (ObjectPoolInstance.m_BloodPrefab[i].m_ObjectName == name)
+            if (Instance.m_BloodPrefab[i].m_ObjectName == name)
             {
-                return ObjectPoolInstance.m_BloodPrefab[i];
+                return Instance.m_BloodPrefab[i];
             }
         }
 
