@@ -26,6 +26,7 @@ namespace FSM.Player
             m_Machine.m_Animator.ResetTrigger(FlyAttack);
             m_Machine.m_Animator.ResetTrigger(FullSwing);
             m_Machine.m_Animator.SetTrigger(m_Exhausted);
+            m_Owner.m_NowExhausted = true;
             m_Owner.StartCoroutine(ExhaustedTimer());
         }
 

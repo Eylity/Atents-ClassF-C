@@ -38,12 +38,11 @@ public class CameraFollow : MonoBehaviour
         transform.position = m_Player.transform.position + m_RigOffset;
     }
 
-    [Button]
     void CamMove()
     {
         if (Input.GetMouseButton(1))
         {
-            m_MouseX += Input.GetAxis("Mouse X");
+            m_MouseX += -Input.GetAxis("Mouse X");
             m_MouseY += Input.GetAxis("Mouse Y");
             m_MouseY = Mathf.Clamp(m_MouseY, -50f, 0f);
             var rotation = transform.rotation;

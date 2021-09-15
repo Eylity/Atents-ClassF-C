@@ -19,7 +19,6 @@ namespace FSM.Player
             m_Owner.m_AttackLeftTrail.Activate();
             m_Owner.m_AttackRightTrail.Activate();
             m_Owner.StartCoroutine(AreaCoolDown());
-            PlayerManager.Instance.PlaySound(EPlayerSound.Area);
             var playerPos = m_Owner.transform.position;
             
             var currentEffect = ObjPool.ObjectPoolInstance.GetObject(EPrefabsName.HealWeapon);

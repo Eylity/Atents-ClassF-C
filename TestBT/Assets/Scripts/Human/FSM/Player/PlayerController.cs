@@ -68,9 +68,9 @@ namespace FSM.Player
             {
                 Destroy(this);
             }
+            GetPlayerController = this;
 
             m_CharacterController = GetComponent<CharacterController>();
-            GetPlayerController = this;
             Stamina = m_MaxStaminaPoint;
             Health = m_MaxHealthPoint;
         }
@@ -143,7 +143,6 @@ namespace FSM.Player
 
             if (m_StaminaPoint <= 0 && !m_NowExhausted)
             {
-                m_NowExhausted = true;
                 m_NowRun = false;
                 m_StateMachine.ChangeState<Player_Exhausted>();
             }

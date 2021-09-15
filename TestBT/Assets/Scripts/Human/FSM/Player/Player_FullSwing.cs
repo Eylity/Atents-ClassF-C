@@ -16,7 +16,6 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            PlayerManager.Instance.PlaySound(EPlayerSound.FullSwing);
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
             m_Owner.Stamina -= 40f;
