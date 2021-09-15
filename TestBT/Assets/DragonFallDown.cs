@@ -12,12 +12,9 @@ public class DragonFallDown : StateMachineBehaviour
 
     Vector3 directvector;
 
-    float accel = 0f;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        accel = 0f;
-
         animator.ResetTrigger("FallDownEnd");
         dragon = animator.GetComponent<DragonController>();
 

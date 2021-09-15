@@ -64,13 +64,13 @@ public class DragonWalk : StateMachineBehaviour
             animator.SetTrigger("FireRainReady");
         }
 
-        if (distance <= 8f && walktime <= 7f)
+        if (distance <= 12f && walktime <= 7f)
         {
             dragonnav.isStopped = true;
             animator.SetTrigger("TailattackIdle");
             walktime = 0f;
         }
-        else if(distance > 8f && walktime > 7f)
+        else if(distance > 12f && walktime > 7f)
         {
             randompattern = Random.Range(0, 10);
             if (randompattern < 5)

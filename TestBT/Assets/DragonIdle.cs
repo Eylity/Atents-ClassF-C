@@ -15,6 +15,8 @@ public class DragonIdle : StateMachineBehaviour
 
     float idletime = 0f;
 
+    int randompattern;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dragon = animator.GetComponent<DragonController>();
@@ -48,16 +50,31 @@ public class DragonIdle : StateMachineBehaviour
         }
 
 
-        if (idletime > 1f && distance > 8f)
+        if (idletime > 1f && distance > 12f)
         {
             animator.SetTrigger("Walk");
 
             idletime = 0f;
         }
-        else if (distance <= 8f && idletime > 1f)
+        else if (distance <= 12f && idletime > 1f)
         {
-            animator.SetTrigger("TailattackIdle");
-            idletime = 0f;
+            randompattern = Random.Range(0, 10);
+
+            if (randompattern < 6)
+            {
+                animator.SetTrigger("TailattackIdle");
+                idletime = 0f;
+            }
+            else if (6<=randompattern && randompattern < 9)
+            {
+                animator.SetTrigger("RushIdle");
+                idletime = 0f;
+            }
+            else
+            {
+                animator.SetTrigger("BreathIdle");
+                idletime = 0f;
+            }
         }
     }
 

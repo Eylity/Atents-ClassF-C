@@ -45,8 +45,7 @@ public class DragonBreathIdle : StateMachineBehaviour
 
 
         if (idletime > 2f)
-        {           
-
+        { 
             animator.SetTrigger("Breath");
 
             idletime = 0f;

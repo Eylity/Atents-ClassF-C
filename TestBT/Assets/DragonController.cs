@@ -16,6 +16,8 @@ public class DragonController : MonoBehaviour
     public bool dragonfirerain;
 
     public GameObject collectfire;
+    public GameObject breathfire;
+
     public GameObject falldownsmoke;
     public GameObject falldowncollision;
 
@@ -26,6 +28,10 @@ public class DragonController : MonoBehaviour
     public GameObject dragonskin;
     public GameObject dragonfirerainobject;
 
+    public GameObject tailspark;
+    public GameObject rushspark1;
+    public GameObject rushspark2;
+
     public float taildamage;
     public float rushdamage;
     public float breathdamage;
@@ -33,6 +39,7 @@ public class DragonController : MonoBehaviour
     public float fireraindamage;
 
     public bool tailcollider;
+    public bool breathcollider;
     public bool rushcollider;
     public bool falldowncollider;
 
@@ -40,6 +47,7 @@ public class DragonController : MonoBehaviour
     {
         tailcollider = false;
         rushcollider = false;
+        breathcollider = false;
         falldowncollider = false;
 
         dragonfalldown = true;
