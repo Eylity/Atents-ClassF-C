@@ -1,5 +1,4 @@
 using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace FSM.Player
@@ -8,7 +7,8 @@ namespace FSM.Player
     {
         public static PlayerController GetPlayerController { get; private set; }
         private StateMachine<PlayerController> m_StateMachine;
-
+        public Status PlayerStat { get; private set; }
+        
         [HideInInspector] public bool m_ActiveFlyAttack = true;
         [HideInInspector] public bool m_ActiveFullSwing = true;
         [HideInInspector] public bool m_ActiveArea = true;
@@ -16,55 +16,22 @@ namespace FSM.Player
         [HideInInspector] public bool m_NowRun;
         [HideInInspector] public bool m_IsLive = true;
 
+        [SerializeField] private float m_MaxHp = 100f;
+        [SerializeField] private float m_MaxStamina = 200f;
+        private const float RUN_STAMINA = 10f;
+        private const float DEFAULT_DAMAGE = 5f;
         [SerializeField] private bool m_Debug;
-        
-        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_HealthPoint;
-        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_MaxHealthPoint = 100;
-        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_StaminaPoint;
-        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_MaxStaminaPoint = 200;
-        [FoldoutGroup("PlayerStatus")][SerializeField] private float m_RunStamina = 10f;
-        [FoldoutGroup("PlayerStatus")][SerializeField] internal float m_PlayerDamage = 5f;
 
-        public float Health
-        {
-            get => m_HealthPoint;
-            set
-            {
-                if (!m_IsLive) return;
-
-                m_HealthPoint = value;
-                if (m_HealthPoint > m_MaxHealthPoint)
-                {
-                    m_HealthPoint = m_MaxHealthPoint;
-                }
-            }
-        }
-
-        public float Stamina
-        {
-            get => m_StaminaPoint;
-            set
-            {
-                if (!m_IsLive) return;
-
-                m_StaminaPoint = value;
-                if (m_StaminaPoint >= m_MaxStaminaPoint)
-                {
-                    m_StaminaPoint = m_MaxStaminaPoint;
-                }
-            }
-        }
-
+ 
         private void Awake()
         {
             if (GetPlayerController != null && GetPlayerController != this)
             {
                 Destroy(this);
             }
-            GetPlayerController = this;
 
-            Stamina = m_MaxStaminaPoint;
-            Health = m_MaxHealthPoint;
+            PlayerStat = new Status(m_MaxHp, m_MaxStamina, RUN_STAMINA, DEFAULT_DAMAGE);
+            GetPlayerController = this;
         }
 
         private void Start()
@@ -89,7 +56,12 @@ namespace FSM.Player
             {
                 if (Input.GetKeyDown(KeyCode.CapsLock))
                 {
-                    Stamina -= 50f;
+                    PlayerStat.Stamina -= 50f;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    TakeDamage(50f);
                 }
 
                 m_ActiveFlyAttack = true;
@@ -98,12 +70,8 @@ namespace FSM.Player
             }
         }
 
-        private void FixedUpdate()
-        {
-            m_StateMachine?.FixedUpdate(Time.deltaTime);
-        }
+        private void FixedUpdate() => m_StateMachine?.FixedUpdate(Time.deltaTime);
 
-        [Button(ButtonStyle.CompactBox)]
         public void TakeDamage(float damage)
         {
             if (!m_IsLive)
@@ -111,10 +79,10 @@ namespace FSM.Player
                 return;
             }
 
-            Health -= (int) Math.Round(damage);
+            PlayerStat.Health -= (int) Math.Round(damage);
 
-            Debug.Log(Health);
-            if (Health <= 0)
+            Debug.Log(PlayerStat.Health);
+            if (PlayerStat.Health <= 0)
             {
                 m_StateMachine.ChangeState<Player_DIe>();
             }
@@ -122,13 +90,13 @@ namespace FSM.Player
 
         private void StaminaChange()
         {
-            Stamina = m_NowRun switch
+            PlayerStat.Stamina = m_NowRun switch
             {
-                true => Stamina -= m_RunStamina * Time.deltaTime,
-                _ => Stamina += m_RunStamina * Time.deltaTime,
+                true => PlayerStat.Stamina -= PlayerStat.m_RunStamina * Time.deltaTime,
+                _ => PlayerStat.Stamina += PlayerStat.m_RunStamina * Time.deltaTime,
             };
 
-            if (m_StaminaPoint <= 0 && !m_NowExhausted)
+            if (PlayerStat.Stamina <= 0 && !m_NowExhausted)
             {
                 m_NowRun = false;
                 m_StateMachine.ChangeState<Player_Exhausted>();

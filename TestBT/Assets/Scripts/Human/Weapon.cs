@@ -20,7 +20,7 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(m_Ray, out var hit) && other.CompareTag("Dragon"))
         {
             Shake();
-            DragonController.instance.hp -= PlayerController.GetPlayerController.m_PlayerDamage;
+            DragonController.instance.hp -= PlayerController.GetPlayerController.PlayerStat.m_Damage;
             Debug.Log($"Hit Weapon\nCurrent Dragon HP : {DragonController.instance.hp}");
 
             var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;

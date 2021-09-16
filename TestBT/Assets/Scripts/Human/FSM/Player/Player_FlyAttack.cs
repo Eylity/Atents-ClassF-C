@@ -19,7 +19,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.Stamina -= 40f;
+            m_Owner.PlayerStat.Stamina -= 40f;
             m_Owner.StartCoroutine(FlyAttackCoolDown());
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
             AddImpact(m_Owner.transform.forward, FORCE);

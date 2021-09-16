@@ -15,10 +15,10 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
-            m_Owner.Stamina -= 40f;
+            m_Owner.PlayerStat.Stamina -= 40f;
             m_Owner.StartCoroutine(FullSwingCoolDown());
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
-            m_Owner.m_PlayerDamage += 5;
+            m_Owner.PlayerStat.m_Damage += 5;
 
             var player = m_Owner.transform.position;
             PlayerManager.Instance.TrailSwitch();
@@ -38,7 +38,7 @@ namespace FSM.Player
             }
         }
 
-        public override void OnStateExit() => m_Owner.m_PlayerDamage -= 5;
+        public override void OnStateExit() => m_Owner.PlayerStat.m_Damage -= 5;
 
         private IEnumerator FullSwingCoolDown()
         {

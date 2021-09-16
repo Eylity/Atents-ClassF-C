@@ -1,4 +1,5 @@
 using System.Collections;
+using FSM.Player;
 using UnityEngine;
 
 namespace Skill
@@ -40,8 +41,8 @@ namespace Skill
             {
                 if (m_InPlayer)
                 {
-                    FSM.Player.PlayerController.GetPlayerController.Stamina += 1;
-                    FSM.Player.PlayerController.GetPlayerController.Health += 1;
+                    PlayerController.GetPlayerController.PlayerStat.Stamina += 1;
+                    PlayerController.GetPlayerController.PlayerStat.Health += 1;
                     yield return m_Time;
                 }
                 else

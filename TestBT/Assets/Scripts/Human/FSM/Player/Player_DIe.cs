@@ -5,11 +5,11 @@ namespace FSM.Player
 {
     public sealed class Player_DIe : State<PlayerController>
     {
-        private static readonly int FlyAttack = Animator.StringToHash("FlyAttack");
-        private static readonly int FullSwing = Animator.StringToHash("FullSwing");
-        private static readonly int Attack = Animator.StringToHash("Attack");
-        private static readonly int IsMove = Animator.StringToHash("IsMove");
-        private static readonly int IsRun = Animator.StringToHash("IsRun");
+        private readonly int m_FlyAttack = Animator.StringToHash("FlyAttack");
+        private readonly int m_FullSwing = Animator.StringToHash("FullSwing");
+        private readonly int m_Attack = Animator.StringToHash("Attack");
+        private readonly int m_IsMove = Animator.StringToHash("IsMove");
+        private readonly int m_IsRun = Animator.StringToHash("IsRun");
         private readonly WaitForSeconds m_Timer = new WaitForSeconds(2.2f);
         private readonly int m_Die;
 
@@ -18,11 +18,11 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             PlayerManager.Instance.TrailSwitch(false);
-            m_Machine.m_Animator.SetBool(IsMove, false);
-            m_Machine.m_Animator.SetBool(IsRun, false);
-            m_Machine.m_Animator.ResetTrigger(Attack);
-            m_Machine.m_Animator.ResetTrigger(FlyAttack);
-            m_Machine.m_Animator.ResetTrigger(FullSwing);
+            m_Machine.m_Animator.SetBool(m_IsMove, false);
+            m_Machine.m_Animator.SetBool(m_IsRun, false);
+            m_Machine.m_Animator.ResetTrigger(m_Attack);
+            m_Machine.m_Animator.ResetTrigger(m_FlyAttack);
+            m_Machine.m_Animator.ResetTrigger(m_FullSwing);
             m_Machine.m_Animator.SetTrigger(m_Die);
             m_Owner.StartCoroutine(Die());
         }

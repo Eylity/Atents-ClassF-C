@@ -30,12 +30,12 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Attack>();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
+            if (Input.GetKeyDown(KeyCode.Q) && m_Owner.PlayerStat.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
             {
                 m_Machine.ChangeState<Player_FlyAttack>();
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && m_Owner.Stamina > 40f && m_Owner.m_ActiveFullSwing)
+            if (Input.GetKeyDown(KeyCode.E) && m_Owner.PlayerStat.Stamina > 40f && m_Owner.m_ActiveFullSwing)
             {
                 m_Machine.ChangeState<Player_FullSwing>();
             }
@@ -53,7 +53,7 @@ namespace FSM.Player
 
             if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
             {
-                m_MoveSpeed = 6f;
+                m_MoveSpeed = 7f;
                 m_RotateSpeed = 12f;
                 m_Machine.m_Animator.SetBool(m_IsRun, true);
                 m_Owner.m_NowRun = true;

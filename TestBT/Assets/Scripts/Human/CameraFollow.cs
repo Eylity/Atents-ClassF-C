@@ -1,7 +1,6 @@
 using DG.Tweening;
 using FSM.Player;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -38,7 +37,7 @@ public class CameraFollow : MonoBehaviour
 
     private void FollowCam()
     {
-        var nextCamPos = m_Player.transform.position + m_RigOffset;
+        var nextCamPos = m_Player.TransformPoint(m_RigOffset);
         transform.position = Vector3.Lerp(transform.position, nextCamPos,CAM_MOVE_SPEED * Time.deltaTime);
     }
 

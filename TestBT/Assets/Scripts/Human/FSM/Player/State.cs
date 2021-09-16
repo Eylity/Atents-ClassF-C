@@ -4,7 +4,7 @@ namespace FSM.Player
 {
     public abstract class State<T>
     {
-        internal readonly int m_StateToHash;
+        internal int m_StateToHash;
         protected StateMachine<T> m_Machine;
         protected T m_Owner;
 
