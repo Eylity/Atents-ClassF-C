@@ -17,10 +17,10 @@ public class PlayerManager : MonoBehaviour
         Instance = this;
     }
 
-    #region PlayerParticleManger
+    #region PlayerEffectManger
 
-    [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackLeftTrail;
-    [FoldoutGroup("Player Trail")] public XWeaponTrail m_AttackRightTrail;
+    [FoldoutGroup("Player Trail")] [SerializeField] internal XWeaponTrail m_AttackLeftTrail;
+    [FoldoutGroup("Player Trail")] [SerializeField] internal XWeaponTrail m_AttackRightTrail;
 
     public void TrailSwitch(bool isActive = true)
     {
@@ -70,6 +70,11 @@ public class PlayerManager : MonoBehaviour
 
     [FoldoutGroup("Player Collider")] [SerializeField]
     private BoxCollider m_AttackRightCollider;
+
+    public PlayerManager(XWeaponTrail attackLeftTrail)
+    {
+        m_AttackLeftTrail = attackLeftTrail;
+    }
 
     private void AttackTrue(string animName)
     {
