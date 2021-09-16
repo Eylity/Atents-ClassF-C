@@ -4,11 +4,7 @@ namespace FSM.Player
 {
     public class Player_Idle : State<PlayerController>
     {
-
-        public override void OnStateEnter()
-        {
-            PlayerManager.Instance.TrailSwitch(false);
-        }
+        public override void OnStateEnter() => PlayerManager.Instance.TrailSwitch(false);
 
         public override void ChangePoint()
         {

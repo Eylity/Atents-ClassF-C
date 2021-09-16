@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FSM.Player;
 using UnityEngine;
 
 public class DragonController : MonoBehaviour
@@ -84,7 +85,7 @@ public class DragonController : MonoBehaviour
         }
 
         playerobject = GameObject.FindWithTag("Player");
-        player = playerobject.GetComponent<FSM.Player.PlayerController>();
+        player = playerobject.GetComponent<PlayerController>();
     }
 
     void Start()

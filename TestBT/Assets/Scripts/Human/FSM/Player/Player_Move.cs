@@ -16,7 +16,7 @@ namespace FSM.Player
 
         protected override void ONInitialized()
         {
-            Debug.Assert(Camera.main != null, $"{ToString()}\nCamera.main Is null");
+            Debug.Assert(Camera.main != null, $"Script Name : {ToString()}\nCamera.main Is null");
             m_CamPos = Camera.main.transform;
             m_CharacterController = m_Owner.GetComponent<CharacterController>();
         }
@@ -66,7 +66,7 @@ namespace FSM.Player
                 m_Owner.m_NowRun = false;
             }
 
-            var movePos = (m_CamPos.right * moveX + m_CamPos.forward * moveZ);
+            var movePos = (m_CamPos.right * moveX) + (m_CamPos.forward * moveZ);
             movePos.y = 0f;
             movePos.Normalize();
             if (movePos == Vector3.zero)

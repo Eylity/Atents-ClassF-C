@@ -7,7 +7,6 @@ namespace FSM.Player
     {
         private readonly WaitForSeconds m_FullSwingTimer = new WaitForSeconds(7.0f);
         private readonly int m_FullSwing;
-        private PSMeshRendererUpdater m_PSUpdater;
         private GameObject m_RightCharge;
         private GameObject m_LeftCharge;
 
@@ -16,26 +15,23 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            m_Owner.Stamina -= 40f;
+            m_Owner.StartCoroutine(FullSwingCoolDown());
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
-            m_Owner.Stamina -= 40f;
 
-            m_Owner.m_ActiveFullSwing = false;
-            m_Owner.StartCoroutine(FullSwingCoolDown());
 
-            var gameObject = m_Owner.gameObject;
-            var playerPos = m_Owner.transform.position;
+            var player = m_Owner.gameObject;
             PlayerManager.Instance.TrailSwitch();
-            m_PSUpdater = PlayerManager.Instance.GetEffect(gameObject, EPrefabsName.FullSwingEffect, 8.0f, gameObject.transform);
-            PlayerManager.Instance.GetEffectObj(playerPos, EPrefabsName.ChargingFullSwing, out m_LeftCharge,5f);
-            PlayerManager.Instance.GetEffectObj(playerPos, EPrefabsName.ChargingFullSwing, out m_RightCharge,5f);
+            PlayerManager.Instance.GetEffect(player, EPrefabsName.FullSwingEffect, 8.0f, 3f,  player.transform);
+            m_LeftCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
+            m_RightCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
         }
 
         public override void OnStateUpdate()
         {
-            var playerPos = m_Owner.transform.position;
-            m_LeftCharge.transform.position = playerPos;
-            m_RightCharge.transform.position = playerPos;
+            m_LeftCharge.transform.position = PlayerManager.Instance.m_AttackLeftTrail.transform.position;
+            m_RightCharge.transform.position = PlayerManager.Instance.m_AttackRightTrail.transform.position;
 
             if (m_Machine.IsEnd())
             {
@@ -43,14 +39,11 @@ namespace FSM.Player
             }
         }
 
-        public override void OnStateExit()
-        {
-            m_Owner.m_PlayerDamage -= 5;
-            m_PSUpdater.IsActive = false;
-        }
+        public override void OnStateExit() => m_Owner.m_PlayerDamage -= 5;
 
         private IEnumerator FullSwingCoolDown()
         {
+            m_Owner.m_ActiveFullSwing = false;
             yield return m_FullSwingTimer;
             m_Owner.m_ActiveFullSwing = true;
         }

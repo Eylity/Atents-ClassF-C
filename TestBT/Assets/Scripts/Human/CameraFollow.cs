@@ -5,11 +5,12 @@ using Debug = System.Diagnostics.Debug;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private float m_MouseRotateSpeed;
-    [SerializeField] private float m_Duration = 0.2f;
-    [SerializeField] private float m_Strength = 0.5f;
-    [SerializeField] private int m_Vibrato = 100;
-    [SerializeField] private Vector3 m_RigOffset;
+    private const float DURATION = 0.2f;
+    private const float STRENGTH = 0.5f;
+    private const int VIBRATO = 100;
+    [SerializeField] private Vector3 m_RigOffset = new Vector3(0f, 5f, 0f);
+    [SerializeField] private float m_MouseRotateSpeed = 2f;
+    [SerializeField] private float m_CamMoveSpeed = 5f;
     private Transform m_CamPos;
     private Transform m_Player;
     private float m_MouseX;
@@ -24,7 +25,7 @@ public class CameraFollow : MonoBehaviour
         var weapons = FindObjectsOfType<Weapon>();
         foreach (var weapon in weapons)
         {
-            weapon.Shake += () => m_CamPos.DOShakePosition(m_Duration, m_Strength, m_Vibrato);
+            weapon.Shake += () => m_CamPos.DOShakePosition(DURATION, STRENGTH, VIBRATO);
         }
     }
  
@@ -33,9 +34,15 @@ public class CameraFollow : MonoBehaviour
         CamRot();
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        transform.position = m_Player.transform.position + m_RigOffset;
+        FollowCam();
+    }
+
+    private void FollowCam()
+    {
+        var nextCamPos = m_Player.transform.position + m_RigOffset;
+        transform.position = Vector3.Lerp(transform.position, nextCamPos,m_CamMoveSpeed * Time.deltaTime);
     }
 
     private void CamRot()

@@ -8,23 +8,19 @@ namespace FSM.Player
     {
         private readonly WaitForSeconds m_SkillTimer = new WaitForSeconds(8.0f);
         private readonly int m_Skill;
-        private PSMeshRendererUpdater m_PSUpdater;
 
         public Player_Area() : base("Base Layer.Skill.Skill") => m_Skill = Animator.StringToHash("Skill");
         
         public override void OnStateEnter()
         {
-            m_Owner.m_ActiveArea = false;
             m_Machine.m_Animator.SetTrigger(m_Skill);
             m_Owner.StartCoroutine(AreaCoolDown());
 
             var player = m_Owner.gameObject;
-            var playerPos = player.transform.position;
             PlayerManager.Instance.TrailSwitch();
             PlayerManager.Instance.GetEffect(player, EPrefabsName.Area,7f);
-            PlayerManager.Instance.GetEffectObj(playerPos, EPrefabsName.AreaEffect, out var effect, 7f);
-            effect.transform.DOMoveY(playerPos.y + 5.0f, 2.5f);
-            m_PSUpdater = PlayerManager.Instance.GetEffect(player, EPrefabsName.HealWeapon, 10f, player.transform);
+            PlayerManager.Instance.GetEffect(player, EPrefabsName.HealWeapon, 10f, 8f, player.transform);
+            PlayerManager.Instance.GetEffect(player, EPrefabsName.AreaEffect, 7f).transform.DOMoveY(player.transform.position.y + 5.0f,2.5f);
         }
 
         public override void OnStateUpdate()
@@ -37,8 +33,8 @@ namespace FSM.Player
 
         private IEnumerator AreaCoolDown()
         {
+            m_Owner.m_ActiveArea = false;
             yield return m_SkillTimer;
-            m_PSUpdater.IsActive = false;
             m_Owner.m_ActiveArea = true;
         }
     }

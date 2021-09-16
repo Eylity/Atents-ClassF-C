@@ -10,7 +10,6 @@ namespace FSM.Player
         private const float FORCE = 100f;
         private const float MASS = 3f;
         private CharacterController m_CharacterController;
-        private PSMeshRendererUpdater m_PSUpdater;
         private Vector3 m_Impact = Vector3.zero;
 
         public Player_FlyAttack() : base("Base Layer.Skill.FlyAttack") =>
@@ -21,14 +20,13 @@ namespace FSM.Player
         public override void OnStateEnter()
         {
             m_Owner.Stamina -= 40f;
-            m_Owner.m_ActiveFlyAttack = false;
+            m_Owner.StartCoroutine(FlyAttackCoolDown());
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
-            AddImpact((m_Owner.transform.forward), FORCE);
+            AddImpact(m_Owner.transform.forward, FORCE);
 
             var player = m_Owner.gameObject;
             PlayerManager.Instance.TrailSwitch();
-            m_PSUpdater = PlayerManager.Instance.GetEffect(player,EPrefabsName.FlyAttackEffect,4f,player.transform);
-            m_Owner.StartCoroutine(FlyAttackCoolDown());
+            PlayerManager.Instance.GetEffect(player,EPrefabsName.FlyAttackEffect,4f, 2f,player.transform);
         }
 
         public override void OnStateUpdate()
@@ -52,11 +50,11 @@ namespace FSM.Player
         public override void OnStateExit()
         {
             PlayerManager.Instance.GetEffect(m_Owner.gameObject, EPrefabsName.FlyAttackArrow, 3f);
-            m_PSUpdater.IsActive = false;
         }
 
         private IEnumerator FlyAttackCoolDown()
         {
+            m_Owner.m_ActiveFlyAttack = false;
             yield return m_FlyAttackTimer;
             m_Owner.m_ActiveFlyAttack = true;
         }

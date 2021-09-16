@@ -24,12 +24,12 @@ namespace FSM.Player
             m_Machine.m_Animator.ResetTrigger(FlyAttack);
             m_Machine.m_Animator.ResetTrigger(FullSwing);
             m_Machine.m_Animator.SetTrigger(m_Die);
-            m_Owner.m_IsLive = false;
             m_Owner.StartCoroutine(Die());
         }
 
         private IEnumerator Die()
         {
+            m_Owner.m_IsLive = false;
             yield return m_Timer;
             m_Owner.gameObject.SetActive(false);
         }

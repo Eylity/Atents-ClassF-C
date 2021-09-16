@@ -1,3 +1,4 @@
+using System.Collections;
 using XftWeapon;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -36,38 +37,31 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public PSMeshRendererUpdater GetEffect(GameObject owner, EPrefabsName particleName, float returnTime, Transform parent = null)
+    public GameObject GetEffect(GameObject owner, EPrefabsName effectName, float returnTime,
+        float? activeTime = null, Transform parent = null)
     {
-        var currentParticle = ObjPool.Instance.GetObject(particleName);
+        var currentParticle = ObjPool.Instance.GetObject(effectName);
         currentParticle.transform.position = owner.transform.position;
         if (parent != null)
         {
             currentParticle.transform.parent = parent;
         }
 
-        ObjPool.Instance.ReturnObject(currentParticle, particleName, (float) returnTime);
+        ObjPool.Instance.ReturnObject(currentParticle, effectName, returnTime);
 
-        if (currentParticle.TryGetComponent<PSMeshRendererUpdater>(out var rendererUpdater))
+        if (currentParticle.TryGetComponent<PSMeshRendererUpdater>(out var rendererUpdater) && activeTime != null)
         {
+            StartCoroutine(ActiveTime(rendererUpdater, (float)activeTime));
             rendererUpdater.UpdateMeshEffect(owner);
-            return rendererUpdater;
         }
 
-        return null;
+        return currentParticle;
     }
 
-    public void GetEffectObj(Vector3 currentPos, EPrefabsName particleName, out GameObject effect,
-        float? returnTime = null)
+    private IEnumerator ActiveTime(PSMeshRendererUpdater currentEffect, float delay)
     {
-        var currentParticle = ObjPool.Instance.GetObject(particleName);
-        currentParticle.transform.position = currentPos;
-
-        if (returnTime != null)
-        {
-            ObjPool.Instance.ReturnObject(currentParticle, particleName, (float) returnTime);
-        }
-
-        effect = currentParticle;
+        yield return new WaitForSeconds(delay);
+        currentEffect.IsActive = false;
     }
 
     #endregion
