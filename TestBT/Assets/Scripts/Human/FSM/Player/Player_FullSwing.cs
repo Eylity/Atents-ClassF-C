@@ -20,10 +20,9 @@ namespace FSM.Player
             m_Machine.m_Animator.SetTrigger(m_FullSwing);
             m_Owner.m_PlayerDamage += 5;
 
-
-            var player = m_Owner.gameObject;
+            var player = m_Owner.transform.position;
             PlayerManager.Instance.TrailSwitch();
-            PlayerManager.Instance.GetEffect(player, EPrefabsName.FullSwingEffect, 8.0f, 3f,  player.transform);
+            PlayerManager.Instance.GetEffect(player, EPrefabsName.FullSwingEffect, 8.0f, 3f, m_Owner.gameObject);
             m_LeftCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
             m_RightCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
         }

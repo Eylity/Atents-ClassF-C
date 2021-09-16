@@ -37,24 +37,20 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public GameObject GetEffect(GameObject owner, EPrefabsName effectName, float returnTime,
-        float? activeTime = null, Transform parent = null)
+    public GameObject GetEffect(Vector3 spawnPos, EPrefabsName effectName, float returnTime,
+        float? activeTime = null, GameObject owner = null)
     {
         var currentParticle = ObjPool.Instance.GetObject(effectName);
-        currentParticle.transform.position = owner.transform.position;
-        if (parent != null)
-        {
-            currentParticle.transform.parent = parent;
-        }
+        currentParticle.transform.position = spawnPos;
 
         ObjPool.Instance.ReturnObject(currentParticle, effectName, returnTime);
 
-        if (currentParticle.TryGetComponent<PSMeshRendererUpdater>(out var rendererUpdater) && activeTime != null)
+        if (currentParticle.TryGetComponent<PSMeshRendererUpdater>(out var rendererUpdater) && activeTime != null && owner != null)
         {
             StartCoroutine(ActiveTime(rendererUpdater, (float)activeTime));
+            currentParticle.transform.parent = owner.transform;
             rendererUpdater.UpdateMeshEffect(owner);
         }
-
         return currentParticle;
     }
 

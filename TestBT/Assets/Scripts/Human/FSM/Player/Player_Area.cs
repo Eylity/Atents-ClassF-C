@@ -16,11 +16,11 @@ namespace FSM.Player
             m_Machine.m_Animator.SetTrigger(m_Skill);
             m_Owner.StartCoroutine(AreaCoolDown());
 
-            var player = m_Owner.gameObject;
+            var playerPos = m_Owner.transform.position;
             PlayerManager.Instance.TrailSwitch();
-            PlayerManager.Instance.GetEffect(player, EPrefabsName.Area,7f);
-            PlayerManager.Instance.GetEffect(player, EPrefabsName.HealWeapon, 10f, 8f, player.transform);
-            PlayerManager.Instance.GetEffect(player, EPrefabsName.AreaEffect, 7f).transform.DOMoveY(player.transform.position.y + 5.0f,2.5f);
+            PlayerManager.Instance.GetEffect(playerPos, EPrefabsName.Area,7f);
+            PlayerManager.Instance.GetEffect(playerPos, EPrefabsName.HealWeapon, 10f, 8f,m_Owner.gameObject);
+            PlayerManager.Instance.GetEffect(playerPos, EPrefabsName.AreaEffect, 7f).transform.DOMoveY(playerPos.y + 5.0f,2.5f);
         }
 
         public override void OnStateUpdate()

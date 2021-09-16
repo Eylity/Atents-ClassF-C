@@ -24,9 +24,9 @@ namespace FSM.Player
             m_Machine.m_Animator.SetTrigger(m_FlyAttack);
             AddImpact(m_Owner.transform.forward, FORCE);
 
-            var player = m_Owner.gameObject;
+            var player = m_Owner.transform.position;
             PlayerManager.Instance.TrailSwitch();
-            PlayerManager.Instance.GetEffect(player,EPrefabsName.FlyAttackEffect,4f, 2f,player.transform);
+            PlayerManager.Instance.GetEffect(player,EPrefabsName.FlyAttackEffect,4f, 2f,m_Owner.gameObject);
         }
 
         public override void OnStateUpdate()
@@ -49,7 +49,7 @@ namespace FSM.Player
 
         public override void OnStateExit()
         {
-            PlayerManager.Instance.GetEffect(m_Owner.gameObject, EPrefabsName.FlyAttackArrow, 3f);
+            PlayerManager.Instance.GetEffect(m_Owner.transform.position, EPrefabsName.FlyAttackArrow, 3f);
         }
 
         private IEnumerator FlyAttackCoolDown()
