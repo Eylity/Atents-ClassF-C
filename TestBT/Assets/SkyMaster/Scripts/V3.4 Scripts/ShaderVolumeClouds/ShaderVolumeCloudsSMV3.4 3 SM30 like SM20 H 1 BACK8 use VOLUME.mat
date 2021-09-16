@@ -68,7 +68,7 @@ Material:
     - _CutHeight: 191.46
     - _CutHeight2: 11111
     - _Cutoff: 0.038
-    - _Density: 0.00015000014
+    - _Density: 0.00015
     - _DepthBlendMul: 2.29
     - _DepthBlendMult: 2
     - _DepthColor: 0
@@ -80,7 +80,7 @@ Material:
     - _FogFactor: 0
     - _FogUnity: 1
     - _Forward: 0
-    - _HorizonFactor: 0.020000016
+    - _HorizonFactor: 0.02
     - _IndirectContribution: 1
     - _MipLevel: 0
     - _Mode: 0
@@ -114,8 +114,8 @@ Material:
     - _ShadowColor: {r: 0.24433826, g: 0.22813834, b: 0.298953, a: 0.28993815}
     - _SunColor: {r: 0.8686345, g: 0.78642464, b: 0.72601455, a: 0.07700468}
     - _SunDir: {r: 0, g: 1, b: 0, a: 0}
-    - _Velocity1: {r: -1.4663419, g: 1.5340158, b: 0, a: 0.016995877}
-    - _Velocity2: {r: -4.747534, g: 4.624088, b: 0, a: 2}
+    - _Velocity1: {r: -0.63741, g: 1.2493085, b: 0, a: 0.01773905}
+    - _Velocity2: {r: -3.3699498, g: 3.9352667, b: 0, a: 2}
     - _WindDirection: {r: 1, g: 0, b: 0, a: 0}
     - pointLightColor: {r: 1, g: 1, b: 1, a: 1}
     - pointLightPos: {r: -487.76697, g: 719.53687, b: -1793.741, a: 0}
