@@ -13,7 +13,7 @@ namespace FSM.Player
         // 사용하는 오브젝트
         protected T m_Owner;
 
-        // 해쉬값이 필요없을시 오버라이딩
+        // 해쉬값이 필요없을시 오버로딩
         protected State()
         {
         }
