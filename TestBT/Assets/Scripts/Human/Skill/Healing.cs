@@ -6,6 +6,7 @@ namespace Skill
 {
     public class Healing : MonoBehaviour
     {
+        // 플레이어 회복 주기
         private readonly WaitForSeconds m_Time = new WaitForSeconds(0.1f);
         private bool m_InPlayer;
 
@@ -19,6 +20,7 @@ namespace Skill
             StopCoroutine(nameof(Heal));
         }
 
+        // 소환시 플레이어 밑에 바로 생성되어 활성화
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
@@ -41,8 +43,9 @@ namespace Skill
             {
                 if (m_InPlayer)
                 {
-                    PlayerController.GetPlayerController.PlayerStat.Stamina += 1;
-                    PlayerController.GetPlayerController.PlayerStat.Health += 1;
+                    PlayerController.Instance.PlayerStat.Stamina += 1;
+                    PlayerController.Instance.PlayerStat.Health += 1;
+                    // 초당 10씩 회복
                     yield return m_Time;
                 }
                 else

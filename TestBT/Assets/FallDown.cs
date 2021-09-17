@@ -17,7 +17,7 @@ public class FallDown : MonoBehaviour
         {
             if (other.tag == "Player")
             {
-                PlayerController.GetPlayerController.TakeDamage(DragonController.instance.falldowndamage);
+                PlayerController.Instance.TakeDamage(DragonController.instance.falldowndamage);
     
                 DragonController.instance.falldowncollider = false;
             }

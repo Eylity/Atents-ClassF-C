@@ -17,6 +17,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            // 모든 애니메이션 트리거 삭제
             PlayerManager.Instance.TrailSwitch(false);
             m_Machine.m_Animator.SetBool(m_IsMove, false);
             m_Machine.m_Animator.SetBool(m_IsRun, false);
@@ -29,6 +30,7 @@ namespace FSM.Player
 
         private IEnumerator Die()
         {
+            // 사망처리
             m_Owner.m_IsLive = false;
             yield return m_Timer;
             m_Owner.gameObject.SetActive(false);

@@ -17,7 +17,7 @@ public class TailAttack : MonoBehaviour
             if (other.tag == "Player")
             {
                 Debug.Log("Triger True");
-                PlayerController.GetPlayerController.TakeDamage(DragonController.instance.taildamage);
+                PlayerController.Instance.TakeDamage(DragonController.instance.taildamage);
     
                 DragonController.instance.tailcollider = false;
             }

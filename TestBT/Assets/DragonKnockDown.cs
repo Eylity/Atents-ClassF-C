@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class DragonKnockDown : StateMachineBehaviour
 {
-    float knockdowntime = 0f;
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        animator.ResetTrigger("KnockDownReturn");
-    }
-
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        knockdowntime += Time.deltaTime;
-
-        if(knockdowntime > 5f)
-        {
-            animator.SetTrigger("KnockDownReturn");
-        }
-    }
+  float knockdowntime;
+  
+      override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+      {
+          knockdowntime = 0f;
+          animator.ResetTrigger("KnockDownReturn");
+      }
+  
+      override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+      {
+          knockdowntime += Time.deltaTime;
+  
+          if(knockdowntime > 5f)
+          {
+              knockdowntime = 0f;
+              animator.SetTrigger("KnockDownReturn");
+          }
+      }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

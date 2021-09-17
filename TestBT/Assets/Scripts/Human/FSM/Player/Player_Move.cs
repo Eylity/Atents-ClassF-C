@@ -7,12 +7,13 @@ namespace FSM.Player
     {
         private readonly int m_IsMove = Animator.StringToHash("IsMove");
         private readonly int m_IsRun = Animator.StringToHash("IsRun");
+        
+        // 중력
         private const float GRAVITY = 9.81f;
         private CharacterController m_CharacterController;
         private Transform m_CamPos;
         private Vector3 m_GravityVec = Vector3.zero;
-        private float m_RotateSpeed;
-        private float m_MoveSpeed;
+
 
         protected override void ONInitialized()
         {
@@ -45,46 +46,54 @@ namespace FSM.Player
                 m_Machine.ChangeState<Player_Area>();
             }
         }
-
-        public override void OnFixedUpdate(float deltaTime)
+        
+        // 뛰는 트리거 설정
+        public override void OnStateUpdate()
         {
-            var moveX = Input.GetAxis("Horizontal");
-            var moveZ = Input.GetAxis("Vertical");
-
             if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
             {
-                m_MoveSpeed = 7f;
-                m_RotateSpeed = 12f;
+                m_Owner.PlayerStat.m_MoveSpeed = 7f;
+                m_Owner.PlayerStat.m_RotateSpeed = 12f;
                 m_Machine.m_Animator.SetBool(m_IsRun, true);
                 m_Owner.m_NowRun = true;
             }
             else
             {
-                m_MoveSpeed = 4f;
-                m_RotateSpeed = 8f;
+                m_Owner.PlayerStat.m_MoveSpeed = 4f;
+                m_Owner.PlayerStat.m_RotateSpeed = 8f;
                 m_Machine.m_Animator.SetBool(m_IsRun, false);
                 m_Owner.m_NowRun = false;
             }
+        }
+        
+        public override void OnFixedUpdate()
+        {
+            var moveX = Input.GetAxis("Horizontal");
+            var moveZ = Input.GetAxis("Vertical");
 
             var movePos = (m_CamPos.right * moveX) + (m_CamPos.forward * moveZ);
             movePos.y = 0f;
             movePos.Normalize();
+            
+            // 입력값이 없을시 대기상태 전환
             if (movePos == Vector3.zero)
             {
                 m_Machine.ChangeState<Player_Idle>();
                 return;
             }
-
+            
+            // 자연스럽게 회전하기위함
             m_Owner.transform.rotation = Quaternion.Slerp(m_Owner.transform.rotation,
                 Quaternion.LookRotation(movePos),
-                m_RotateSpeed * deltaTime);
-
+                m_Owner.PlayerStat.m_RotateSpeed * Time.deltaTime);
+            
+            // 중력적용
             if (!m_CharacterController.isGrounded)
             {
                 m_GravityVec.y -= GRAVITY * Time.deltaTime;
             }
 
-            m_CharacterController.Move((movePos + m_GravityVec) * (m_MoveSpeed * Time.deltaTime));
+            m_CharacterController.Move((movePos + m_GravityVec) * (m_Owner.PlayerStat.m_MoveSpeed * Time.deltaTime));
         }
 
         public override void OnStateExit()

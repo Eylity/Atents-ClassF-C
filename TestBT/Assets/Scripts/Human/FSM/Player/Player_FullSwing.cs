@@ -13,6 +13,7 @@ namespace FSM.Player
         public Player_FullSwing() : base("Base Layer.Skill.FullSwing") =>
             m_FullSwing = Animator.StringToHash("FullSwing");
 
+        // 이펙트 활성화 및 스킬 쿨다운
         public override void OnStateEnter()
         {
             m_Owner.PlayerStat.Stamina -= 40f;

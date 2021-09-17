@@ -18,6 +18,7 @@ namespace FSM.Player
 
         public override void OnStateEnter()
         {
+            // 애니메이션 트리거 취소
             PlayerManager.Instance.TrailSwitch(false);
             m_Machine.m_Animator.SetBool(m_IsMove, false);
             m_Machine.m_Animator.SetBool(m_IsRun, false);
@@ -38,6 +39,7 @@ namespace FSM.Player
 
         private IEnumerator ExhaustedTimer()
         {
+            // 탈진 시간
             m_Owner.m_NowExhausted = true;
             yield return m_ExhaustedTime;
             m_Owner.m_NowExhausted = false;

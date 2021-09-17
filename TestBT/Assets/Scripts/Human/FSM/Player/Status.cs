@@ -2,49 +2,54 @@
 {
     public class Status
     {
+        // 플레이어의 기본 스탯
         private float m_HealthPoint;
-        private readonly float m_MaxHealthPoint;
+        private const float MAX_HEALTH_POINT = 100f;
         private float m_StaminaPoint;
-        private readonly float m_MAXStaminaPoint;
+        private const float MAX_STAMINA_POINT = 200f;
 
-        public float m_Damage;
-        public readonly float m_RunStamina;
+        public float m_Damage = 5f;
+        public readonly float m_RunStamina = 10f;
+        public float m_RotateSpeed = 8f;
+        public float m_MoveSpeed = 4f;
 
-        public Status(float maxHealthPoint, float maxStaminaPoint, float runStamina, float damage)
-        {
-            this.m_MaxHealthPoint = maxHealthPoint;
-            this.m_MAXStaminaPoint = maxStaminaPoint;
-            m_RunStamina = runStamina;
-            m_Damage = damage;
-            this.m_HealthPoint = m_MaxHealthPoint;
-            this.m_StaminaPoint = m_MAXStaminaPoint;
-        }
-        
-               
+        // 플레이어의 체력
         public float Health
         {
+            // 현재 체력값을 리턴
             get => m_HealthPoint;
             set
             {
                 m_HealthPoint = value;
-                if (m_HealthPoint > m_MaxHealthPoint)
+                // 최대 체력 제한
+                if (m_HealthPoint > MAX_HEALTH_POINT)
                 {
-                    m_HealthPoint = m_MaxHealthPoint;
+                    m_HealthPoint = MAX_HEALTH_POINT;
                 }
             }
         }
 
+        // 플레이어의 스태미너
         public float Stamina
         {
+            // 현재 스태미너값을 리턴
             get => m_StaminaPoint;
             set
             {
                 m_StaminaPoint = value;
-                if (m_StaminaPoint >= m_MAXStaminaPoint)
+                // 최대 스태미너 제한
+                if (m_StaminaPoint >= MAX_STAMINA_POINT)
                 {
-                    m_StaminaPoint = m_MAXStaminaPoint;
+                    m_StaminaPoint = MAX_STAMINA_POINT;
                 }
             }
+        }
+
+        // 현재 체력값과 스태미너값 대입
+        public Status()
+        {
+            m_HealthPoint = MAX_HEALTH_POINT;
+            m_StaminaPoint = MAX_STAMINA_POINT;
         }
     }
 }

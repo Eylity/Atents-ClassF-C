@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 사용할 프리팹들을 열거형으로 정의 편의를 위해 피와 스킬 이펙트의 열거형을 다르게 정의함
 public enum EPrefabsName
 {
     Area = 0,
@@ -37,6 +38,8 @@ public enum EBloodPrefabsName
 
 public class ObjPool : MonoBehaviour
 {
+    // 생성할 프리팹들을 담아둘 클래스
+
     #region Prefabs Class
 
     public Prefabs[] m_Prefab;
@@ -65,6 +68,8 @@ public class ObjPool : MonoBehaviour
     #endregion
 
     public static ObjPool Instance { get; private set; }
+
+    // 프리팹들을 처음에 생성하고 비활성화 시킴
 
     #region Make Parent
 
@@ -158,20 +163,10 @@ public class ObjPool : MonoBehaviour
 
     #endregion
 
-
-    /// <summary>
-    /// Get Object To ObjectPool
-    /// </summary>
-    /// <param name="name">Object Name</param>
-    /// <returns> Object</returns>
-    public GameObject GetObject(EPrefabsName name)
+    // 프리팹을 가져옴
+    public GameObject GetObject(EPrefabsName prefabName)
     {
-        var currentPrefab = FindPrefabName(name);
-        if (currentPrefab == null)
-        {
-            Debug.Log($"Can't Find {name.ToString()} In GetObject");
-            return null;
-        }
+        var currentPrefab = FindPrefabName(prefabName);
 
         if (currentPrefab.m_ObjectQueue.Count > 0)
         {
@@ -189,11 +184,6 @@ public class ObjPool : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Get Blood Object To ObjectPool
-    /// </summary>
-    /// <param name="name">Object Name</param>
-    /// <returns> Object</returns>
     public GameObject GetObject(EBloodPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);
@@ -213,11 +203,7 @@ public class ObjPool : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Object Return To Object Pool If you Want Delay Add Float
-    /// </summary>
-    /// <param name="obj">Return Obj</param>
-    /// <param name="name">Return Obj Name</param>
+    // 풀링에 반환
     public void ReturnObject(GameObject obj, EPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);
@@ -227,33 +213,16 @@ public class ObjPool : MonoBehaviour
         currentPrefab.m_ObjectQueue.Enqueue(obj);
     }
 
-    /// <summary>
-    /// Blood Object Return To Object Pool If you Want Delay Add Float
-    /// </summary>
-    /// <param name="obj">Return Obj</param>
-    /// <param name="name">Return Obj Name</param>
     public void ReturnObject(GameObject obj, EBloodPrefabsName name)
     {
         var currentPrefab = FindPrefabName(name);
 
-        if (currentPrefab == null)
-        {
-            Debug.Log($"Can't Find {name.ToString()} In ReturnObject");
-        }
-        else
-        {
-            obj.gameObject.SetActive(false);
-            obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
-            currentPrefab.m_ObjectQueue.Enqueue(obj);
-        }
+        obj.gameObject.SetActive(false);
+        obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
+        currentPrefab.m_ObjectQueue.Enqueue(obj);
     }
-
-    /// <summary>
-    /// Object Delay Return To ObjectPool
-    /// </summary>
-    /// <param name="obj">Return Obj</param>
-    /// <param name="name">Return Obj Name</param>
-    /// <param name="time">Delay Time</param>
+    
+    // 일정시간 딜레이후 반환
     public void ReturnObject(GameObject obj, EPrefabsName name, float time)
     {
         StartCoroutine(DelayReturn(obj, name, time));
@@ -264,13 +233,7 @@ public class ObjPool : MonoBehaviour
         yield return new WaitForSeconds(time);
         ReturnObject(obj, name);
     }
-
-    /// <summary>
-    /// Blood Object Delay Return To ObjectPool
-    /// </summary>
-    /// <param name="obj">Return Obj</param>
-    /// <param name="name">Return Obj Name</param>
-    /// <param name="time">Delay Time</param>
+    
     public void ReturnObject(GameObject obj, EBloodPrefabsName name, float time)
     {
         StartCoroutine(DelayReturn(obj, name, time));

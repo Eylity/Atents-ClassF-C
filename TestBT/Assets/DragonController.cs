@@ -54,7 +54,7 @@ public class DragonController : MonoBehaviour
         dragonfalldown = true;
         dragonfirerain = true;
 
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -100,6 +100,9 @@ public class DragonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (hp <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

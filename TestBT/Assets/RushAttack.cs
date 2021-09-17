@@ -17,7 +17,7 @@ public class RushAttack : MonoBehaviour
         {
             if (other.tag == "Player")
             {
-                PlayerController.GetPlayerController.TakeDamage(DragonController.instance.rushdamage);
+                PlayerController.Instance.TakeDamage(DragonController.instance.rushdamage);
     
                 DragonController.instance.rushcollider = false;
             }

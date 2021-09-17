@@ -1,16 +1,15 @@
 using System;
 using FSM.Player;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Weapon : MonoBehaviour
 {
-    private const int FirstBloodPrefab = 0;
-    private const int LastBloodPrefab = 17;
     private Collider m_Collider;
     private Ray m_Ray;
 
     public Transform m_RayTransform;
+    
+    // 무기 타격시 카메라 흔들리는 효과를 내기위한 Action함수
     public Action Shake;
 
     private void Awake() => m_Collider = GetComponent<BoxCollider>();
@@ -20,17 +19,14 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(m_Ray, out var hit) && other.CompareTag("Dragon"))
         {
             Shake();
-            DragonController.instance.hp -= PlayerController.GetPlayerController.PlayerStat.m_Damage;
-            Debug.Log($"Hit Weapon\nCurrent Dragon HP : {DragonController.instance.hp}");
+            DragonController.instance.hp -= PlayerController.Instance.PlayerStat.m_Damage;
 
-            var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
+            // 혈픈효과의 회전값 적용
+            // 레이가 맞은 위치의 x 와 z 각도를 구한다. 
+            // Rad2Deg 는 라디안 값을 각도로 변환
+            var angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg;
 
-            var effectIdx = (EBloodPrefabsName) Random.Range(FirstBloodPrefab, LastBloodPrefab);
-            var instance = ObjPool.Instance.GetObject(effectIdx);
-            ObjPool.Instance.ReturnObject(instance, effectIdx, 10f);
-            instance.transform.position = hit.point;
-            instance.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
+            PlayerManager.Instance.GetBlood(hit.point,10f,Quaternion.Euler(0f, angle, 0f));
             m_Collider.enabled = false;
         }
     }

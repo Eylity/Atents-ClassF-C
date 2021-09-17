@@ -25,7 +25,7 @@ public class BreathFire : MonoBehaviour
         {
             if (other.tag == "Player")
             {
-                PlayerController.GetPlayerController.TakeDamage(DragonController.instance.breathdamage);
+                PlayerController.Instance.TakeDamage(DragonController.instance.breathdamage);
 
                 breathcollider.enabled = false;
                 DragonController.instance.breathcollider = false;

@@ -30,7 +30,7 @@ public class MeteorStrike : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
-            FSM.Player.PlayerController.GetPlayerController.TakeDamage(DragonController.instance.fireraindamage);
+            FSM.Player.PlayerController.Instance.TakeDamage(DragonController.instance.fireraindamage);
 
             speed = 0f;
 
