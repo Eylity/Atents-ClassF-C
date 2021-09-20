@@ -11,81 +11,81 @@ namespace FSM.Player
         // 중력
         private const float GRAVITY = 9.81f;
         private CharacterController m_CharacterController;
-        private Transform m_CamPos;
+        private Transform m_CamTransform;
         private Vector3 m_GravityVec = Vector3.zero;
 
 
         protected override void ONInitialized()
         {
             Debug.Assert(Camera.main != null, $"Script Name : {ToString()}\nCamera.main Is null");
-            m_CamPos = Camera.main.transform;
-            m_CharacterController = m_Owner.GetComponent<CharacterController>();
+            m_CamTransform = Camera.main.transform;
+            m_CharacterController = owner.GetComponent<CharacterController>();
         }
 
-        public override void OnStateEnter() => m_Machine.m_Animator.SetBool(m_IsMove, true);
+        public override void OnStateEnter() => machine.animator.SetBool(m_IsMove, true);
 
         public override void ChangePoint()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_Machine.ChangeState<Player_Attack>();
+                machine.ChangeState<Player_Attack>();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && m_Owner.PlayerStat.Stamina > 40f && m_Owner.m_ActiveFlyAttack)
+            if (Input.GetKeyDown(KeyCode.Q) && owner.PlayerStat.Stamina > 40f && owner.activeFlyAttack)
             {
-                m_Machine.ChangeState<Player_FlyAttack>();
+                machine.ChangeState<Player_FlyAttack>();
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && m_Owner.PlayerStat.Stamina > 40f && m_Owner.m_ActiveFullSwing)
+            if (Input.GetKeyDown(KeyCode.E) && owner.PlayerStat.Stamina > 40f && owner.activeFullSwing)
             {
-                m_Machine.ChangeState<Player_FullSwing>();
+                machine.ChangeState<Player_FullSwing>();
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && m_Owner.m_ActiveArea)
+            if (Input.GetKeyDown(KeyCode.Space) && owner.activeArea)
             {
-                m_Machine.ChangeState<Player_Area>();
+                machine.ChangeState<Player_Area>();
             }
         }
         
         // 뛰는 트리거 설정
         public override void OnStateUpdate()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !m_Owner.m_NowExhausted)
+            if (Input.GetKey(KeyCode.LeftShift) && !owner.nowExhausted)
             {
-                m_Owner.PlayerStat.m_MoveSpeed = 7f;
-                m_Owner.PlayerStat.m_RotateSpeed = 12f;
-                m_Machine.m_Animator.SetBool(m_IsRun, true);
-                m_Owner.m_NowRun = true;
+                owner.PlayerStat.moveSpeed = 7f;
+                owner.PlayerStat.rotateSpeed = 12f;
+                machine.animator.SetBool(m_IsRun, true);
+                owner.nowRun = true;
             }
             else
             {
-                m_Owner.PlayerStat.m_MoveSpeed = 4f;
-                m_Owner.PlayerStat.m_RotateSpeed = 8f;
-                m_Machine.m_Animator.SetBool(m_IsRun, false);
-                m_Owner.m_NowRun = false;
+                owner.PlayerStat.moveSpeed = 4f;
+                owner.PlayerStat.rotateSpeed = 8f;
+                machine.animator.SetBool(m_IsRun, false);
+                owner.nowRun = false;
             }
         }
         
         public override void OnFixedUpdate()
         {
-            var moveX = Input.GetAxis("Horizontal");
-            var moveZ = Input.GetAxis("Vertical");
+            var _moveX = Input.GetAxis("Horizontal");
+            var _moveZ = Input.GetAxis("Vertical");
 
-            var movePos = (m_CamPos.right * moveX) + (m_CamPos.forward * moveZ);
-            movePos.y = 0f;
-            movePos.Normalize();
+            var _movePos = (m_CamTransform.right * _moveX) + (m_CamTransform.forward * _moveZ);
+            _movePos.y = 0f;
+            _movePos.Normalize();
             
             // 입력값이 없을시 대기상태 전환
-            if (movePos == Vector3.zero)
+            if (_movePos == Vector3.zero)
             {
-                m_Machine.ChangeState<Player_Idle>();
+                machine.ChangeState<Player_Idle>();
                 return;
             }
             
             // 자연스럽게 회전하기위함
-            m_Owner.transform.rotation = Quaternion.Slerp(m_Owner.transform.rotation,
-                Quaternion.LookRotation(movePos),
-                m_Owner.PlayerStat.m_RotateSpeed * Time.deltaTime);
+            owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation,
+                Quaternion.LookRotation(_movePos),
+                owner.PlayerStat.rotateSpeed * Time.deltaTime);
             
             // 중력적용
             if (!m_CharacterController.isGrounded)
@@ -93,14 +93,14 @@ namespace FSM.Player
                 m_GravityVec.y -= GRAVITY * Time.deltaTime;
             }
 
-            m_CharacterController.Move((movePos + m_GravityVec) * (m_Owner.PlayerStat.m_MoveSpeed * Time.deltaTime));
+            m_CharacterController.Move((_movePos + m_GravityVec) * (owner.PlayerStat.moveSpeed * Time.deltaTime));
         }
 
         public override void OnStateExit()
         {
-            m_Owner.m_NowRun = false;
-            m_Machine.m_Animator.SetBool(m_IsMove, false);
-            m_Machine.m_Animator.SetBool(m_IsRun, false);
+            owner.nowRun = false;
+            machine.animator.SetBool(m_IsMove, false);
+            machine.animator.SetBool(m_IsRun, false);
         }
     }
 }

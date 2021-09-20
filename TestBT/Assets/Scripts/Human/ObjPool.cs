@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 사용할 프리팹들을 열거형으로 정의 편의를 위해 피와 스킬 이펙트의 열거형을 다르게 정의함
+#region Prefab Name
+
 public enum EPrefabsName
 {
     Area = 0,
@@ -35,6 +36,7 @@ public enum EBloodPrefabsName
     Blood14,
     Blood15,
 }
+#endregion
 
 public class ObjPool : MonoBehaviour
 {
@@ -42,27 +44,27 @@ public class ObjPool : MonoBehaviour
 
     #region Prefabs Class
 
-    public Prefabs[] m_Prefab;
-    public BloodPrefabs[] m_BloodPrefab;
+    public Prefabs[] prefab;
+    public BloodPrefabs[] bloodPrefab;
 
     [Serializable]
     public class Prefabs
     {
-        public GameObject m_Prefab;
-        public int m_ProduceCount;
-        public EPrefabsName m_ObjectName;
-        public Queue<GameObject> m_ObjectQueue = new Queue<GameObject>();
-        [HideInInspector] public Transform m_ObjectTransform;
+        public GameObject prefab;
+        public int produceCount;
+        public EPrefabsName objectName;
+        public Queue<GameObject> objectQueue = new Queue<GameObject>();
+        [HideInInspector] public Transform objectTransform;
     }
 
     [Serializable]
     public class BloodPrefabs
     {
-        public GameObject m_Prefab;
-        public int m_ProduceCount;
-        public EBloodPrefabsName m_ObjectName;
-        public Queue<GameObject> m_ObjectQueue = new Queue<GameObject>();
-        [HideInInspector] public Transform m_ObjectTransform;
+        public GameObject prefab;
+        public int produceCount;
+        public EBloodPrefabsName objectName;
+        public Queue<GameObject> objectQueue = new Queue<GameObject>();
+        [HideInInspector] public Transform objectTransform;
     }
 
     #endregion
@@ -86,20 +88,20 @@ public class ObjPool : MonoBehaviour
 
     private void CreatePrefabsParent()
     {
-        for (var i = 0; i < m_Prefab.Length; i++)
+        for (var i = 0; i < prefab.Length; i++)
         {
-            var obj = new GameObject(m_Prefab[i].m_ObjectName.ToString());
-            m_Prefab[i].m_ObjectTransform = obj.transform;
-            obj.transform.SetParent(this.transform);
-            SetPool(m_Prefab[i], m_Prefab[i].m_ProduceCount);
+            var _obj = new GameObject(prefab[i].objectName.ToString());
+            prefab[i].objectTransform = _obj.transform;
+            _obj.transform.SetParent(this.transform);
+            SetPool(prefab[i], prefab[i].produceCount);
         }
 
-        for (var i = 0; i < m_BloodPrefab.Length; i++)
+        for (var i = 0; i < bloodPrefab.Length; i++)
         {
-            var obj = new GameObject(m_BloodPrefab[i].m_ObjectName.ToString());
-            m_BloodPrefab[i].m_ObjectTransform = obj.transform;
-            obj.transform.SetParent(this.transform);
-            SetPool(m_BloodPrefab[i], m_BloodPrefab[i].m_ProduceCount);
+            var _obj = new GameObject(bloodPrefab[i].objectName.ToString());
+            bloodPrefab[i].objectTransform = _obj.transform;
+            _obj.transform.SetParent(this.transform);
+            SetPool(bloodPrefab[i], bloodPrefab[i].produceCount);
         }
     }
 
@@ -107,7 +109,7 @@ public class ObjPool : MonoBehaviour
     {
         for (var i = 0; i < count; i++)
         {
-            prefab.m_ObjectQueue.Enqueue(CreateNewObj(prefab));
+            prefab.objectQueue.Enqueue(CreateNewObj(prefab));
         }
     }
 
@@ -115,33 +117,33 @@ public class ObjPool : MonoBehaviour
     {
         for (var i = 0; i < count; i++)
         {
-            prefab.m_ObjectQueue.Enqueue(CreateNewObj(prefab));
+            prefab.objectQueue.Enqueue(CreateNewObj(prefab));
         }
     }
 
     private static GameObject CreateNewObj(Prefabs prefab)
     {
-        var obj = Instantiate(prefab.m_Prefab);
+        var obj = Instantiate(prefab.prefab);
         obj.SetActive(false);
-        obj.transform.SetParent(prefab.m_ObjectTransform);
+        obj.transform.SetParent(prefab.objectTransform);
         return obj;
     }
 
     private static GameObject CreateNewObj(BloodPrefabs prefab)
     {
-        var obj = Instantiate(prefab.m_Prefab);
+        var obj = Instantiate(prefab.prefab);
         obj.SetActive(false);
-        obj.transform.SetParent(prefab.m_ObjectTransform);
+        obj.transform.SetParent(prefab.objectTransform);
         return obj;
     }
 
     private static Prefabs FindPrefabName(EPrefabsName name)
     {
-        for (var i = 0; i < Instance.m_Prefab.Length; i++)
+        for (var i = 0; i < Instance.prefab.Length; i++)
         {
-            if (Instance.m_Prefab[i].m_ObjectName == name)
+            if (Instance.prefab[i].objectName == name)
             {
-                return Instance.m_Prefab[i];
+                return Instance.prefab[i];
             }
         }
 
@@ -150,11 +152,11 @@ public class ObjPool : MonoBehaviour
 
     private static BloodPrefabs FindPrefabName(EBloodPrefabsName name)
     {
-        for (var i = 0; i < Instance.m_BloodPrefab.Length; i++)
+        for (var i = 0; i < Instance.bloodPrefab.Length; i++)
         {
-            if (Instance.m_BloodPrefab[i].m_ObjectName == name)
+            if (Instance.bloodPrefab[i].objectName == name)
             {
-                return Instance.m_BloodPrefab[i];
+                return Instance.bloodPrefab[i];
             }
         }
 
@@ -168,9 +170,9 @@ public class ObjPool : MonoBehaviour
     {
         var currentPrefab = FindPrefabName(prefabName);
 
-        if (currentPrefab.m_ObjectQueue.Count > 0)
+        if (currentPrefab.objectQueue.Count > 0)
         {
-            var obj = currentPrefab.m_ObjectQueue.Dequeue();
+            var obj = currentPrefab.objectQueue.Dequeue();
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
             return obj;
@@ -184,12 +186,12 @@ public class ObjPool : MonoBehaviour
         }
     }
 
-    public GameObject GetObject(EBloodPrefabsName name)
+    public GameObject GetObject(EBloodPrefabsName BloodName)
     {
-        var currentPrefab = FindPrefabName(name);
-        if (currentPrefab.m_ObjectQueue.Count > 0)
+        var currentPrefab = FindPrefabName(BloodName);
+        if (currentPrefab.objectQueue.Count > 0)
         {
-            var obj = currentPrefab.m_ObjectQueue.Dequeue();
+            var obj = currentPrefab.objectQueue.Dequeue();
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
             return obj;
@@ -209,17 +211,17 @@ public class ObjPool : MonoBehaviour
         var currentPrefab = FindPrefabName(name);
 
         obj.gameObject.SetActive(false);
-        obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
-        currentPrefab.m_ObjectQueue.Enqueue(obj);
+        obj.transform.SetParent(currentPrefab.objectTransform.transform);
+        currentPrefab.objectQueue.Enqueue(obj);
     }
 
-    public void ReturnObject(GameObject obj, EBloodPrefabsName name)
+    public void ReturnObject(GameObject obj, EBloodPrefabsName BloodName)
     {
-        var currentPrefab = FindPrefabName(name);
+        var currentPrefab = FindPrefabName(BloodName);
 
         obj.gameObject.SetActive(false);
-        obj.transform.SetParent(currentPrefab.m_ObjectTransform.transform);
-        currentPrefab.m_ObjectQueue.Enqueue(obj);
+        obj.transform.SetParent(currentPrefab.objectTransform.transform);
+        currentPrefab.objectQueue.Enqueue(obj);
     }
     
     // 일정시간 딜레이후 반환
@@ -234,9 +236,9 @@ public class ObjPool : MonoBehaviour
         ReturnObject(obj, name);
     }
     
-    public void ReturnObject(GameObject obj, EBloodPrefabsName name, float time)
+    public void ReturnObject(GameObject obj, EBloodPrefabsName BloodName, float time)
     {
-        StartCoroutine(DelayReturn(obj, name, time));
+        StartCoroutine(DelayReturn(obj, BloodName, time));
     }
 
     private IEnumerator DelayReturn(GameObject obj, EBloodPrefabsName name, float time)

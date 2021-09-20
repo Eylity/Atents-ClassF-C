@@ -8,10 +8,10 @@
         private float m_StaminaPoint;
         private const float MAX_STAMINA_POINT = 200f;
 
-        public float m_Damage = 5f;
-        public readonly float m_RunStamina = 10f;
-        public float m_RotateSpeed = 8f;
-        public float m_MoveSpeed = 4f;
+        public float damage = 5f;
+        public const float RUN_STAMINA = 10f;
+        public float rotateSpeed = 8f;
+        public float moveSpeed = 4f;
 
         // 플레이어의 체력
         public float Health

@@ -20,29 +20,29 @@ namespace FSM.Player
         {
             // 애니메이션 트리거 취소
             PlayerManager.Instance.TrailSwitch(false);
-            m_Machine.m_Animator.SetBool(m_IsMove, false);
-            m_Machine.m_Animator.SetBool(m_IsRun, false);
-            m_Machine.m_Animator.ResetTrigger(m_Attack);
-            m_Machine.m_Animator.ResetTrigger(m_FlyAttack);
-            m_Machine.m_Animator.ResetTrigger(m_FullSwing);
-            m_Machine.m_Animator.SetTrigger(m_Exhausted);
-            m_Owner.StartCoroutine(ExhaustedTimer());
+            machine.animator.SetBool(m_IsMove, false);
+            machine.animator.SetBool(m_IsRun, false);
+            machine.animator.ResetTrigger(m_Attack);
+            machine.animator.ResetTrigger(m_FlyAttack);
+            machine.animator.ResetTrigger(m_FullSwing);
+            machine.animator.SetTrigger(m_Exhausted);
+            owner.StartCoroutine(ExhaustedTimer());
         }
 
         public override void OnStateUpdate()
         {
-            if (m_Machine.IsEnd())
+            if (machine.IsEnd())
             {
-                m_Machine.ChangeState<Player_Idle>();
+                machine.ChangeState<Player_Idle>();
             }
         }
 
         private IEnumerator ExhaustedTimer()
         {
             // 탈진 시간
-            m_Owner.m_NowExhausted = true;
+            owner.nowExhausted = true;
             yield return m_ExhaustedTime;
-            m_Owner.m_NowExhausted = false;
+            owner.nowExhausted = false;
         }
     }
 }

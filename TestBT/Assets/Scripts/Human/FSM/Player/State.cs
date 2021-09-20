@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FSM.Player
@@ -5,13 +6,14 @@ namespace FSM.Player
     public abstract class State<T>
     {
         // 해니메이션 해쉬값
-        internal readonly int m_StateToHash;
-        
+        internal readonly int stateToHash;
+        protected List<State<T>> nextState = new List<State<T>>(); 
+
         // 스테이트머신
-        protected StateMachine<T> m_Machine;
+        protected StateMachine<T> machine;
         
         // 사용하는 오브젝트
-        protected T m_Owner;
+        protected T owner;
 
         // 해쉬값이 필요없을시 오버로딩
         protected State()
@@ -22,13 +24,13 @@ namespace FSM.Player
         {
         }
 
-        private State(int animStateHash) => this.m_StateToHash = animStateHash;
+        private State(int animStateHash) => this.stateToHash = animStateHash;
         
         // 초기화시 한번만 호출
         internal void SetMachineAndContext(StateMachine<T> machine, T owner)
         {
-            m_Machine = machine;
-            m_Owner = owner;
+            this.machine = machine;
+            this.owner = owner;
             ONInitialized();
         }
 

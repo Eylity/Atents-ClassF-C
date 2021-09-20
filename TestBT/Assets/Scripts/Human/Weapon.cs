@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(m_Ray, out var hit) && other.CompareTag("Dragon"))
         {
             Shake();
-            DragonController.instance.hp -= PlayerController.Instance.PlayerStat.m_Damage;
+            DragonController.instance.hp -= PlayerController.Instance.PlayerStat.damage;
 
             // 혈픈효과의 회전값 적용
             // 레이가 맞은 위치의 x 와 z 각도를 구한다. 

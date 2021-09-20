@@ -5,10 +5,10 @@ namespace FSM.Player
 {
     public sealed class Player_FullSwing : State<PlayerController>
     {
-        private readonly WaitForSeconds m_FullSwingTimer = new WaitForSeconds(7.0f);
+        private readonly WaitForSeconds m_FullSwingCoolTime = new WaitForSeconds(7.0f);
         private readonly int m_FullSwing;
-        private GameObject m_RightCharge;
-        private GameObject m_LeftCharge;
+        private GameObject m_RightChargeEffect;
+        private GameObject m_LeftChargeEffect;
 
         public Player_FullSwing() : base("Base Layer.Skill.FullSwing") =>
             m_FullSwing = Animator.StringToHash("FullSwing");
@@ -16,36 +16,36 @@ namespace FSM.Player
         // 이펙트 활성화 및 스킬 쿨다운
         public override void OnStateEnter()
         {
-            m_Owner.PlayerStat.Stamina -= 40f;
-            m_Owner.StartCoroutine(FullSwingCoolDown());
-            m_Machine.m_Animator.SetTrigger(m_FullSwing);
-            m_Owner.PlayerStat.m_Damage += 5;
+            owner.PlayerStat.Stamina -= 40f;
+            owner.StartCoroutine(FullSwingCoolDown());
+            machine.animator.SetTrigger(m_FullSwing);
+            owner.PlayerStat.damage += 5;
 
-            var player = m_Owner.transform.position;
+            var _player = owner.transform.position;
             PlayerManager.Instance.TrailSwitch();
-            PlayerManager.Instance.GetEffect(player, EPrefabsName.FullSwingEffect, 8.0f, 3f, m_Owner.gameObject);
-            m_LeftCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
-            m_RightCharge = PlayerManager.Instance.GetEffect(player, EPrefabsName.ChargingFullSwing,5f);
+            PlayerManager.Instance.GetEffect(_player, EPrefabsName.FullSwingEffect, 8.0f, 3f, owner.gameObject);
+            m_LeftChargeEffect = PlayerManager.Instance.GetEffect(_player, EPrefabsName.ChargingFullSwing,5f);
+            m_RightChargeEffect = PlayerManager.Instance.GetEffect(_player, EPrefabsName.ChargingFullSwing,5f);
         }
 
         public override void OnStateUpdate()
         {
-            m_LeftCharge.transform.position = PlayerManager.Instance.m_AttackLeftTrail.transform.position;
-            m_RightCharge.transform.position = PlayerManager.Instance.m_AttackRightTrail.transform.position;
+            m_LeftChargeEffect.transform.position = PlayerManager.Instance.m_AttackLeftTrail.transform.position;
+            m_RightChargeEffect.transform.position = PlayerManager.Instance.m_AttackRightTrail.transform.position;
 
-            if (m_Machine.IsEnd())
+            if (machine.IsEnd())
             {
-                m_Machine.ChangeState<Player_Idle>();
+                machine.ChangeState<Player_Idle>();
             }
         }
 
-        public override void OnStateExit() => m_Owner.PlayerStat.m_Damage -= 5;
+        public override void OnStateExit() => owner.PlayerStat.damage -= 5;
 
         private IEnumerator FullSwingCoolDown()
         {
-            m_Owner.m_ActiveFullSwing = false;
-            yield return m_FullSwingTimer;
-            m_Owner.m_ActiveFullSwing = true;
+            owner.activeFullSwing = false;
+            yield return m_FullSwingCoolTime;
+            owner.activeFullSwing = true;
         }
     }
 }

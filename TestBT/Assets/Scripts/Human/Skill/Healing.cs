@@ -7,7 +7,7 @@ namespace Skill
     public class Healing : MonoBehaviour
     {
         // 플레이어 회복 주기
-        private readonly WaitForSeconds m_Time = new WaitForSeconds(0.1f);
+        private readonly WaitForSeconds m_HealTime = new WaitForSeconds(0.1f);
         private bool m_InPlayer;
 
         private void OnEnable()
@@ -46,7 +46,7 @@ namespace Skill
                     PlayerController.Instance.PlayerStat.Stamina += 1;
                     PlayerController.Instance.PlayerStat.Health += 1;
                     // 초당 10씩 회복
-                    yield return m_Time;
+                    yield return m_HealTime;
                 }
                 else
                 {

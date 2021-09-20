@@ -11,14 +11,14 @@ namespace FSM.Player
         private StateMachine<PlayerController> m_StateMachine;
         
         // 스킬 쿨타임
-        [HideInInspector] public bool m_ActiveFlyAttack = true;
-        [HideInInspector] public bool m_ActiveFullSwing = true;
-        [HideInInspector] public bool m_ActiveArea = true;
+        [HideInInspector] public bool activeFlyAttack = true;
+        [HideInInspector] public bool activeFullSwing = true;
+        [HideInInspector] public bool activeArea = true;
         
         // 현재상태 체크하는 변수
-        [HideInInspector] public bool m_NowExhausted;
-        [HideInInspector] public bool m_NowRun;
-        [HideInInspector] public bool m_IsLive = true;
+        [HideInInspector] public bool nowExhausted;
+        [HideInInspector] public bool nowRun;
+        [HideInInspector] public bool isLive = true;
 
         private void Awake()
         {
@@ -33,8 +33,8 @@ namespace FSM.Player
 
         private void Start()
         {
-            var anim = GetComponent<Animator>();
-            m_StateMachine = new StateMachine<PlayerController>(anim, this, new Player_Idle());
+            var _anim = GetComponent<Animator>();
+            m_StateMachine = new StateMachine<PlayerController>(_anim, this, new Player_Idle());
             m_StateMachine.AddState(new Player_Move());
             m_StateMachine.AddState(new Player_Attack());
             m_StateMachine.AddState(new Player_Area());
@@ -54,7 +54,7 @@ namespace FSM.Player
 
         public void TakeDamage(float damage)
         {
-            if (!m_IsLive)
+            if (!isLive)
             {
                 return;
             }
@@ -71,15 +71,15 @@ namespace FSM.Player
         // m_NowRun 값에 따라 스태미너 회복 결정
         private void StaminaChange()
         {
-            PlayerStat.Stamina = m_NowRun switch
+            PlayerStat.Stamina = nowRun switch
             {
-                true => PlayerStat.Stamina -= PlayerStat.m_RunStamina * Time.deltaTime,
-                _ => PlayerStat.Stamina += PlayerStat.m_RunStamina * Time.deltaTime,
+                true => PlayerStat.Stamina -= Status.RUN_STAMINA * Time.deltaTime,
+                _ => PlayerStat.Stamina += Status.RUN_STAMINA * Time.deltaTime,
             };
 
-            if (PlayerStat.Stamina <= 0 && !m_NowExhausted)
+            if (PlayerStat.Stamina <= 0 && !nowExhausted)
             {
-                m_NowRun = false;
+                nowRun = false;
                 m_StateMachine.ChangeState<Player_Exhausted>();
             }
         }
@@ -93,9 +93,9 @@ namespace FSM.Player
         [FoldoutGroup("Debug")][Button("SkillCool")]
         private void Debug_Skill()
         {
-            m_ActiveFlyAttack = true;
-            m_ActiveFullSwing = true;
-            m_ActiveArea = true;
+            activeFlyAttack = true;
+            activeFullSwing = true;
+            activeArea = true;
         }
         [FoldoutGroup("Debug")][Button("TakeDamage")]
         private void Debug_TakeDamage()
