@@ -48,6 +48,11 @@ namespace FSM.Player
         {
             m_StateMachine?.Update();
             StaminaChange();
+            // DeBug
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                TakeDamage(35);
+            }
         }
 
         private void FixedUpdate() => m_StateMachine?.FixedUpdate();
